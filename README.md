@@ -80,30 +80,46 @@ Distributed application platform and tools:
 
 ## Why Macula?
 
-### Event Sourcing + Mesh = Resilience
+### Break Free from Big Tech
 
-Traditional architectures couple storage and computation. When a server fails, both are lost. The Macula approach separates concerns:
+Five companies control most cloud infrastructure, creating vendor lock-in and data exploitation. Macula provides **infrastructure you own**:
 
-- **Events are facts** - Immutable records of what happened
-- **State is derived** - Rebuilt from events on any node
-- **Mesh is location-agnostic** - Services move freely between nodes
+- **Local data processing** - Your data never leaves your network
+- **Open standards** - No proprietary lock-in
+- **Compute as an asset** - Run micro-datacenters, participate in the mesh economy
 
-### BEAM-Native = Operational Excellence
+### Data Sovereignty by Design
 
-Every component is built on the BEAM (Erlang VM):
+Governments worldwide enforce strict data residency requirements (GDPR, CCPA, localization laws). Macula's edge-first architecture naturally complies:
 
-- **Fault tolerance** - Supervisors restart failed processes
-- **Distribution** - Built-in clustering primitives
-- **Hot code loading** - Deploy without downtime
-- **Soft real-time** - Predictable latency characteristics
+- **Processing where data is created** - No cross-border transfers
+- **Cryptographic authorization** - UCAN tokens, not central auth servers
+- **Audit trails** - Event sourcing captures every state change
 
-### Edge-First = True Decentralization
+### Digital Resilience
 
-The platform is designed for edge deployment:
+Centralized systems fail catastrophically. Macula's mesh architecture ensures continuity:
 
-- **Local autonomy** - Nodes operate independently when disconnected
+- **If node A fails, nodes B, C, D continue** - No single point of failure
+- **Offline-capable** - Nodes operate independently when disconnected
 - **Eventual consistency** - Changes propagate when connectivity returns
-- **No single point of failure** - No master node required
+
+### Environmental Efficiency
+
+Data centers consume significant global electricity while operating at only 15-25% utilization. Edge processing changes this:
+
+- **10x energy reduction** for local processing vs cloud round-trips
+- **Utilize existing hardware** - Any device can join the mesh
+- **Reduce network overhead** - Process data where it's generated
+
+### BEAM-Native Excellence
+
+Every component is built on the BEAM (Erlang VM), battle-tested in telecom for 40+ years:
+
+- **Fault tolerance** - Supervisors restart failed processes automatically
+- **Soft real-time** - Predictable latency characteristics
+- **Hot code loading** - Deploy without downtime
+- **Massive concurrency** - Millions of lightweight processes
 
 ## Use Cases
 
