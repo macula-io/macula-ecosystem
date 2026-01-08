@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <linearGradient id="eventGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed"/>
+      <stop offset="100%" style="stop-color:#5b21b6"/>
+    </linearGradient>
+    <linearGradient id="meshGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0ea5e9"/>
+      <stop offset="100%" style="stop-color:#0284c7"/>
+    </linearGradient>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a78bfa"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#34d399"/>
+    </marker>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" fill="url(#bgGrad)"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#fff">
+    Event-Sourced Application Data Flow
+  </text>
+
+  <!-- Application Layer -->
+  <g transform="translate(50, 70)">
+    <rect width="200" height="100" rx="12" fill="#1e3a5f" filter="url(#shadow)"/>
+    <rect width="200" height="100" rx="12" fill="none" stroke="#0ea5e9" stroke-width="2"/>
+    <text x="100" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">Your Application</text>
+    <text x="100" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7dd3fc">Phoenix LiveView</text>
+    <text x="100" y="70" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7dd3fc">Business Logic</text>
+    <text x="100" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7dd3fc">Read Models</text>
+  </g>
+
+  <!-- Evoq -->
+  <g transform="translate(350, 70)">
+    <rect width="200" height="100" rx="12" fill="url(#eventGrad)" filter="url(#shadow)"/>
+    <text x="100" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">evoq</text>
+    <text x="100" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e9d5ff">Aggregates</text>
+    <text x="100" y="70" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e9d5ff">Commands → Events</text>
+    <text x="100" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e9d5ff">Process Managers</text>
+  </g>
+
+  <!-- ReckonEvoq -->
+  <g transform="translate(650, 70)">
+    <rect width="200" height="100" rx="12" fill="url(#eventGrad)" filter="url(#shadow)"/>
+    <text x="100" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">reckon_evoq</text>
+    <text x="100" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e9d5ff">Event Adapter</text>
+    <text x="100" y="70" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e9d5ff">Stream Routing</text>
+    <text x="100" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e9d5ff">Subscriptions</text>
+  </g>
+
+  <!-- Arrows: App -> Evoq -> ReckonEvoq -->
+  <path d="M 250 120 L 340 120" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <text x="295" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#a78bfa">dispatch</text>
+
+  <path d="M 550 120 L 640 120" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <text x="595" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#a78bfa">persist</text>
+
+  <!-- ReckonGater -->
+  <g transform="translate(350, 220)">
+    <rect width="200" height="100" rx="12" fill="url(#eventGrad)" filter="url(#shadow)"/>
+    <text x="100" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">reckon_gater</text>
+    <text x="100" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e9d5ff">Gateway Layer</text>
+    <text x="100" y="70" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e9d5ff">Load Balancing</text>
+    <text x="100" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e9d5ff">UCAN Authorization</text>
+  </g>
+
+  <!-- ReckonDB -->
+  <g transform="translate(350, 370)">
+    <rect width="200" height="100" rx="12" fill="url(#eventGrad)" filter="url(#shadow)"/>
+    <text x="100" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">reckon_db</text>
+    <text x="100" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e9d5ff">Event Store</text>
+    <text x="100" y="70" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e9d5ff">Khepri/Ra (Raft)</text>
+    <text x="100" y="85" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e9d5ff">Distributed Consensus</text>
+  </g>
+
+  <!-- Vertical arrows -->
+  <path d="M 750 180 L 750 200 Q 750 220 730 220 L 560 220" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <text x="660" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#a78bfa">route</text>
+
+  <path d="M 450 330 L 450 360" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrowPurple)"/>
+  <text x="470" y="350" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#a78bfa">store</text>
+
+  <!-- Macula Mesh (side) -->
+  <g transform="translate(650, 270)">
+    <rect width="200" height="80" rx="12" fill="url(#meshGrad)" filter="url(#shadow)"/>
+    <text x="100" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">macula</text>
+    <text x="100" y="50" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#bae6fd">Mesh Networking</text>
+    <text x="100" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#bae6fd">Cross-node Events</text>
+  </g>
+
+  <!-- Mesh connection -->
+  <path d="M 560 270 L 640 290" stroke="#38bdf8" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowBlue)"/>
+  <text x="600" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#38bdf8">replicate</text>
+
+  <!-- Projections (callback) -->
+  <g transform="translate(50, 270)">
+    <rect width="200" height="80" rx="12" fill="#134e4a" filter="url(#shadow)"/>
+    <rect width="200" height="80" rx="12" fill="none" stroke="#10b981" stroke-width="2"/>
+    <text x="100" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">Projections</text>
+    <text x="100" y="50" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6ee7b7">Event → Read Model</text>
+    <text x="100" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#6ee7b7">SQLite / PostgreSQL</text>
+  </g>
+
+  <!-- Subscription callback arrow -->
+  <path d="M 340 270 Q 280 260 260 260 L 260 270" stroke="#34d399" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowGreen)"/>
+  <text x="300" y="250" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#34d399">subscribe</text>
+
+  <!-- Back to app -->
+  <path d="M 150 270 L 150 180" stroke="#34d399" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text x="130" y="225" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#34d399" transform="rotate(-90, 130, 225)">query</text>
+
+  <!-- Legend -->
+  <g transform="translate(650, 400)">
+    <text x="0" y="0" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#94a3b8">Legend</text>
+    <line x1="0" y1="20" x2="30" y2="20" stroke="#a78bfa" stroke-width="2"/>
+    <text x="40" y="24" font-family="system-ui, sans-serif" font-size="10" fill="#a78bfa">Command/Event Flow</text>
+    <line x1="0" y1="40" x2="30" y2="40" stroke="#38bdf8" stroke-width="2" stroke-dasharray="5,3"/>
+    <text x="40" y="44" font-family="system-ui, sans-serif" font-size="10" fill="#38bdf8">Mesh Replication</text>
+    <line x1="0" y1="60" x2="30" y2="60" stroke="#34d399" stroke-width="2" stroke-dasharray="5,3"/>
+    <text x="40" y="64" font-family="system-ui, sans-serif" font-size="10" fill="#34d399">Projection Updates</text>
+  </g>
+</svg>

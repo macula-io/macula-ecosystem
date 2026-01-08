@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed"/>
+      <stop offset="50%" style="stop-color:#0ea5e9"/>
+      <stop offset="100%" style="stop-color:#10b981"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="#0f172a"/>
+  <circle cx="64" cy="64" r="58" fill="none" stroke="url(#logoGrad)" stroke-width="2"/>
+
+  <!-- Central node -->
+  <circle cx="64" cy="64" r="12" fill="url(#logoGrad)" filter="url(#glow)"/>
+
+  <!-- Orbiting nodes -->
+  <circle cx="64" cy="28" r="8" fill="#7c3aed"/>
+  <circle cx="95" cy="48" r="8" fill="#0ea5e9"/>
+  <circle cx="95" cy="80" r="8" fill="#10b981"/>
+  <circle cx="64" cy="100" r="8" fill="#f59e0b"/>
+  <circle cx="33" cy="80" r="8" fill="#10b981"/>
+  <circle cx="33" cy="48" r="8" fill="#0ea5e9"/>
+
+  <!-- Connection lines -->
+  <g stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.6">
+    <line x1="64" y1="52" x2="64" y2="36"/>
+    <line x1="74" y1="58" x2="87" y2="50"/>
+    <line x1="74" y1="70" x2="87" y2="78"/>
+    <line x1="64" y1="76" x2="64" y2="92"/>
+    <line x1="54" y1="70" x2="41" y2="78"/>
+    <line x1="54" y1="58" x2="41" y2="50"/>
+  </g>
+
+  <!-- Outer ring connections -->
+  <g stroke="#475569" stroke-width="1" opacity="0.4">
+    <path d="M 64 28 Q 85 25 95 48" fill="none"/>
+    <path d="M 95 48 Q 105 64 95 80" fill="none"/>
+    <path d="M 95 80 Q 85 103 64 100" fill="none"/>
+    <path d="M 64 100 Q 43 103 33 80" fill="none"/>
+    <path d="M 33 80 Q 23 64 33 48" fill="none"/>
+    <path d="M 33 48 Q 43 25 64 28" fill="none"/>
+  </g>
+</svg>
