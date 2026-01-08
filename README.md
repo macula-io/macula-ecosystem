@@ -68,28 +68,6 @@ Distributed application platform and tools:
   <img src="assets/data-flow.svg" alt="Event-Sourced Application Data Flow" width="100%">
 </p>
 
-## Quick Start
-
-Add the packages you need to your `mix.exs`:
-
-```elixir
-defp deps do
-  [
-    # Event sourcing
-    {:evoq, "~> 1.0"},
-    {:reckon_evoq, "~> 1.0"},
-
-    # Mesh networking
-    {:macula, "~> 0.17"},
-
-    # Neuroevolution (optional)
-    {:macula_neuroevolution, "~> 0.18"}
-  ]
-end
-```
-
-See the [Getting Started Guide](guides/getting-started.md) for a complete tutorial.
-
 ## Documentation
 
 - [**Overview**](guides/overview.md) - Introduction to the ecosystem
