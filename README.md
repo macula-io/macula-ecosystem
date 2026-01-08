@@ -27,6 +27,14 @@ Macula is a **BEAM-native platform** for building distributed, event-sourced app
   <img src="assets/ecosystem-overview.svg" alt="Macula Ecosystem Architecture" width="100%">
 </p>
 
+## Mesh Architecture
+
+<p align="center">
+  <img src="assets/mesh-architecture.svg" alt="Macula Mesh: Decentralized Service Architecture" width="100%">
+</p>
+
+Edge nodes form clusters that participate in a realm (mesh). Services advertise to the Kademlia DHT, consumers discover them, and communication happens via RPC (request/response) or PubSub (broadcast). All interactions are secured with DID identities and UCAN capability tokens.
+
 ## Two Organizations, One Platform
 
 The ecosystem spans two GitHub organizations with complementary responsibilities:
