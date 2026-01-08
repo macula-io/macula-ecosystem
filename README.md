@@ -3,15 +3,11 @@
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 <p align="center">
-  <img src="assets/logo.svg" width="128" height="128" alt="Macula Ecosystem">
+  <img src="assets/logo.svg" width="120" height="120" alt="Macula">
 </p>
 
 <p align="center">
   <strong>Documentation hub for the Macula distributed application platform</strong>
-</p>
-
-<p align="center">
-  Build event-sourced applications on a decentralized mesh network
 </p>
 
 ---
