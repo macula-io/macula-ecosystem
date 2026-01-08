@@ -80,13 +80,31 @@ Distributed application platform and tools:
 
 ## Why Macula?
 
+### Reclaim Your Place in the AI Economy
+
+AI is rapidly automating cognitive work, displacing millions from traditional employment. But AI needs compute—and that's an opportunity. Macula transforms you from a **displaced worker** into an **infrastructure provider**:
+
+- **Compute as a new asset class** - Your hardware becomes income-generating infrastructure
+- **Run micro-datacenters** - Participate in the mesh economy from your home or office
+- **Own your contribution** - No middleman taking 30%+ of your compute value
+- **Community-owned AI** - Train and run models on community infrastructure, not Big Tech clouds
+
+### A Platform for Indies and Solo Developers
+
+Big Tech platforms demand 30% cuts, dictate your terms, and can deplatform you overnight. Macula puts a **production-ready distributed platform at your fingertips**:
+
+- **Zero platform fees** - Keep 100% of what you earn
+- **No app store gatekeepers** - Deploy directly to your users
+- **Built-in distribution** - Your app runs on the mesh, scales with demand
+- **Own your relationship** - Direct connection to users, no algorithm deciding your fate
+
 ### Break Free from Big Tech
 
 Five companies control most cloud infrastructure, creating vendor lock-in and data exploitation. Macula provides **infrastructure you own**:
 
 - **Local data processing** - Your data never leaves your network
-- **Open standards** - No proprietary lock-in
-- **Compute as an asset** - Run micro-datacenters, participate in the mesh economy
+- **Open standards** - No proprietary lock-in, no platform risk
+- **Portable workloads** - Move freely between nodes and providers
 
 ### Data Sovereignty by Design
 
