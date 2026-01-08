@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 720" width="900" height="720">
   <defs>
     <!-- Gradients -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -48,7 +48,7 @@
   </defs>
 
   <!-- Background -->
-  <rect width="900" height="600" fill="url(#bgGrad)"/>
+  <rect width="900" height="720" fill="url(#bgGrad)"/>
 
   <!-- Title -->
   <text x="450" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" font-weight="bold" fill="#fff">
@@ -168,35 +168,42 @@
     <line x1="750" y1="280" x2="750" y2="350"/>
   </g>
 
-  <!-- RPC Flow Animation (Cluster A to B via DHT) -->
+  <!-- RPC Flow Animation (Cluster B to A - Request, A responds) -->
   <g id="rpc-flow">
     <!-- DHT Lookup path -->
-    <path d="M 150 205 Q 300 250 450 320" fill="none" stroke="#F97316" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
-    <path d="M 450 320 Q 600 250 750 205" fill="none" stroke="#F97316" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
+    <path d="M 750 205 Q 600 250 450 320" fill="none" stroke="#F97316" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
+    <path d="M 450 320 Q 300 250 150 205" fill="none" stroke="#F97316" stroke-width="2" stroke-dasharray="5,5" opacity="0.6"/>
 
-    <!-- Animated packet: DHT lookup -->
-    <circle r="5" fill="#F97316" filter="url(#glow)">
-      <animateMotion dur="3s" repeatCount="indefinite" begin="0s">
-        <mpath href="#rpc-path-1"/>
-      </animateMotion>
-      <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite"/>
-    </circle>
+    <!-- RPC Request path (B calls A) -->
+    <path id="rpc-request-path" d="M 750 205 C 600 150 300 150 150 205" fill="none" stroke="#0EA5E9" stroke-width="2" opacity="0"/>
+    <path d="M 750 205 C 600 150 300 150 150 205" fill="none" stroke="#0EA5E9" stroke-width="2" stroke-dasharray="8,4" opacity="0.7" marker-end="url(#arrowBlue)"/>
 
-    <!-- RPC call path (direct after discovery) -->
-    <path id="rpc-path-1" d="M 150 205 C 300 150 600 150 750 205" fill="none" stroke="#0EA5E9" stroke-width="2" opacity="0"/>
-    <path d="M 150 205 C 300 150 600 150 750 205" fill="none" stroke="#0EA5E9" stroke-width="2" stroke-dasharray="8,4" opacity="0.7" marker-end="url(#arrowBlue)"/>
+    <!-- RPC Response path (A responds to B) -->
+    <path id="rpc-response-path" d="M 150 205 C 300 260 600 260 750 205" fill="none" stroke="#8B5CF6" stroke-width="2" opacity="0"/>
+    <path d="M 150 205 C 300 260 600 260 750 205" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="4,4" opacity="0.5"/>
 
-    <!-- Animated RPC packet -->
+    <!-- Animated RPC Request packet (B to A) -->
     <circle r="6" fill="#0EA5E9" filter="url(#glow)">
-      <animateMotion dur="2.5s" repeatCount="indefinite" begin="1.5s">
-        <mpath href="#rpc-path-1"/>
+      <animateMotion dur="2s" repeatCount="indefinite" begin="0s">
+        <mpath href="#rpc-request-path"/>
       </animateMotion>
-      <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" begin="1.5s"/>
+      <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" begin="0s"/>
     </circle>
 
-    <!-- RPC label -->
-    <rect x="400" y="125" width="100" height="22" rx="4" fill="#0EA5E9" opacity="0.2"/>
-    <text x="450" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0EA5E9" font-weight="bold">RPC Call</text>
+    <!-- Animated RPC Response packet (A to B) -->
+    <circle r="6" fill="#8B5CF6" filter="url(#glow)">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="2.5s">
+        <mpath href="#rpc-response-path"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" begin="2.5s"/>
+    </circle>
+
+    <!-- RPC labels -->
+    <rect x="380" y="118" width="70" height="18" rx="4" fill="#0EA5E9" opacity="0.2"/>
+    <text x="415" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0EA5E9" font-weight="bold">Request</text>
+
+    <rect x="450" y="118" width="70" height="18" rx="4" fill="#8B5CF6" opacity="0.2"/>
+    <text x="485" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#8B5CF6" font-weight="bold">Response</text>
   </g>
 
   <!-- PubSub Flow Animation (Cluster C to D via DHT) -->
@@ -232,49 +239,51 @@
   </g>
 
   <!-- Legend -->
-  <g id="legend" transform="translate(30, 85)">
-    <rect x="0" y="0" width="180" height="130" rx="8" fill="#0C1929" stroke="#334155" stroke-width="1" opacity="0.9"/>
-    <text x="15" y="22" font-family="system-ui, sans-serif" font-size="11" fill="#94A3B8" font-weight="bold">Legend</text>
+  <g id="legend" transform="translate(30, 590)">
+    <rect x="0" y="0" width="180" height="120" rx="8" fill="#0C1929" stroke="#334155" stroke-width="1" opacity="0.9"/>
+    <text x="15" y="20" font-family="system-ui, sans-serif" font-size="11" fill="#94A3B8" font-weight="bold">Legend</text>
 
     <!-- RPC -->
-    <line x1="15" y1="42" x2="45" y2="42" stroke="#0EA5E9" stroke-width="2" stroke-dasharray="8,4"/>
-    <circle cx="30" cy="42" r="4" fill="#0EA5E9"/>
-    <text x="55" y="46" font-family="system-ui, sans-serif" font-size="10" fill="#0EA5E9">RPC (Request/Response)</text>
+    <line x1="15" y1="38" x2="45" y2="38" stroke="#0EA5E9" stroke-width="2" stroke-dasharray="8,4"/>
+    <circle cx="30" cy="38" r="4" fill="#0EA5E9"/>
+    <text x="55" y="42" font-family="system-ui, sans-serif" font-size="10" fill="#0EA5E9">RPC (Request/Response)</text>
 
     <!-- PubSub -->
-    <line x1="15" y1="62" x2="45" y2="62" stroke="#10B981" stroke-width="2" stroke-dasharray="6,3"/>
-    <circle cx="30" cy="62" r="4" fill="#10B981"/>
-    <text x="55" y="66" font-family="system-ui, sans-serif" font-size="10" fill="#10B981">PubSub (Broadcast)</text>
+    <line x1="15" y1="58" x2="45" y2="58" stroke="#10B981" stroke-width="2" stroke-dasharray="6,3"/>
+    <circle cx="30" cy="58" r="4" fill="#10B981"/>
+    <text x="55" y="62" font-family="system-ui, sans-serif" font-size="10" fill="#10B981">PubSub (Broadcast)</text>
 
     <!-- DHT -->
-    <circle cx="30" cy="82" r="8" fill="none" stroke="#F97316" stroke-width="1.5" stroke-dasharray="3,2"/>
-    <text x="55" y="86" font-family="system-ui, sans-serif" font-size="10" fill="#F97316">DHT Discovery</text>
+    <circle cx="30" cy="78" r="8" fill="none" stroke="#F97316" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <text x="55" y="82" font-family="system-ui, sans-serif" font-size="10" fill="#F97316">DHT Discovery</text>
 
     <!-- Hub node -->
-    <circle cx="30" cy="105" r="6" fill="#0C1929" stroke="#F97316" stroke-width="2"/>
-    <circle cx="30" cy="105" r="3" fill="#F97316"/>
-    <text x="55" y="109" font-family="system-ui, sans-serif" font-size="10" fill="#94A3B8">Service Provider</text>
+    <circle cx="30" cy="100" r="6" fill="#0C1929" stroke="#F97316" stroke-width="2"/>
+    <circle cx="30" cy="100" r="3" fill="#F97316"/>
+    <text x="55" y="104" font-family="system-ui, sans-serif" font-size="10" fill="#94A3B8">Service Provider</text>
   </g>
 
   <!-- Security info box -->
-  <g id="security-info" transform="translate(690, 85)">
-    <rect x="0" y="0" width="180" height="90" rx="8" fill="#0C1929" stroke="#10B981" stroke-width="1" opacity="0.9"/>
-    <text x="15" y="22" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">Security</text>
+  <g id="security-info" transform="translate(690, 590)">
+    <rect x="0" y="0" width="180" height="120" rx="8" fill="#0C1929" stroke="#10B981" stroke-width="1" opacity="0.9"/>
+    <text x="15" y="20" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">Security</text>
 
     <text x="15" y="42" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">• DID identity per node</text>
-    <text x="15" y="56" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">• UCAN capability tokens</text>
-    <text x="15" y="70" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">• Ed25519 signatures</text>
-    <text x="15" y="84" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">• No central authority</text>
+    <text x="15" y="58" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">• UCAN capability tokens</text>
+    <text x="15" y="74" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">• Ed25519 signatures</text>
+    <text x="15" y="90" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">• No central authority</text>
+    <text x="15" y="106" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">• Cryptographic proof</text>
   </g>
 
   <!-- Flow description -->
-  <g id="flow-desc" transform="translate(250, 85)">
-    <rect x="0" y="0" width="200" height="90" rx="8" fill="#0C1929" stroke="#334155" stroke-width="1" opacity="0.9"/>
-    <text x="15" y="22" font-family="system-ui, sans-serif" font-size="11" fill="#94A3B8" font-weight="bold">How it works</text>
+  <g id="flow-desc" transform="translate(250, 590)">
+    <rect x="0" y="0" width="400" height="120" rx="8" fill="#0C1929" stroke="#334155" stroke-width="1" opacity="0.9"/>
+    <text x="15" y="20" font-family="system-ui, sans-serif" font-size="11" fill="#94A3B8" font-weight="bold">How it works</text>
 
-    <text x="15" y="42" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">1. Provider advertises to DHT</text>
-    <text x="15" y="56" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">2. Consumer discovers via DHT</text>
-    <text x="15" y="70" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">3. Direct QUIC connection</text>
-    <text x="15" y="84" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">4. RPC call with UCAN auth</text>
+    <text x="15" y="42" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">1. Provider advertises service to DHT</text>
+    <text x="15" y="58" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">2. Consumer discovers provider via DHT lookup</text>
+    <text x="15" y="74" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">3. Direct QUIC connection established (NAT-friendly)</text>
+    <text x="15" y="90" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">4. RPC: Request/Response with UCAN authorization</text>
+    <text x="15" y="106" font-family="system-ui, sans-serif" font-size="9" fill="#94A3B8">5. PubSub: Events broadcast to all subscribers</text>
   </g>
 </svg>
