@@ -86,32 +86,7 @@ defp deps do
 end
 ```
 
-Then start building:
-
-```elixir
-# Define an event
-defmodule MyApp.OrderPlaced do
-  use Evoq.Event
-
-  embedded_schema do
-    field :order_id, :string
-    field :customer_id, :string
-    field :items, {:array, :map}
-  end
-end
-
-# Define an aggregate
-defmodule MyApp.Order do
-  use Evoq.Aggregate
-
-  def execute(%PlaceOrder{} = cmd, nil) do
-    {:ok, [%OrderPlaced{order_id: cmd.order_id, items: cmd.items}]}
-  end
-end
-
-# Dispatch commands
-Evoq.dispatch(%PlaceOrder{order_id: "123", items: [...]}, aggregate: MyApp.Order)
-```
+See the [Getting Started Guide](https://hexdocs.pm/macula_ecosystem/getting-started.html) for a complete tutorial.
 
 ## Documentation
 
