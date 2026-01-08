@@ -1,7 +1,5 @@
 # Macula Ecosystem
 
-[![Hex.pm](https://img.shields.io/hexpm/v/macula_ecosystem.svg)](https://hex.pm/packages/macula_ecosystem)
-[![Documentation](https://img.shields.io/badge/docs-hexdocs-blue.svg)](https://hexdocs.pm/macula_ecosystem)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 <p align="center">
@@ -86,19 +84,17 @@ defp deps do
 end
 ```
 
-See the [Getting Started Guide](https://hexdocs.pm/macula_ecosystem/getting-started.html) for a complete tutorial.
+See the [Getting Started Guide](guides/getting-started.md) for a complete tutorial.
 
 ## Documentation
 
-Comprehensive guides are available at [hexdocs.pm/macula_ecosystem](https://hexdocs.pm/macula_ecosystem):
-
-- [**Overview**](https://hexdocs.pm/macula_ecosystem/overview.html) - Introduction to the ecosystem
-- [**Architecture**](https://hexdocs.pm/macula_ecosystem/architecture.html) - How the pieces fit together
-- [**Getting Started**](https://hexdocs.pm/macula_ecosystem/getting-started.html) - Build your first app
-- [**Event Sourcing**](https://hexdocs.pm/macula_ecosystem/event-sourcing.html) - CQRS/ES patterns
-- [**Mesh Networking**](https://hexdocs.pm/macula_ecosystem/mesh-networking.html) - HTTP/3 mesh guide
-- [**Neuroevolution**](https://hexdocs.pm/macula_ecosystem/neuroevolution.html) - TWEANN and NEAT
-- [**MaculaOS**](https://hexdocs.pm/macula_ecosystem/macula-os.html) - Edge deployment
+- [**Overview**](guides/overview.md) - Introduction to the ecosystem
+- [**Architecture**](guides/architecture.md) - How the pieces fit together
+- [**Getting Started**](guides/getting-started.md) - Build your first app
+- [**Event Sourcing**](guides/event-sourcing.md) - CQRS/ES patterns
+- [**Mesh Networking**](guides/mesh-networking.md) - HTTP/3 mesh guide
+- [**Neuroevolution**](guides/neuroevolution.md) - TWEANN and NEAT
+- [**MaculaOS**](guides/macula-os.md) - Edge deployment
 
 ## Why Macula?
 
