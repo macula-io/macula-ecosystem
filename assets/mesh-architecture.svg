@@ -91,10 +91,10 @@
     <circle cx="0" cy="25" r="14" fill="#0C1929" stroke="url(#hubGrad)" stroke-width="2.5" filter="url(#softGlow)"/>
     <circle cx="0" cy="25" r="6" fill="#F97316"/>
 
-    <!-- Service label -->
-    <rect x="-45" y="48" width="90" height="18" rx="4" fill="#0EA5E9" opacity="0.2"/>
-    <text x="0" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#0EA5E9">
-      orders.place_order
+    <!-- Service label (provider/responder) -->
+    <rect x="-55" y="48" width="110" height="18" rx="4" fill="#8B5CF6" opacity="0.2"/>
+    <text x="0" y="60" text-anchor="middle" font-family="monospace" font-size="8" fill="#8B5CF6">
+      respond:place_order
     </text>
 
     <!-- "Advertise" animation -->
@@ -115,10 +115,10 @@
     <circle cx="0" cy="25" r="14" fill="#0C1929" stroke="#0EA5E9" stroke-width="2.5"/>
     <circle cx="0" cy="25" r="6" fill="#0EA5E9"/>
 
-    <!-- Consumer label -->
-    <rect x="-45" y="48" width="90" height="18" rx="4" fill="#0EA5E9" opacity="0.2"/>
-    <text x="0" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#0EA5E9">
-      orders.place_order
+    <!-- Consumer label (caller/requester) -->
+    <rect x="-55" y="48" width="110" height="18" rx="4" fill="#0EA5E9" opacity="0.2"/>
+    <text x="0" y="60" text-anchor="middle" font-family="monospace" font-size="8" fill="#0EA5E9">
+      request:place_order
     </text>
   </g>
 
