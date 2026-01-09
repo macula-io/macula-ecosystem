@@ -265,8 +265,8 @@
     </circle>
 
     <!-- PubSub broadcast label - left side near publisher (Cluster C) -->
-    <rect x="15" y="520" width="120" height="22" rx="4" fill="#10B981" opacity="0.2"/>
-    <text x="75" y="535" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">PubSub Broadcast</text>
+    <rect x="15" y="460" width="120" height="22" rx="4" fill="#10B981" opacity="0.2"/>
+    <text x="75" y="475" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">PubSub Broadcast</text>
   </g>
 
   <!-- Security Layer (UCAN/DID) -->
