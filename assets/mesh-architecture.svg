@@ -62,8 +62,8 @@
   <ellipse cx="450" cy="320" rx="380" ry="220" fill="none" stroke="#0EA5E9" stroke-width="2" opacity="0.2" stroke-dasharray="10,5">
     <animate attributeName="opacity" values="0.1;0.3;0.1" dur="4s" repeatCount="indefinite"/>
   </ellipse>
-  <text x="450" y="555" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#0EA5E9" opacity="0.8">
-    Realm: io.macula.production
+  <text x="820" y="320" text-anchor="end" font-family="system-ui, sans-serif" font-size="14" fill="#0EA5E9" opacity="0.8">
+    Realm: io.macula
   </text>
 
   <!-- DHT Ring visualization (center) -->
