@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 720" width="900" height="720">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 780" width="900" height="780">
   <defs>
     <!-- Gradients -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -48,7 +48,7 @@
   </defs>
 
   <!-- Background -->
-  <rect width="900" height="720" fill="url(#bgGrad)"/>
+  <rect width="900" height="780" fill="url(#bgGrad)"/>
 
   <!-- Title -->
   <text x="450" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" font-weight="bold" fill="#fff">
@@ -158,6 +158,24 @@
     </text>
   </g>
 
+  <!-- Cluster 5: PubSub Subscriber 2 (bottom-center) - Shows broadcast nature -->
+  <g id="cluster5" transform="translate(450, 520)">
+    <rect x="-60" y="-50" width="120" height="100" rx="10" fill="#0C1929" stroke="#0EA5E9" stroke-width="2" opacity="0.8"/>
+    <text x="0" y="-60" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">Edge Cluster E</text>
+
+    <!-- Nodes in cluster -->
+    <circle cx="-25" cy="-10" r="12" fill="#0C1929" stroke="#0EA5E9" stroke-width="2"/>
+    <circle cx="25" cy="-10" r="12" fill="#0C1929" stroke="#10B981" stroke-width="2"/>
+    <circle cx="25" cy="-10" r="5" fill="#10B981"/>
+    <circle cx="0" cy="25" r="12" fill="#0C1929" stroke="#0EA5E9" stroke-width="2"/>
+
+    <!-- Subscriber label -->
+    <rect x="-45" y="48" width="90" height="18" rx="4" fill="#10B981" opacity="0.2"/>
+    <text x="0" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#10B981">
+      billing.listener
+    </text>
+  </g>
+
   <!-- Connection lines (mesh topology) -->
   <g id="mesh-connections" stroke="#0EA5E9" stroke-width="1" fill="none" opacity="0.4">
     <line x1="210" y1="180" x2="390" y2="280"/>
@@ -166,6 +184,10 @@
     <line x1="690" y1="450" x2="510" y2="360"/>
     <line x1="150" y1="280" x2="150" y2="350"/>
     <line x1="750" y1="280" x2="750" y2="350"/>
+    <!-- New connections for Cluster E -->
+    <line x1="450" y1="380" x2="450" y2="470"/>
+    <line x1="210" y1="450" x2="390" y2="520"/>
+    <line x1="690" y1="450" x2="510" y2="520"/>
   </g>
 
   <!-- RPC Flow Animation (Cluster B to A - Request, A responds) -->
@@ -206,12 +228,15 @@
     <text x="485" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#8B5CF6" font-weight="bold">Response</text>
   </g>
 
-  <!-- PubSub Flow Animation (Cluster C to D via DHT) -->
+  <!-- PubSub Flow Animation (Cluster C broadcasts to D and E) -->
   <g id="pubsub-flow">
-    <!-- Broadcast paths -->
-    <path id="pubsub-path-1" d="M 175 450 C 300 500 600 500 775 470" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="6,3" opacity="0.7"/>
+    <!-- Broadcast path to Cluster D -->
+    <path id="pubsub-path-1" d="M 175 450 C 300 420 600 420 775 470" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="6,3" opacity="0.7"/>
 
-    <!-- Animated pub packet -->
+    <!-- Broadcast path to Cluster E (shows fan-out pattern) -->
+    <path id="pubsub-path-2" d="M 175 450 C 250 500 350 540 450 520" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="6,3" opacity="0.7"/>
+
+    <!-- Animated pub packet to Cluster D -->
     <circle r="5" fill="#10B981" filter="url(#glow)">
       <animateMotion dur="3s" repeatCount="indefinite" begin="0.5s">
         <mpath href="#pubsub-path-1"/>
@@ -219,15 +244,29 @@
       <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="0.5s"/>
     </circle>
     <circle r="5" fill="#10B981" filter="url(#glow)">
-      <animateMotion dur="3s" repeatCount="indefinite" begin="1.5s">
+      <animateMotion dur="3s" repeatCount="indefinite" begin="2.5s">
         <mpath href="#pubsub-path-1"/>
       </animateMotion>
-      <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+      <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="2.5s"/>
     </circle>
 
-    <!-- PubSub label -->
-    <rect x="400" y="510" width="100" height="22" rx="4" fill="#10B981" opacity="0.2"/>
-    <text x="450" y="525" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">PubSub Event</text>
+    <!-- Animated pub packet to Cluster E (simultaneous broadcast) -->
+    <circle r="5" fill="#10B981" filter="url(#glow)">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="0.5s">
+        <mpath href="#pubsub-path-2"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+    </circle>
+    <circle r="5" fill="#10B981" filter="url(#glow)">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="2.5s">
+        <mpath href="#pubsub-path-2"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" begin="2.5s"/>
+    </circle>
+
+    <!-- PubSub broadcast label -->
+    <rect x="55" y="485" width="120" height="22" rx="4" fill="#10B981" opacity="0.2"/>
+    <text x="115" y="500" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">PubSub Broadcast</text>
   </g>
 
   <!-- Security Layer (UCAN/DID) -->
@@ -239,7 +278,7 @@
   </g>
 
   <!-- Legend -->
-  <g id="legend" transform="translate(30, 590)">
+  <g id="legend" transform="translate(30, 650)">
     <rect x="0" y="0" width="180" height="120" rx="8" fill="#0C1929" stroke="#334155" stroke-width="1" opacity="0.9"/>
     <text x="15" y="20" font-family="system-ui, sans-serif" font-size="11" fill="#94A3B8" font-weight="bold">Legend</text>
 
@@ -264,7 +303,7 @@
   </g>
 
   <!-- Security info box -->
-  <g id="security-info" transform="translate(690, 590)">
+  <g id="security-info" transform="translate(690, 650)">
     <rect x="0" y="0" width="180" height="120" rx="8" fill="#0C1929" stroke="#10B981" stroke-width="1" opacity="0.9"/>
     <text x="15" y="20" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">Security</text>
 
@@ -276,7 +315,7 @@
   </g>
 
   <!-- Flow description -->
-  <g id="flow-desc" transform="translate(250, 590)">
+  <g id="flow-desc" transform="translate(250, 650)">
     <rect x="0" y="0" width="400" height="120" rx="8" fill="#0C1929" stroke="#334155" stroke-width="1" opacity="0.9"/>
     <text x="15" y="20" font-family="system-ui, sans-serif" font-size="11" fill="#94A3B8" font-weight="bold">How it works</text>
 

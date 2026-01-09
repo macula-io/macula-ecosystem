@@ -35,13 +35,50 @@ Macula is a **BEAM-native platform** for building distributed, event-sourced app
 
 Edge nodes form clusters that participate in a realm (mesh). Services advertise to the Kademlia DHT, consumers discover them, and communication happens via RPC (request/response) or PubSub (broadcast). All interactions are secured with DID identities and UCAN capability tokens.
 
-## Two Organizations, One Platform
+## The Ecosystem
 
-The ecosystem spans two GitHub organizations with complementary responsibilities:
+The platform comprises three distinct pillars, each addressing a core need:
 
-### Infrastructure Layer ([reckon-db-org](https://github.com/reckon-db-org))
+---
 
-Event sourcing and persistence infrastructure:
+### Macula Mesh — Decentralized Infrastructure
+
+A BEAM-native HTTP/3 mesh network for edge computing.
+
+| Package | Description | Links |
+|---------|-------------|-------|
+| **macula** | HTTP/3 mesh networking over QUIC with DHT-based service discovery | [GitHub](https://github.com/macula-io/macula) \| [HexDocs](https://hexdocs.pm/macula) |
+| **macula_console** | Management console for Macula nodes and clusters | [GitHub](https://github.com/macula-io/macula-console) |
+| **macula_os** | Immutable edge node operating system (based on k3os) | [GitHub](https://github.com/macula-io/macula-os) |
+
+**Core capabilities:**
+- **DHT PubSub** — Decentralized publish/subscribe via Kademlia DHT
+- **DHT RPC** — Request/response patterns with service discovery
+- **NAT Traversal** — HTTP/3 over QUIC for firewall-friendly communication
+- **Capability Security** — DID identities with UCAN authorization tokens
+
+---
+
+### Macula Machine Learning — Neuroevolution Framework
+
+Evolve adaptive neural network controllers using TWEANN and NEAT.
+
+| Package | Description | Links |
+|---------|-------------|-------|
+| **macula_tweann** | Topology & Weight Evolving Artificial Neural Networks | [GitHub](https://github.com/macula-io/macula-tweann) \| [HexDocs](https://hexdocs.pm/macula_tweann) |
+| **macula_neuroevolution** | Full neuroevolution framework with populations and species | [GitHub](https://github.com/macula-io/macula-neuroevolution) \| [HexDocs](https://hexdocs.pm/macula_neuroevolution) |
+
+**Core capabilities:**
+- **NEAT Algorithm** — NeuroEvolution of Augmenting Topologies
+- **Distributed Evaluation** — Evolve populations across mesh nodes
+- **Speciation** — Protect innovation through species-based selection
+- **Real-time Adaptation** — Evolve controllers for dynamic environments
+
+---
+
+### Reckon Ecosystem — Event Store & CQRS ([reckon-db-org](https://github.com/reckon-db-org))
+
+BEAM-native event sourcing infrastructure.
 
 | Package | Description | Links |
 |---------|-------------|-------|
@@ -50,17 +87,11 @@ Event sourcing and persistence infrastructure:
 | **evoq** | Event sourcing primitives (aggregates, commands, events) | [GitHub](https://github.com/reckon-db-org/evoq) \| [HexDocs](https://hexdocs.pm/evoq) |
 | **reckon_evoq** | Adapter connecting Evoq to ReckonDB | [GitHub](https://github.com/reckon-db-org/reckon-evoq) \| [HexDocs](https://hexdocs.pm/reckon_evoq) |
 
-### Application Layer ([macula-io](https://github.com/macula-io))
-
-Distributed application platform and tools:
-
-| Package | Description | Links |
-|---------|-------------|-------|
-| **macula** | HTTP/3 mesh networking over QUIC | [GitHub](https://github.com/macula-io/macula) \| [HexDocs](https://hexdocs.pm/macula) |
-| **macula_tweann** | TWEANN neural network topologies | [GitHub](https://github.com/macula-io/macula-tweann) \| [HexDocs](https://hexdocs.pm/macula_tweann) |
-| **macula_neuroevolution** | Neuroevolution framework | [GitHub](https://github.com/macula-io/macula-neuroevolution) \| [HexDocs](https://hexdocs.pm/macula_neuroevolution) |
-| **macula_console** | Management console for Macula platform | [GitHub](https://github.com/macula-io/macula-console) |
-| **macula_os** | Edge node operating system | [GitHub](https://github.com/macula-io/macula-os) |
+**Core capabilities:**
+- **Raft Consensus** — Strong consistency via Ra (Erlang Raft implementation)
+- **Event Replay** — Full audit trail and time-travel debugging
+- **CQRS Patterns** — Command/query separation with projections
+- **Distributed Clusters** — Automatic discovery via LibCluster
 
 ## Data Flow
 
