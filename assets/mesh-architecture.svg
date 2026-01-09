@@ -118,7 +118,7 @@
     <!-- Consumer label -->
     <rect x="-45" y="48" width="90" height="18" rx="4" fill="#0EA5E9" opacity="0.2"/>
     <text x="0" y="60" text-anchor="middle" font-family="monospace" font-size="9" fill="#0EA5E9">
-      web.frontend
+      orders.place_order
     </text>
   </g>
 
@@ -264,9 +264,9 @@
       <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" begin="2.5s"/>
     </circle>
 
-    <!-- PubSub broadcast label -->
-    <rect x="55" y="560" width="120" height="22" rx="4" fill="#10B981" opacity="0.2"/>
-    <text x="115" y="575" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">PubSub Broadcast</text>
+    <!-- PubSub broadcast label - positioned between the two broadcast paths -->
+    <rect x="280" y="478" width="120" height="22" rx="4" fill="#10B981" opacity="0.2"/>
+    <text x="340" y="493" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">PubSub Broadcast</text>
   </g>
 
   <!-- Security Layer (UCAN/DID) -->
