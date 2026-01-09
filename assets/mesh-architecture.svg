@@ -265,8 +265,8 @@
     </circle>
 
     <!-- PubSub broadcast label - centered between C and E, above broadcast paths -->
-    <rect x="260" y="370" width="120" height="22" rx="4" fill="#10B981" opacity="0.2"/>
-    <text x="320" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">PubSub Broadcast</text>
+    <rect x="300" y="400" width="120" height="22" rx="4" fill="#10B981" opacity="0.2"/>
+    <text x="360" y="415" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">PubSub Broadcast</text>
   </g>
 
   <!-- Security Layer (UCAN/DID) -->
