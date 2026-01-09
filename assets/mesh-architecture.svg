@@ -264,9 +264,9 @@
       <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" begin="2.5s"/>
     </circle>
 
-    <!-- PubSub broadcast label - positioned between the two broadcast paths -->
-    <rect x="280" y="478" width="120" height="22" rx="4" fill="#10B981" opacity="0.2"/>
-    <text x="340" y="493" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">PubSub Broadcast</text>
+    <!-- PubSub broadcast label - above the broadcast paths -->
+    <rect x="280" y="408" width="120" height="22" rx="4" fill="#10B981" opacity="0.2"/>
+    <text x="340" y="423" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">PubSub Broadcast</text>
   </g>
 
   <!-- Security Layer (UCAN/DID) -->
