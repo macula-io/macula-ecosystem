@@ -59,6 +59,24 @@ A BEAM-native HTTP/3 mesh network for edge computing.
 
 ---
 
+### bc_gitops — Mesh Application Orchestration ([beam-campus](https://github.com/beam-campus))
+
+BEAM-native GitOps reconciler for publishing, installing, and managing OTP applications across the mesh.
+
+| Package | Description | Links |
+|---------|-------------|-------|
+| **bc_gitops** | GitOps reconciler for OTP applications | [GitHub](https://github.com/beam-campus/bc-gitops) \| [HexDocs](https://hexdocs.pm/bc_gitops) |
+
+**Core capabilities:**
+- **GitOps Reconciliation** — Watches a Git repository for application specifications
+- **Auto-deployment** — Automatically deploys, upgrades, and removes applications based on config changes
+- **Hot Code Reload** — Supports hot code upgrades for same-version changes
+- **Dependency Management** — Respects application dependencies during deployment
+- **Multi-format Config** — Supports Erlang terms, YAML, and JSON config files
+- **Pluggable Runtime** — Custom deployment strategies via runtime behaviour
+
+---
+
 ### Macula Machine Learning — Neuroevolution Framework
 
 Evolve adaptive neural network controllers using TWEANN and NEAT.
@@ -180,8 +198,8 @@ Every component is built on the BEAM (Erlang VM), battle-tested in telecom for 4
 
 ## Community
 
-- **GitHub**: [macula-io](https://github.com/macula-io) | [reckon-db-org](https://github.com/reckon-db-org)
-- **Hex.pm**: Search for `macula` or `reckon`
+- **GitHub**: [macula-io](https://github.com/macula-io) | [reckon-db-org](https://github.com/reckon-db-org) | [beam-campus](https://github.com/beam-campus)
+- **Hex.pm**: Search for `macula`, `reckon`, or `bc_gitops`
 - **Issues**: Report bugs on the respective repositories
 
 ## License
