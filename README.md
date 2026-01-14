@@ -125,6 +125,7 @@ BEAM-native event sourcing infrastructure.
 - [**Getting Started**](guides/getting-started.md) - Build your first app
 - [**Event Sourcing**](guides/event-sourcing.md) - CQRS/ES patterns
 - [**Mesh Networking**](guides/mesh-networking.md) - HTTP/3 mesh guide
+- [**Content Transfer**](guides/content-transfer.md) - P2P artifact distribution
 - [**Neuroevolution**](guides/neuroevolution.md) - TWEANN and NEAT
 - [**MaculaOS**](guides/macula-os.md) - Edge deployment
 
