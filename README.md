@@ -75,6 +75,29 @@ BEAM-native GitOps reconciler for publishing, installing, and managing OTP appli
 - **Dependency Management** — Respects application dependencies during deployment
 - **Multi-format Config** — Supports Erlang terms, YAML, and JSON config files
 - **Pluggable Runtime** — Custom deployment strategies via runtime behaviour
+- **Mesh Source Type** — Fetch releases from mesh via MCID (Macula Content Identifier)
+
+---
+
+### Macula Content Transfer — P2P Artifact Distribution
+
+<p align="center">
+  <img src="assets/content-transfer-flow.svg" alt="Macula Content Transfer: Want/Have/Block Protocol" width="100%">
+</p>
+
+BEAM-native content-addressed storage and transfer system for distributing OTP releases and artifacts across the mesh without external dependencies like IPFS or BitTorrent.
+
+**Core capabilities:**
+- **Content-Addressed Storage** — MCID (Macula Content Identifier) ensures same content = same ID everywhere
+- **Merkle Tree Verification** — Chunk-level integrity verification with parallel download
+- **Want/Have/Block Protocol** — Efficient P2P exchange inspired by IPFS Bitswap
+- **DHT Integration** — Announce availability and discover providers via Kademlia DHT
+- **Parallel Download** — Fetch chunks from multiple providers simultaneously
+- **NAT-Friendly** — Uses existing Macula QUIC transport (no new NAT traversal needed)
+
+**Protocol message types:** `content_want`, `content_have`, `content_block`, `content_manifest_req`, `content_manifest_res`, `content_cancel`
+
+See the [Content Transfer Guide](guides/content-transfer.md) for API usage and protocol details.
 
 ---
 
