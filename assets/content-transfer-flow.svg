@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" width="900" height="700">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0C1929"/>
+      <stop offset="100%" style="stop-color:#1a2744"/>
+    </linearGradient>
+    <linearGradient id="nodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0EA5E9"/>
+      <stop offset="100%" style="stop-color:#0284C7"/>
+    </linearGradient>
+    <linearGradient id="contentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#EC4899"/>
+      <stop offset="100%" style="stop-color:#BE185D"/>
+    </linearGradient>
+    <linearGradient id="verifyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <linearGradient id="dhtGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F97316"/>
+      <stop offset="100%" style="stop-color:#EA580C"/>
+    </linearGradient>
+
+    <!-- Glow filters -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Arrow markers -->
+    <marker id="arrowPink" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EC4899"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0EA5E9"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#F97316"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="700" fill="url(#bgGrad)"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" font-weight="bold" fill="#fff">
+    Macula Content Transfer: P2P Artifact Distribution
+  </text>
+  <text x="450" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#64748B">
+    Want/Have/Block protocol with Merkle verification and parallel download
+  </text>
+
+  <!-- Requester Node (left) -->
+  <g id="requester" transform="translate(120, 200)">
+    <rect x="-70" y="-60" width="140" height="120" rx="12" fill="#0C1929" stroke="#0EA5E9" stroke-width="2" opacity="0.9"/>
+    <text x="0" y="-70" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748B">Requester</text>
+
+    <!-- Node icon -->
+    <circle cx="0" cy="-20" r="20" fill="#0C1929" stroke="#0EA5E9" stroke-width="2"/>
+    <circle cx="0" cy="-20" r="10" fill="#0EA5E9" opacity="0.3"/>
+    <text x="0" y="-16" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0EA5E9">bc-gitops</text>
+
+    <!-- Content store -->
+    <rect x="-50" y="10" width="100" height="40" rx="6" fill="#1e293b" stroke="#64748B" stroke-width="1"/>
+    <text x="0" y="30" text-anchor="middle" font-family="monospace" font-size="8" fill="#94a3b8">Content Store</text>
+    <text x="0" y="42" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748B">[empty]</text>
+  </g>
+
+  <!-- DHT Discovery (center-top) -->
+  <g id="dht-ring" transform="translate(450, 160)">
+    <circle cx="0" cy="0" r="50" fill="none" stroke="#F97316" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.5">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="35" fill="none" stroke="#F97316" stroke-width="1" stroke-dasharray="2,3" opacity="0.3">
+      <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="15s" repeatCount="indefinite"/>
+    </circle>
+    <text x="0" y="3" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#F97316" font-weight="bold">DHT</text>
+    <text x="0" y="16" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#F97316" opacity="0.8">Locate Providers</text>
+  </g>
+
+  <!-- Provider 1 (right-top) -->
+  <g id="provider1" transform="translate(700, 150)">
+    <rect x="-60" y="-50" width="120" height="100" rx="12" fill="#0C1929" stroke="url(#contentGrad)" stroke-width="2" opacity="0.9"/>
+    <text x="0" y="-58" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">Provider 1</text>
+
+    <!-- Provider icon -->
+    <circle cx="0" cy="-15" r="16" fill="#0C1929" stroke="#EC4899" stroke-width="2"/>
+    <circle cx="0" cy="-15" r="8" fill="#EC4899" opacity="0.3"/>
+
+    <!-- Has chunks badge -->
+    <rect x="-40" y="10" width="80" height="28" rx="4" fill="#EC4899" opacity="0.2"/>
+    <text x="0" y="25" text-anchor="middle" font-family="monospace" font-size="8" fill="#EC4899">Chunks 0-3</text>
+    <text x="0" y="35" text-anchor="middle" font-family="monospace" font-size="7" fill="#f9a8d4">256KB each</text>
+
+    <!-- Advertise ripple -->
+    <circle cx="0" cy="-15" r="16" fill="none" stroke="#EC4899" stroke-width="1" opacity="0">
+      <animate attributeName="r" values="16;35;50" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;0.2;0" dur="3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Provider 2 (right-middle) -->
+  <g id="provider2" transform="translate(700, 300)">
+    <rect x="-60" y="-50" width="120" height="100" rx="12" fill="#0C1929" stroke="url(#contentGrad)" stroke-width="2" opacity="0.9"/>
+    <text x="0" y="-58" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">Provider 2</text>
+
+    <!-- Provider icon -->
+    <circle cx="0" cy="-15" r="16" fill="#0C1929" stroke="#EC4899" stroke-width="2"/>
+    <circle cx="0" cy="-15" r="8" fill="#EC4899" opacity="0.3"/>
+
+    <!-- Has chunks badge -->
+    <rect x="-40" y="10" width="80" height="28" rx="4" fill="#EC4899" opacity="0.2"/>
+    <text x="0" y="25" text-anchor="middle" font-family="monospace" font-size="8" fill="#EC4899">Chunks 4-7</text>
+    <text x="0" y="35" text-anchor="middle" font-family="monospace" font-size="7" fill="#f9a8d4">256KB each</text>
+
+    <!-- Advertise ripple -->
+    <circle cx="0" cy="-15" r="16" fill="none" stroke="#EC4899" stroke-width="1" opacity="0">
+      <animate attributeName="r" values="16;35;50" dur="3s" repeatCount="indefinite" begin="1s"/>
+      <animate attributeName="opacity" values="0.6;0.2;0" dur="3s" repeatCount="indefinite" begin="1s"/>
+    </circle>
+  </g>
+
+  <!-- Provider 3 (right-bottom) -->
+  <g id="provider3" transform="translate(700, 450)">
+    <rect x="-60" y="-50" width="120" height="100" rx="12" fill="#0C1929" stroke="url(#contentGrad)" stroke-width="2" opacity="0.9"/>
+    <text x="0" y="-58" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">Provider 3</text>
+
+    <!-- Provider icon -->
+    <circle cx="0" cy="-15" r="16" fill="#0C1929" stroke="#EC4899" stroke-width="2"/>
+    <circle cx="0" cy="-15" r="8" fill="#EC4899" opacity="0.3"/>
+
+    <!-- Has all chunks badge -->
+    <rect x="-40" y="10" width="80" height="28" rx="4" fill="#EC4899" opacity="0.2"/>
+    <text x="0" y="25" text-anchor="middle" font-family="monospace" font-size="8" fill="#EC4899">Chunks 0-7</text>
+    <text x="0" y="35" text-anchor="middle" font-family="monospace" font-size="7" fill="#f9a8d4">Complete</text>
+
+    <!-- Advertise ripple -->
+    <circle cx="0" cy="-15" r="16" fill="none" stroke="#EC4899" stroke-width="1" opacity="0">
+      <animate attributeName="r" values="16;35;50" dur="3s" repeatCount="indefinite" begin="2s"/>
+      <animate attributeName="opacity" values="0.6;0.2;0" dur="3s" repeatCount="indefinite" begin="2s"/>
+    </circle>
+  </g>
+
+  <!-- DHT Discovery Path -->
+  <path d="M 190 200 Q 320 160 400 160" fill="none" stroke="#F97316" stroke-width="2" stroke-dasharray="5,5" opacity="0.6" marker-end="url(#arrowOrange)"/>
+  <text x="295" y="145" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#F97316">1. Discover</text>
+
+  <!-- DHT Response Paths (to show discovery) -->
+  <path d="M 500 160 Q 580 140 640 150" fill="none" stroke="#F97316" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.4"/>
+  <path d="M 500 160 Q 580 200 640 285" fill="none" stroke="#F97316" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.4"/>
+  <path d="M 500 160 Q 600 300 640 435" fill="none" stroke="#F97316" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.4"/>
+
+  <!-- WANT message paths (Requester to Providers) -->
+  <path id="want-path-1" d="M 190 180 C 350 120 550 100 640 135" fill="none" stroke="#0EA5E9" stroke-width="2" stroke-dasharray="8,4" opacity="0.7" marker-end="url(#arrowBlue)"/>
+  <path id="want-path-2" d="M 190 200 C 350 220 550 250 640 285" fill="none" stroke="#0EA5E9" stroke-width="2" stroke-dasharray="8,4" opacity="0.7" marker-end="url(#arrowBlue)"/>
+  <path id="want-path-3" d="M 190 220 C 300 350 500 400 640 435" fill="none" stroke="#0EA5E9" stroke-width="2" stroke-dasharray="8,4" opacity="0.7" marker-end="url(#arrowBlue)"/>
+
+  <!-- WANT label -->
+  <rect x="350" y="95" width="70" height="20" rx="4" fill="#0EA5E9" opacity="0.2"/>
+  <text x="385" y="108" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#0EA5E9" font-weight="bold">2. WANT</text>
+
+  <!-- Animated WANT packets -->
+  <circle r="5" fill="#0EA5E9" filter="url(#glow)">
+    <animateMotion dur="2s" repeatCount="indefinite" begin="0s">
+      <mpath href="#want-path-1"/>
+    </animateMotion>
+    <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" begin="0s"/>
+  </circle>
+  <circle r="5" fill="#0EA5E9" filter="url(#glow)">
+    <animateMotion dur="2s" repeatCount="indefinite" begin="0.3s">
+      <mpath href="#want-path-2"/>
+    </animateMotion>
+    <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" begin="0.3s"/>
+  </circle>
+  <circle r="5" fill="#0EA5E9" filter="url(#glow)">
+    <animateMotion dur="2s" repeatCount="indefinite" begin="0.6s">
+      <mpath href="#want-path-3"/>
+    </animateMotion>
+    <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+  </circle>
+
+  <!-- BLOCK response paths (Providers to Requester) -->
+  <path id="block-path-1" d="M 640 150 C 500 180 300 200 190 200" fill="none" stroke="#EC4899" stroke-width="3" stroke-dasharray="4,4" opacity="0.7" marker-end="url(#arrowPink)"/>
+  <path id="block-path-2" d="M 640 300 C 500 280 300 240 190 200" fill="none" stroke="#EC4899" stroke-width="3" stroke-dasharray="4,4" opacity="0.7" marker-end="url(#arrowPink)"/>
+  <path id="block-path-3" d="M 640 450 C 500 400 350 280 190 220" fill="none" stroke="#EC4899" stroke-width="3" stroke-dasharray="4,4" opacity="0.7" marker-end="url(#arrowPink)"/>
+
+  <!-- BLOCK label -->
+  <rect x="350" y="230" width="70" height="20" rx="4" fill="#EC4899" opacity="0.2"/>
+  <text x="385" y="243" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#EC4899" font-weight="bold">3. BLOCK</text>
+
+  <!-- Animated BLOCK data packets (larger, represent chunks) -->
+  <rect x="-8" y="-4" width="16" height="8" rx="2" fill="#EC4899" filter="url(#glow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" begin="2.2s">
+      <mpath href="#block-path-1"/>
+    </animateMotion>
+    <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" begin="2.2s"/>
+  </rect>
+  <rect x="-8" y="-4" width="16" height="8" rx="2" fill="#EC4899" filter="url(#glow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" begin="2.5s">
+      <mpath href="#block-path-2"/>
+    </animateMotion>
+    <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" begin="2.5s"/>
+  </rect>
+  <rect x="-8" y="-4" width="16" height="8" rx="2" fill="#EC4899" filter="url(#glow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" begin="2.8s">
+      <mpath href="#block-path-3"/>
+    </animateMotion>
+    <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" begin="2.8s"/>
+  </rect>
+
+  <!-- Additional BLOCK packets (show parallel download) -->
+  <rect x="-8" y="-4" width="16" height="8" rx="2" fill="#EC4899" filter="url(#glow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" begin="3.5s">
+      <mpath href="#block-path-1"/>
+    </animateMotion>
+    <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" begin="3.5s"/>
+  </rect>
+  <rect x="-8" y="-4" width="16" height="8" rx="2" fill="#EC4899" filter="url(#glow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" begin="3.8s">
+      <mpath href="#block-path-2"/>
+    </animateMotion>
+    <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" begin="3.8s"/>
+  </rect>
+
+  <!-- Merkle Tree Visualization (bottom-left) -->
+  <g id="merkle-tree" transform="translate(100, 520)">
+    <text x="110" y="-10" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">Merkle Tree Verification</text>
+
+    <!-- Root hash -->
+    <rect x="80" y="10" width="60" height="30" rx="4" fill="#10B981" opacity="0.3" stroke="#10B981" stroke-width="1.5">
+      <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+    </rect>
+    <text x="110" y="30" text-anchor="middle" font-family="monospace" font-size="8" fill="#10B981">Root</text>
+
+    <!-- Level 1 -->
+    <rect x="35" y="60" width="50" height="25" rx="4" fill="#10B981" opacity="0.2" stroke="#10B981" stroke-width="1"/>
+    <text x="60" y="76" text-anchor="middle" font-family="monospace" font-size="7" fill="#6ee7b7">H01</text>
+    <rect x="135" y="60" width="50" height="25" rx="4" fill="#10B981" opacity="0.2" stroke="#10B981" stroke-width="1"/>
+    <text x="160" y="76" text-anchor="middle" font-family="monospace" font-size="7" fill="#6ee7b7">H23</text>
+
+    <!-- Level 2 (chunks) -->
+    <rect x="5" y="105" width="40" height="25" rx="4" fill="#EC4899" opacity="0.2" stroke="#EC4899" stroke-width="1"/>
+    <text x="25" y="121" text-anchor="middle" font-family="monospace" font-size="7" fill="#f9a8d4">C0</text>
+    <rect x="55" y="105" width="40" height="25" rx="4" fill="#EC4899" opacity="0.2" stroke="#EC4899" stroke-width="1"/>
+    <text x="75" y="121" text-anchor="middle" font-family="monospace" font-size="7" fill="#f9a8d4">C1</text>
+    <rect x="105" y="105" width="40" height="25" rx="4" fill="#EC4899" opacity="0.2" stroke="#EC4899" stroke-width="1"/>
+    <text x="125" y="121" text-anchor="middle" font-family="monospace" font-size="7" fill="#f9a8d4">C2</text>
+    <rect x="155" y="105" width="40" height="25" rx="4" fill="#EC4899" opacity="0.2" stroke="#EC4899" stroke-width="1"/>
+    <text x="175" y="121" text-anchor="middle" font-family="monospace" font-size="7" fill="#f9a8d4">C3</text>
+
+    <!-- Tree lines -->
+    <line x1="110" y1="40" x2="60" y2="60" stroke="#10B981" stroke-width="1" opacity="0.6"/>
+    <line x1="110" y1="40" x2="160" y2="60" stroke="#10B981" stroke-width="1" opacity="0.6"/>
+    <line x1="60" y1="85" x2="25" y2="105" stroke="#10B981" stroke-width="1" opacity="0.4"/>
+    <line x1="60" y1="85" x2="75" y2="105" stroke="#10B981" stroke-width="1" opacity="0.4"/>
+    <line x1="160" y1="85" x2="125" y2="105" stroke="#10B981" stroke-width="1" opacity="0.4"/>
+    <line x1="160" y1="85" x2="175" y2="105" stroke="#10B981" stroke-width="1" opacity="0.4"/>
+
+    <!-- Verification checkmark animation -->
+    <circle cx="110" cy="25" r="12" fill="none" stroke="#10B981" stroke-width="2" opacity="0">
+      <animate attributeName="opacity" values="0;0.8;0" dur="4s" repeatCount="indefinite" begin="5s"/>
+      <animate attributeName="r" values="12;25;25" dur="4s" repeatCount="indefinite" begin="5s"/>
+    </circle>
+  </g>
+
+  <!-- MCID Format Box (bottom-center) -->
+  <g id="mcid-format" transform="translate(350, 510)">
+    <rect x="0" y="0" width="200" height="130" rx="8" fill="#0C1929" stroke="#EC4899" stroke-width="1" opacity="0.9"/>
+    <text x="100" y="20" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#EC4899" font-weight="bold">MCID Format (34 bytes)</text>
+
+    <!-- Format breakdown -->
+    <rect x="15" y="35" width="25" height="25" rx="3" fill="#8B5CF6" opacity="0.3"/>
+    <text x="27" y="51" text-anchor="middle" font-family="monospace" font-size="8" fill="#c4b5fd">Ver</text>
+    <text x="27" y="72" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748B">1 byte</text>
+
+    <rect x="50" y="35" width="35" height="25" rx="3" fill="#0EA5E9" opacity="0.3"/>
+    <text x="67" y="51" text-anchor="middle" font-family="monospace" font-size="8" fill="#7dd3fc">Codec</text>
+    <text x="67" y="72" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748B">1 byte</text>
+
+    <rect x="95" y="35" width="90" height="25" rx="3" fill="#EC4899" opacity="0.3"/>
+    <text x="140" y="51" text-anchor="middle" font-family="monospace" font-size="8" fill="#f9a8d4">BLAKE3/SHA256</text>
+    <text x="140" y="72" text-anchor="middle" font-family="monospace" font-size="7" fill="#64748B">32 bytes</text>
+
+    <!-- Example MCID string -->
+    <text x="100" y="95" text-anchor="middle" font-family="monospace" font-size="7" fill="#94a3b8">mcid1-raw-blake3-5d41402abc...</text>
+    <text x="100" y="115" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#64748B">Content-addressed identifier</text>
+  </g>
+
+  <!-- Protocol Flow Summary (bottom-right) -->
+  <g id="protocol-flow" transform="translate(600, 510)">
+    <rect x="0" y="0" width="280" height="130" rx="8" fill="#0C1929" stroke="#334155" stroke-width="1" opacity="0.9"/>
+    <text x="140" y="20" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#94A3B8" font-weight="bold">Want/Have/Block Protocol</text>
+
+    <text x="15" y="42" font-family="system-ui, sans-serif" font-size="9" fill="#F97316">1. Discover providers via DHT lookup</text>
+    <text x="15" y="58" font-family="system-ui, sans-serif" font-size="9" fill="#0EA5E9">2. Send WANT for missing chunk MCIDs</text>
+    <text x="15" y="74" font-family="system-ui, sans-serif" font-size="9" fill="#EC4899">3. Receive BLOCKs (verified on receipt)</text>
+    <text x="15" y="90" font-family="system-ui, sans-serif" font-size="9" fill="#10B981">4. Verify Merkle root when complete</text>
+    <text x="15" y="106" font-family="system-ui, sans-serif" font-size="9" fill="#8B5CF6">5. Reassemble original content</text>
+    <text x="15" y="122" font-family="system-ui, sans-serif" font-size="9" fill="#64748B">   Parallel download from multiple peers</text>
+  </g>
+
+  <!-- Legend -->
+  <g id="legend" transform="translate(30, 560)">
+    <rect x="0" y="0" width="180" height="100" rx="8" fill="#0C1929" stroke="#334155" stroke-width="1" opacity="0.9"/>
+    <text x="15" y="20" font-family="system-ui, sans-serif" font-size="11" fill="#94A3B8" font-weight="bold">Legend</text>
+
+    <!-- WANT -->
+    <line x1="15" y1="38" x2="45" y2="38" stroke="#0EA5E9" stroke-width="2" stroke-dasharray="8,4"/>
+    <circle cx="30" cy="38" r="4" fill="#0EA5E9"/>
+    <text x="55" y="42" font-family="system-ui, sans-serif" font-size="9" fill="#0EA5E9">WANT Request</text>
+
+    <!-- BLOCK -->
+    <line x1="15" y1="58" x2="45" y2="58" stroke="#EC4899" stroke-width="2" stroke-dasharray="4,4"/>
+    <rect x="26" y="54" width="10" height="8" rx="2" fill="#EC4899"/>
+    <text x="55" y="62" font-family="system-ui, sans-serif" font-size="9" fill="#EC4899">BLOCK Data</text>
+
+    <!-- DHT -->
+    <circle cx="30" cy="78" r="8" fill="none" stroke="#F97316" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <text x="55" y="82" font-family="system-ui, sans-serif" font-size="9" fill="#F97316">DHT Discovery</text>
+  </g>
+
+  <!-- Parallel Download Indicator -->
+  <g id="parallel-indicator" transform="translate(430, 320)">
+    <rect x="-50" y="-15" width="100" height="30" rx="6" fill="#8B5CF6" opacity="0.2" stroke="#8B5CF6" stroke-width="1">
+      <animate attributeName="opacity" values="0.2;0.4;0.2" dur="2s" repeatCount="indefinite"/>
+    </rect>
+    <text x="0" y="2" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#c4b5fd" font-weight="bold">Parallel</text>
+    <text x="0" y="12" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#a78bfa">3 providers</text>
+  </g>
+</svg>
