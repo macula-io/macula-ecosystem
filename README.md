@@ -1,7 +1,7 @@
 # Macula Ecosystem
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-yellow.svg)](https://buymeacoffee.com/beamologist)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-yellow.svg)](https://buymeacoffee.com/rlefever)
 
 <p align="center">
   <img src="assets/logo.svg" width="120" height="120" alt="Macula">
@@ -15,12 +15,13 @@
 
 ## What is Macula?
 
-Macula is a **BEAM-native platform** for building distributed, event-sourced applications that run on a decentralized mesh network. The ecosystem combines:
+Macula is a **BEAM-native platform** for building distributed applications that run on a decentralized mesh network. The ecosystem provides:
 
-- **Event Sourcing** - Capture every state change as an immutable event
 - **Mesh Networking** - HTTP/3 over QUIC for NAT-friendly communication
 - **Edge Computing** - Run workloads autonomously at the edge
 - **Neuroevolution** - Evolve adaptive neural network controllers
+- **Content Transfer** - P2P artifact distribution without external dependencies
+- **GitOps Orchestration** - Deploy and manage OTP applications across the mesh
 
 ## Architecture Overview
 
@@ -38,7 +39,7 @@ Edge nodes form clusters that participate in a realm (mesh). Services advertise 
 
 ## The Ecosystem
 
-The platform comprises three distinct pillars, each addressing a core need:
+The Macula platform comprises the following components:
 
 ---
 
@@ -116,25 +117,6 @@ Evolve adaptive neural network controllers using TWEANN and NEAT.
 - **Speciation** — Protect innovation through species-based selection
 - **Real-time Adaptation** — Evolve controllers for dynamic environments
 
----
-
-### Reckon Ecosystem — Event Store & CQRS ([reckon-db-org](https://github.com/reckon-db-org))
-
-BEAM-native event sourcing infrastructure.
-
-| Package | Description | Links |
-|---------|-------------|-------|
-| **reckon_db** | BEAM-native event store built on Khepri/Ra | [GitHub](https://github.com/reckon-db-org/reckon-db) \| [HexDocs](https://hexdocs.pm/reckon_db) |
-| **reckon_gater** | Gateway for distributed event store access | [GitHub](https://github.com/reckon-db-org/reckon-gater) \| [HexDocs](https://hexdocs.pm/reckon_gater) |
-| **evoq** | Event sourcing primitives (aggregates, commands, events) | [GitHub](https://github.com/reckon-db-org/evoq) \| [HexDocs](https://hexdocs.pm/evoq) |
-| **reckon_evoq** | Adapter connecting Evoq to ReckonDB | [GitHub](https://github.com/reckon-db-org/reckon-evoq) \| [HexDocs](https://hexdocs.pm/reckon_evoq) |
-
-**Core capabilities:**
-- **Raft Consensus** — Strong consistency via Ra (Erlang Raft implementation)
-- **Event Replay** — Full audit trail and time-travel debugging
-- **CQRS Patterns** — Command/query separation with projections
-- **Distributed Clusters** — Automatic discovery via LibCluster
-
 ## Data Flow
 
 <p align="center">
@@ -151,6 +133,37 @@ BEAM-native event sourcing infrastructure.
 - [**Content Transfer**](guides/content-transfer.md) - P2P artifact distribution
 - [**Neuroevolution**](guides/neuroevolution.md) - TWEANN and NEAT
 - [**MaculaOS**](guides/macula-os.md) - Edge deployment
+
+## Related Ecosystems
+
+Macula works alongside two independent ecosystems, each maintained by their own organizations:
+
+### Reckon — Event Sourcing & CQRS ([reckon-db-org](https://github.com/reckon-db-org))
+
+A BEAM-native event sourcing stack providing durable event stores, CQRS frameworks, and distributed persistence. Applications built on Macula can use Reckon for event-sourced state management.
+
+| Package | Description | Links |
+|---------|-------------|-------|
+| **reckon_db** | Distributed event store on Khepri/Ra | [GitHub](https://github.com/reckon-db-org/reckon-db) \| [HexDocs](https://hexdocs.pm/reckon_db) |
+| **evoq** | CQRS/ES framework (aggregates, commands, events) | [GitHub](https://github.com/reckon-db-org/evoq) \| [HexDocs](https://hexdocs.pm/evoq) |
+| **reckon_gater** | Gateway and shared types | [GitHub](https://github.com/reckon-db-org/reckon-gater) \| [HexDocs](https://hexdocs.pm/reckon_gater) |
+| **reckon_evoq** | Adapter connecting evoq to ReckonDB | [GitHub](https://github.com/reckon-db-org/reckon-evoq) \| [HexDocs](https://hexdocs.pm/reckon_evoq) |
+
+> See [reckon-ecosystem](https://github.com/reckon-db-org/reckon-ecosystem) for full documentation.
+
+### Hecate — AI-Powered Developer Studio ([hecate-social](https://github.com/hecate-social))
+
+An AI-powered developer studio for building applications on the Macula mesh. Hecate uses both Macula (for mesh networking) and Reckon (for event sourcing) to provide a venture lifecycle management system.
+
+| Component | Description | Links |
+|-----------|-------------|-------|
+| **hecate-daemon** | Erlang/OTP backend with venture lifecycle and LLM providers | [GitHub](https://github.com/hecate-social/hecate-daemon) |
+| **hecate-tui** | Go terminal UI with chat, tools, and vim mode | [GitHub](https://github.com/hecate-social/hecate-tui) |
+| **hecate-agents** | Philosophy, skills, and code generation templates | [GitHub](https://github.com/hecate-social/hecate-agents) |
+
+> See [hecate-ecosystem](https://github.com/hecate-social/hecate-ecosystem) for full documentation.
+
+---
 
 ## Why Macula?
 
@@ -223,8 +236,10 @@ Every component is built on the BEAM (Erlang VM), battle-tested in telecom for 4
 
 ## Community
 
-- **GitHub**: [macula-io](https://github.com/macula-io) | [reckon-db-org](https://github.com/reckon-db-org) | [beam-campus](https://github.com/beam-campus)
-- **Hex.pm**: Search for `macula`, `reckon`, or `bc_gitops`
+- **Macula**: [macula-io](https://github.com/macula-io) on GitHub | Search `macula` on [hex.pm](https://hex.pm)
+- **Reckon**: [reckon-db-org](https://github.com/reckon-db-org) on GitHub | Search `reckon` on [hex.pm](https://hex.pm)
+- **Hecate**: [hecate-social](https://github.com/hecate-social) on GitHub
+- **beam-campus**: [beam-campus](https://github.com/beam-campus) on GitHub | `bc_gitops` on [hex.pm](https://hex.pm)
 - **Issues**: Report bugs on the respective repositories
 
 ## License
