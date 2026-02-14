@@ -13,7 +13,7 @@ The ecosystem is organized into distinct layers, each with a specific responsibi
 │         Phoenix LiveView, Business Logic, Read Models            │
 ├─────────────────────────────────────────────────────────────────┤
 │                    INTELLIGENCE LAYER                            │
-│       macula_neuroevolution, macula_tweann (optional)           │
+│       faber_neuroevolution, faber_tweann (optional, rgfaber)    │
 ├─────────────────────────────────────────────────────────────────┤
 │                      MESH LAYER                                  │
 │                        macula                                    │
@@ -153,21 +153,14 @@ macula:advertise(Client, "my.service.procedure", Handler).
 macula:publish(Client, "my.domain.event_occurred", Payload).
 ```
 
-### macula_tweann - Neural Networks
+### Faber - AI & Neuroevolution (rgfaber)
 
-Topology and Weight Evolving Artificial Neural Networks:
+The neuroevolution packages are part of the independent [Faber ecosystem](https://github.com/rgfaber/faber-ecosystem):
 
-- **Dynamic topologies** - Networks that grow and shrink
-- **Substrate encoding** - Spatial neural patterns
-- **Neuromodulation** - Adaptive learning rates
+- **faber_tweann** - TWEANN neural networks with LTC neurons and ONNX export
+- **faber_neuroevolution** - Population-based evolutionary training with NEAT/HyperNEAT
 
-### macula_neuroevolution - Evolution Framework
-
-Genetic algorithms for neural network evolution:
-
-- **NEAT** - NeuroEvolution of Augmenting Topologies
-- **HyperNEAT** - Indirect encoding via CPPNs
-- **Population management** - Speciation and selection
+These can optionally integrate with the Macula mesh for distributed fitness evaluation.
 
 ## Integration Patterns
 

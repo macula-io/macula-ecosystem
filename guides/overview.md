@@ -25,10 +25,15 @@ The distributed application platform:
 | Package | Description |
 |---------|-------------|
 | [macula](https://hexdocs.pm/macula) | HTTP/3 mesh networking over QUIC |
-| [macula_tweann](https://hexdocs.pm/macula_tweann) | TWEANN neural network topologies |
-| [macula_neuroevolution](https://hexdocs.pm/macula_neuroevolution) | Neuroevolution framework |
 | [macula_console](https://github.com/macula-io/macula-console) | Management console |
 | [macula_os](https://github.com/macula-io/macula-os) | Edge node operating system |
+
+### rgfaber - AI & Neuroevolution
+
+| Package | Description |
+|---------|-------------|
+| [faber_tweann](https://hexdocs.pm/faber_tweann) | TWEANN neural networks with LTC neurons |
+| [faber_neuroevolution](https://hexdocs.pm/faber_neuroevolution) | Population-based evolutionary training |
 
 ## The Big Picture
 
