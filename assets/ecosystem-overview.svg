@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 920" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 960" fill="none">
   <defs>
     <!-- Gradients -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -9,7 +9,7 @@
       <stop offset="0%" style="stop-color:#0ea5e9"/>
       <stop offset="100%" style="stop-color:#0284c7"/>
     </linearGradient>
-    <linearGradient id="aiGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+    <linearGradient id="faberGrad" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" style="stop-color:#10b981"/>
       <stop offset="100%" style="stop-color:#059669"/>
     </linearGradient>
@@ -40,7 +40,7 @@
       <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.3"/>
     </filter>
 
-    <!-- Arrow marker -->
+    <!-- Arrow markers -->
     <marker id="arrow" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="10" markerHeight="7" orient="auto-start-reverse">
       <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
     </marker>
@@ -56,19 +56,19 @@
   </defs>
 
   <!-- Background -->
-  <rect width="1200" height="920" fill="url(#bgGrad)"/>
+  <rect width="1200" height="960" fill="url(#bgGrad)"/>
 
   <!-- Grid pattern -->
   <g opacity="0.08">
     <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
       <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#fff" stroke-width="0.5"/>
     </pattern>
-    <rect width="1200" height="920" fill="url(#grid)"/>
+    <rect width="1200" height="960" fill="url(#grid)"/>
   </g>
 
   <!-- Title -->
   <text x="600" y="50" text-anchor="middle" font-family="system-ui, sans-serif" font-size="28" font-weight="bold" fill="#fff">
-    Three Ecosystems, One Platform
+    Four Ecosystems, One Platform
   </text>
   <text x="600" y="78" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" fill="#94a3b8">
     Independent projects that compose into a distributed application platform
@@ -78,16 +78,16 @@
   <!-- MACULA ECOSYSTEM (center, main)              -->
   <!-- ============================================ -->
 
-  <!-- Macula outer border -->
-  <rect x="280" y="100" width="640" height="460" rx="20" fill="#0c4a6e" opacity="0.2" filter="url(#shadow)"/>
-  <rect x="280" y="100" width="640" height="460" rx="20" fill="none" stroke="#0ea5e9" stroke-width="2" opacity="0.6" stroke-dasharray="none"/>
+  <!-- Macula outer border (shorter: no AI section) -->
+  <rect x="280" y="100" width="640" height="350" rx="20" fill="#0c4a6e" opacity="0.2" filter="url(#shadow)"/>
+  <rect x="280" y="100" width="640" height="350" rx="20" fill="none" stroke="#0ea5e9" stroke-width="2" opacity="0.6" stroke-dasharray="none"/>
 
   <!-- Macula header -->
   <text x="600" y="132" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#38bdf8">
     Macula Ecosystem
   </text>
   <text x="600" y="152" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#7dd3fc">
-    macula-io · Decentralized Infrastructure
+    macula-io &middot; Decentralized Infrastructure
   </text>
 
   <!-- Mesh Networking section -->
@@ -100,147 +100,163 @@
   <g filter="url(#shadow)">
     <rect x="340" y="210" width="520" height="65" rx="10" fill="url(#meshGrad)"/>
     <text x="600" y="237" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#fff">macula</text>
-    <text x="600" y="256" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#bae6fd">HTTP/3 over QUIC · DHT Discovery · PubSub · RPC · NAT Traversal · UCAN Security</text>
-  </g>
-
-  <!-- AI / Neuroevolution section -->
-  <rect x="310" y="305" width="580" height="110" rx="14" fill="#064e3b" opacity="0.4"/>
-  <rect x="310" y="305" width="580" height="110" rx="14" fill="none" stroke="#10b981" stroke-width="1" opacity="0.4"/>
-  <text x="600" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#34d399">
-    AI / NEUROEVOLUTION
-  </text>
-
-  <g filter="url(#shadow)">
-    <rect x="340" y="345" width="260" height="55" rx="10" fill="url(#aiGrad)"/>
-    <text x="470" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#fff">macula_tweann</text>
-    <text x="470" y="388" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#a7f3d0">TWEANN Neural Networks · Topology Evolution</text>
-  </g>
-
-  <g filter="url(#shadow)">
-    <rect x="620" y="345" width="240" height="55" rx="10" fill="url(#aiGrad)"/>
-    <text x="740" y="370" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">macula_neuroevolution</text>
-    <text x="740" y="388" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#a7f3d0">Populations · Species · Distributed</text>
+    <text x="600" y="256" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#bae6fd">HTTP/3 over QUIC &middot; DHT Discovery &middot; PubSub &middot; RPC &middot; NAT Traversal &middot; UCAN Security</text>
   </g>
 
   <!-- Tools / Orchestration section -->
-  <rect x="310" y="430" width="580" height="115" rx="14" fill="#451a03" opacity="0.3"/>
-  <rect x="310" y="430" width="580" height="115" rx="14" fill="none" stroke="#f59e0b" stroke-width="1" opacity="0.4"/>
-  <text x="600" y="455" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#fbbf24">
+  <rect x="310" y="305" width="580" height="130" rx="14" fill="#451a03" opacity="0.3"/>
+  <rect x="310" y="305" width="580" height="130" rx="14" fill="none" stroke="#f59e0b" stroke-width="1" opacity="0.4"/>
+  <text x="600" y="330" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" font-weight="600" fill="#fbbf24">
     ORCHESTRATION &amp; TOOLS
   </text>
 
   <g filter="url(#shadow)">
-    <rect x="340" y="470" width="170" height="60" rx="8" fill="url(#toolsGrad)"/>
-    <text x="425" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">bc_gitops</text>
-    <text x="425" y="512" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fef3c7">Mesh App Orchestration</text>
+    <rect x="340" y="345" width="170" height="70" rx="8" fill="url(#toolsGrad)"/>
+    <text x="425" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">bc_gitops</text>
+    <text x="425" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fef3c7">Mesh App Orchestration</text>
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="525" y="470" width="170" height="60" rx="8" fill="url(#toolsGrad)"/>
-    <text x="610" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">macula_console</text>
-    <text x="610" y="512" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fef3c7">Management Console</text>
+    <rect x="525" y="345" width="170" height="70" rx="8" fill="url(#toolsGrad)"/>
+    <text x="610" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">macula_console</text>
+    <text x="610" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fef3c7">Management Console</text>
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="710" y="470" width="150" height="60" rx="8" fill="url(#toolsGrad)"/>
-    <text x="785" y="495" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">macula_os</text>
-    <text x="785" y="512" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fef3c7">Edge Operating System</text>
+    <rect x="710" y="345" width="150" height="70" rx="8" fill="url(#toolsGrad)"/>
+    <text x="785" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">macula_os</text>
+    <text x="785" y="395" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fef3c7">Edge Operating System</text>
   </g>
 
   <!-- ============================================ -->
-  <!-- RECKON ECOSYSTEM (left, independent)         -->
+  <!-- RECKON ECOSYSTEM (bottom-left)               -->
   <!-- ============================================ -->
 
-  <rect x="30" y="600" width="530" height="280" rx="20" fill="#2e1065" opacity="0.25" filter="url(#shadow)"/>
-  <rect x="30" y="600" width="530" height="280" rx="20" fill="none" stroke="#7c3aed" stroke-width="2" opacity="0.6"/>
+  <rect x="30" y="510" width="530" height="280" rx="20" fill="#2e1065" opacity="0.25" filter="url(#shadow)"/>
+  <rect x="30" y="510" width="530" height="280" rx="20" fill="none" stroke="#7c3aed" stroke-width="2" opacity="0.6"/>
 
   <!-- Reckon header -->
-  <text x="295" y="632" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#a78bfa">
+  <text x="295" y="542" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#a78bfa">
     Reckon Ecosystem
   </text>
-  <text x="295" y="652" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#c4b5fd">
-    reckon-db-org · Event Sourcing &amp; CQRS
+  <text x="295" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#c4b5fd">
+    reckon-db-org &middot; Event Sourcing &amp; CQRS
   </text>
 
   <!-- Reckon packages -->
   <g filter="url(#shadow)">
-    <rect x="60" y="670" width="230" height="55" rx="8" fill="url(#reckonGrad)"/>
-    <text x="175" y="695" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#fff">reckon_db</text>
-    <text x="175" y="712" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#e9d5ff">Event Store · Khepri/Ra · Raft</text>
+    <rect x="60" y="580" width="230" height="55" rx="8" fill="url(#reckonGrad)"/>
+    <text x="175" y="605" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#fff">reckon_db</text>
+    <text x="175" y="622" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#e9d5ff">Event Store &middot; Khepri/Ra &middot; Raft</text>
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="310" y="670" width="220" height="55" rx="8" fill="url(#reckonGrad)"/>
-    <text x="420" y="695" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#fff">reckon_gater</text>
-    <text x="420" y="712" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#e9d5ff">Gateway · Shared Types · API</text>
+    <rect x="310" y="580" width="220" height="55" rx="8" fill="url(#reckonGrad)"/>
+    <text x="420" y="605" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#fff">reckon_gater</text>
+    <text x="420" y="622" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#e9d5ff">Gateway &middot; Shared Types &middot; API</text>
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="60" y="740" width="230" height="55" rx="8" fill="url(#reckonGrad)"/>
-    <text x="175" y="765" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#fff">evoq</text>
-    <text x="175" y="782" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#e9d5ff">CQRS Framework · Aggregates · Events</text>
+    <rect x="60" y="650" width="230" height="55" rx="8" fill="url(#reckonGrad)"/>
+    <text x="175" y="675" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#fff">evoq</text>
+    <text x="175" y="692" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#e9d5ff">CQRS Framework &middot; Aggregates &middot; Events</text>
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="310" y="740" width="220" height="55" rx="8" fill="url(#reckonGrad)"/>
-    <text x="420" y="765" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#fff">reckon_evoq</text>
-    <text x="420" y="782" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#e9d5ff">Adapter · Evoq ↔ ReckonDB</text>
+    <rect x="310" y="650" width="220" height="55" rx="8" fill="url(#reckonGrad)"/>
+    <text x="420" y="675" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" fill="#fff">reckon_evoq</text>
+    <text x="420" y="692" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#e9d5ff">Adapter &middot; Evoq &#x2194; ReckonDB</text>
   </g>
 
   <!-- reckon_nifs (small, optional) -->
   <g filter="url(#shadow)">
-    <rect x="160" y="810" width="270" height="45" rx="8" fill="#4c1d95" opacity="0.7"/>
-    <rect x="160" y="810" width="270" height="45" rx="8" fill="none" stroke="#7c3aed" stroke-width="1" opacity="0.5"/>
-    <text x="295" y="833" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#c4b5fd">reckon_nifs</text>
-    <text x="295" y="848" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#a78bfa">Rust NIFs · Optional Acceleration</text>
+    <rect x="160" y="720" width="270" height="45" rx="8" fill="#4c1d95" opacity="0.7"/>
+    <rect x="160" y="720" width="270" height="45" rx="8" fill="none" stroke="#7c3aed" stroke-width="1" opacity="0.5"/>
+    <text x="295" y="743" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#c4b5fd">reckon_nifs</text>
+    <text x="295" y="758" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#a78bfa">Rust NIFs &middot; Optional Acceleration</text>
   </g>
 
   <!-- ============================================ -->
-  <!-- HECATE ECOSYSTEM (right, independent)        -->
+  <!-- FABER ECOSYSTEM (bottom-center)              -->
   <!-- ============================================ -->
 
-  <rect x="600" y="600" width="570" height="280" rx="20" fill="#4c0519" opacity="0.2" filter="url(#shadow)"/>
-  <rect x="600" y="600" width="570" height="280" rx="20" fill="none" stroke="#e11d48" stroke-width="2" opacity="0.6"/>
+  <rect x="30" y="810" width="530" height="120" rx="20" fill="#064e3b" opacity="0.2" filter="url(#shadow)"/>
+  <rect x="30" y="810" width="530" height="120" rx="20" fill="none" stroke="#10b981" stroke-width="2" opacity="0.6"/>
+
+  <!-- Faber header -->
+  <text x="295" y="840" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#34d399">
+    Faber Ecosystem
+  </text>
+  <text x="295" y="858" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#6ee7b7">
+    rgfaber &middot; AI &amp; Neuroevolution
+  </text>
+
+  <g filter="url(#shadow)">
+    <rect x="60" y="870" width="230" height="45" rx="8" fill="url(#faberGrad)"/>
+    <text x="175" y="893" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">faber_tweann</text>
+    <text x="175" y="908" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#a7f3d0">TWEANN &middot; LTC Neurons &middot; ONNX</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="310" y="870" width="220" height="45" rx="8" fill="url(#faberGrad)"/>
+    <text x="420" y="893" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="bold" fill="#fff">faber_neuroevolution</text>
+    <text x="420" y="908" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#a7f3d0">Populations &middot; Species &middot; NEAT</text>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- HECATE ECOSYSTEM (bottom-right)              -->
+  <!-- ============================================ -->
+
+  <rect x="600" y="510" width="570" height="280" rx="20" fill="#4c0519" opacity="0.2" filter="url(#shadow)"/>
+  <rect x="600" y="510" width="570" height="280" rx="20" fill="none" stroke="#e11d48" stroke-width="2" opacity="0.6"/>
 
   <!-- Hecate header -->
-  <text x="885" y="632" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#fb7185">
+  <text x="885" y="542" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="bold" fill="#fb7185">
     Hecate Ecosystem
   </text>
-  <text x="885" y="652" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#fda4af">
-    hecate-social · AI-Powered Developer Studio
+  <text x="885" y="562" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#fda4af">
+    hecate-social &middot; AI-Powered Developer Studio
   </text>
 
-  <!-- Hecate components -->
+  <!-- Hecate components &#x2014; Row 1: three runtime apps -->
   <g filter="url(#shadow)">
-    <rect x="630" y="670" width="240" height="80" rx="10" fill="url(#hecateGrad)"/>
-    <text x="750" y="700" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="bold" fill="#fff">hecate-daemon</text>
-    <text x="750" y="718" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fecdd3">Erlang/OTP · Event-Sourced</text>
-    <text x="750" y="734" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fecdd3">Venture Lifecycle · LLM Providers</text>
+    <rect x="620" y="580" width="166" height="75" rx="10" fill="url(#hecateGrad)"/>
+    <text x="703" y="607" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">hecate-daemon</text>
+    <text x="703" y="623" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fecdd3">Erlang/OTP &middot; Event-Sourced</text>
+    <text x="703" y="638" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fecdd3">Venture Lifecycle &middot; LLM</text>
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="890" y="670" width="250" height="80" rx="10" fill="url(#hecateGrad)"/>
-    <text x="1015" y="700" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="bold" fill="#fff">hecate-tui</text>
-    <text x="1015" y="718" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fecdd3">Go · Terminal UI · Bubble Tea</text>
-    <text x="1015" y="734" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fecdd3">Chat · Tools · Vim Mode</text>
+    <rect x="796" y="580" width="166" height="75" rx="10" fill="url(#hecateGrad)"/>
+    <text x="879" y="607" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">hecate-web</text>
+    <text x="879" y="623" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fecdd3">Tauri &middot; SvelteKit &middot; Desktop</text>
+    <text x="879" y="638" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fecdd3">DevOps &middot; Event Storming</text>
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="630" y="770" width="240" height="55" rx="8" fill="#9f1239" opacity="0.7"/>
-    <rect x="630" y="770" width="240" height="55" rx="8" fill="none" stroke="#e11d48" stroke-width="1" opacity="0.5"/>
-    <text x="750" y="797" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fda4af">hecate-agents</text>
-    <text x="750" y="815" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fb7185">Philosophy · Skills · Templates</text>
+    <rect x="972" y="580" width="166" height="75" rx="10" fill="url(#hecateGrad)"/>
+    <text x="1055" y="607" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">hecate-tui</text>
+    <text x="1055" y="623" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fecdd3">Go &middot; Terminal UI &middot; Bubble Tea</text>
+    <text x="1055" y="638" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fecdd3">Chat &middot; Tools &middot; Vim Mode</text>
+  </g>
+
+  <!-- Row 2: supporting components -->
+  <g filter="url(#shadow)">
+    <rect x="630" y="670" width="240" height="55" rx="8" fill="#9f1239" opacity="0.7"/>
+    <rect x="630" y="670" width="240" height="55" rx="8" fill="none" stroke="#e11d48" stroke-width="1" opacity="0.5"/>
+    <text x="750" y="697" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fda4af">hecate-agents</text>
+    <text x="750" y="715" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fb7185">Philosophy &middot; Skills &middot; Templates</text>
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="890" y="770" width="250" height="55" rx="8" fill="#9f1239" opacity="0.7"/>
-    <rect x="890" y="770" width="250" height="55" rx="8" fill="none" stroke="#e11d48" stroke-width="1" opacity="0.5"/>
-    <text x="1015" y="797" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fda4af">hecate-gitops</text>
-    <text x="1015" y="815" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fb7185">K8s · Flux · Deployment</text>
+    <rect x="890" y="670" width="250" height="55" rx="8" fill="#9f1239" opacity="0.7"/>
+    <rect x="890" y="670" width="250" height="55" rx="8" fill="none" stroke="#e11d48" stroke-width="1" opacity="0.5"/>
+    <text x="1015" y="697" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fda4af">hecate-gitops</text>
+    <text x="1015" y="715" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fb7185">K8s &middot; Flux &middot; Deployment</text>
   </g>
 
   <!-- Hecate "depends on" label -->
-  <text x="885" y="855" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fda4af" opacity="0.7">
+  <text x="885" y="760" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fda4af" opacity="0.7">
     Uses Macula (mesh) + Reckon (event sourcing)
   </text>
 
@@ -248,19 +264,19 @@
   <!-- RELATIONSHIP ARROWS                          -->
   <!-- ============================================ -->
 
-  <!-- Hecate → Macula (uses mesh) -->
-  <path d="M 885 600 C 885 580 750 575 750 560" stroke="#fb7185" stroke-width="2.5" fill="none" stroke-dasharray="6,4" opacity="0.7" marker-end="url(#arrowRose)"/>
-  <text x="840" y="575" font-family="system-ui, sans-serif" font-size="10" fill="#fb7185" opacity="0.8">uses mesh</text>
+  <!-- Hecate &#x2192; Macula (uses mesh) -->
+  <path d="M 885 510 C 885 490 750 485 750 450" stroke="#fb7185" stroke-width="2.5" fill="none" stroke-dasharray="6,4" opacity="0.7" marker-end="url(#arrowRose)"/>
+  <text x="840" y="485" font-family="system-ui, sans-serif" font-size="10" fill="#fb7185" opacity="0.8">uses mesh</text>
 
-  <!-- Hecate → Reckon (uses event sourcing) -->
-  <path d="M 700 600 C 600 590 500 590 470 580 C 440 575 410 580 380 600" stroke="#fb7185" stroke-width="2.5" fill="none" stroke-dasharray="6,4" opacity="0.7" marker-end="url(#arrowRose)"/>
-  <text x="530" y="585" font-family="system-ui, sans-serif" font-size="10" fill="#fb7185" opacity="0.8">uses event sourcing</text>
+  <!-- Hecate &#x2192; Reckon (uses event sourcing) -->
+  <path d="M 700 510 C 600 500 500 500 470 495 C 440 492 410 495 380 510" stroke="#fb7185" stroke-width="2.5" fill="none" stroke-dasharray="6,4" opacity="0.7" marker-end="url(#arrowRose)"/>
+  <text x="530" y="497" font-family="system-ui, sans-serif" font-size="10" fill="#fb7185" opacity="0.8">uses event sourcing</text>
 
   <!-- ============================================ -->
   <!-- LEGEND                                       -->
   <!-- ============================================ -->
 
-  <g transform="translate(40, 900)">
+  <g transform="translate(40, 945)">
     <rect x="0" y="-8" width="12" height="12" rx="2" fill="#0ea5e9"/>
     <text x="18" y="2" font-family="system-ui, sans-serif" font-size="10" fill="#38bdf8">Macula (macula-io)</text>
 
@@ -270,12 +286,15 @@
     <rect x="380" y="-8" width="12" height="12" rx="2" fill="#e11d48"/>
     <text x="398" y="2" font-family="system-ui, sans-serif" font-size="10" fill="#fb7185">Hecate (hecate-social)</text>
 
-    <line x1="560" y1="-2" x2="600" y2="-2" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,4"/>
-    <text x="610" y="2" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8">depends on</text>
+    <rect x="560" y="-8" width="12" height="12" rx="2" fill="#10b981"/>
+    <text x="578" y="2" font-family="system-ui, sans-serif" font-size="10" fill="#34d399">Faber (rgfaber)</text>
+
+    <line x1="720" y1="-2" x2="760" y2="-2" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,4"/>
+    <text x="770" y="2" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8">depends on</text>
   </g>
 
   <!-- Version -->
-  <text x="1160" y="910" text-anchor="end" font-family="system-ui, sans-serif" font-size="10" fill="#475569">
-    macula_ecosystem v0.1.0
+  <text x="1160" y="950" text-anchor="end" font-family="system-ui, sans-serif" font-size="10" fill="#475569">
+    macula_ecosystem v0.2.0
   </text>
 </svg>

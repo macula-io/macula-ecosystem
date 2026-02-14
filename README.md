@@ -19,7 +19,6 @@ Macula is a **BEAM-native platform** for building distributed applications that 
 
 - **Mesh Networking** - HTTP/3 over QUIC for NAT-friendly communication
 - **Edge Computing** - Run workloads autonomously at the edge
-- **Neuroevolution** - Evolve adaptive neural network controllers
 - **Content Transfer** - P2P artifact distribution without external dependencies
 - **GitOps Orchestration** - Deploy and manage OTP applications across the mesh
 
@@ -100,23 +99,6 @@ BEAM-native content-addressed storage and transfer system for distributing OTP r
 
 See the [Content Transfer Guide](guides/content-transfer.md) for API usage and protocol details.
 
----
-
-### Macula Machine Learning — Neuroevolution Framework
-
-Evolve adaptive neural network controllers using TWEANN and NEAT.
-
-| Package | Description | Links |
-|---------|-------------|-------|
-| **macula_tweann** | Topology & Weight Evolving Artificial Neural Networks | [GitHub](https://github.com/macula-io/macula-tweann) \| [HexDocs](https://hexdocs.pm/macula_tweann) |
-| **macula_neuroevolution** | Full neuroevolution framework with populations and species | [GitHub](https://github.com/macula-io/macula-neuroevolution) \| [HexDocs](https://hexdocs.pm/macula_neuroevolution) |
-
-**Core capabilities:**
-- **NEAT Algorithm** — NeuroEvolution of Augmenting Topologies
-- **Distributed Evaluation** — Evolve populations across mesh nodes
-- **Speciation** — Protect innovation through species-based selection
-- **Real-time Adaptation** — Evolve controllers for dynamic environments
-
 ## Data Flow
 
 <p align="center">
@@ -131,7 +113,7 @@ Evolve adaptive neural network controllers using TWEANN and NEAT.
 - [**Event Sourcing**](guides/event-sourcing.md) - CQRS/ES patterns
 - [**Mesh Networking**](guides/mesh-networking.md) - HTTP/3 mesh guide
 - [**Content Transfer**](guides/content-transfer.md) - P2P artifact distribution
-- [**Neuroevolution**](guides/neuroevolution.md) - TWEANN and NEAT
+- [**Neuroevolution**](guides/neuroevolution.md) - TWEANN and NEAT (moved to Faber ecosystem)
 - [**MaculaOS**](guides/macula-os.md) - Edge deployment
 
 ## Related Ecosystems
@@ -158,10 +140,22 @@ An AI-powered developer studio for building applications on the Macula mesh. Hec
 | Component | Description | Links |
 |-----------|-------------|-------|
 | **hecate-daemon** | Erlang/OTP backend with venture lifecycle and LLM providers | [GitHub](https://github.com/hecate-social/hecate-daemon) |
+| **hecate-web** | Native desktop UI with Tauri/SvelteKit (DevOps, LLM, Event Storming) | [GitHub](https://github.com/hecate-social/hecate-web) |
 | **hecate-tui** | Go terminal UI with chat, tools, and vim mode | [GitHub](https://github.com/hecate-social/hecate-tui) |
 | **hecate-agents** | Philosophy, skills, and code generation templates | [GitHub](https://github.com/hecate-social/hecate-agents) |
 
 > See [hecate-ecosystem](https://github.com/hecate-social/hecate-ecosystem) for full documentation.
+
+### Faber — AI & Neuroevolution ([rgfaber](https://github.com/rgfaber))
+
+Evolutionary neural network framework for Erlang/OTP. Evolve adaptive AI controllers using TWEANN and NEAT, with optional distributed evaluation across the Macula mesh.
+
+| Package | Description | Links |
+|---------|-------------|-------|
+| **faber_tweann** | TWEANN neural networks with LTC neurons and ONNX export | [GitHub](https://github.com/rgfaber/faber-tweann) \| [HexDocs](https://hexdocs.pm/faber_tweann) |
+| **faber_neuroevolution** | Population-based evolutionary training with speciation and selection | [GitHub](https://github.com/rgfaber/faber-neuroevolution) \| [HexDocs](https://hexdocs.pm/faber_neuroevolution) |
+
+> See [faber-ecosystem](https://github.com/rgfaber/faber-ecosystem) for full documentation.
 
 ---
 
@@ -231,7 +225,7 @@ Every component is built on the BEAM (Erlang VM), battle-tested in telecom for 4
 - **IoT Platforms** - Collect and process sensor data at the edge
 - **Financial Systems** - Complete audit trails with event sourcing
 - **Gaming** - Real-time multiplayer on a mesh network
-- **Robotics** - Evolve controllers with neuroevolution
+- **Robotics** - Evolve controllers with [Faber](https://github.com/rgfaber/faber-ecosystem) neuroevolution
 - **Healthcare** - Decentralized patient data with UCAN authorization
 
 ## Community
@@ -239,6 +233,7 @@ Every component is built on the BEAM (Erlang VM), battle-tested in telecom for 4
 - **Macula**: [macula-io](https://github.com/macula-io) on GitHub | Search `macula` on [hex.pm](https://hex.pm)
 - **Reckon**: [reckon-db-org](https://github.com/reckon-db-org) on GitHub | Search `reckon` on [hex.pm](https://hex.pm)
 - **Hecate**: [hecate-social](https://github.com/hecate-social) on GitHub
+- **Faber**: [rgfaber](https://github.com/rgfaber) on GitHub | Search `faber` on [hex.pm](https://hex.pm)
 - **beam-campus**: [beam-campus](https://github.com/beam-campus) on GitHub | `bc_gitops` on [hex.pm](https://hex.pm)
 - **Issues**: Report bugs on the respective repositories
 
