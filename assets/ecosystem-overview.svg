@@ -189,7 +189,7 @@
 
   <!-- Hecate "depends on" label -->
   <text x="885" y="760" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fda4af" opacity="0.7">
-    Uses Macula (mesh) + Reckon (event sourcing)
+    Uses Macula (mesh) + Reckon (event sourcing) + Faber (AI)
   </text>
 
   <!-- ============================================ -->
@@ -205,6 +205,11 @@
   <path d="M 700 510 C 600 500 500 500 470 495 C 440 492 410 495 380 510" stroke="#fb7185" stroke-width="2.5" fill="none" stroke-dasharray="6,4" opacity="0.7"/>
   <polygon points="380,510 375,500 385,500" fill="#fb7185" opacity="0.7"/>
   <text x="530" y="497" font-family="system-ui, sans-serif" font-size="10" fill="#fb7185" opacity="0.8">uses event sourcing</text>
+
+  <!-- Hecate to Faber (uses AI/neuroevolution) -->
+  <path d="M 650 790 C 630 800 580 808 540 810" stroke="#fb7185" stroke-width="2.5" fill="none" stroke-dasharray="6,4" opacity="0.7"/>
+  <polygon points="540,810 550,805 550,815" fill="#fb7185" opacity="0.7"/>
+  <text x="620" y="808" font-family="system-ui, sans-serif" font-size="10" fill="#fb7185" opacity="0.8">uses AI</text>
 
   <!-- ============================================ -->
   <!-- LEGEND                                       -->
