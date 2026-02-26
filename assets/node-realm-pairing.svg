@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" width="900" height="700">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0C1929"/>
+      <stop offset="100%" style="stop-color:#1a2744"/>
+    </linearGradient>
+    <linearGradient id="nodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0EA5E9"/>
+      <stop offset="100%" style="stop-color:#0284C7"/>
+    </linearGradient>
+    <linearGradient id="realmGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F97316"/>
+      <stop offset="100%" style="stop-color:#EA580C"/>
+    </linearGradient>
+    <linearGradient id="userGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <linearGradient id="successGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+
+    <!-- Glow filters -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="successGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Arrow markers -->
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0EA5E9"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#F97316"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="700" fill="url(#bgGrad)"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" font-weight="bold" fill="#fff">
+    Node-Realm Pairing: Joining Your Hecate Node
+  </text>
+  <text x="450" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#64748B">
+    Secure device registration with Ed25519 keypair exchange and 6-digit confirmation
+  </text>
+
+  <!-- Swimlane Headers -->
+  <!-- Hecate Node -->
+  <g transform="translate(150, 75)">
+    <rect x="-70" y="-12" width="140" height="28" rx="6" fill="#0EA5E9" opacity="0.15" stroke="#0EA5E9" stroke-width="1.5"/>
+    <circle cx="-48" cy="2" r="8" fill="#0C1929" stroke="#0EA5E9" stroke-width="1.5"/>
+    <circle cx="-48" cy="2" r="4" fill="#0EA5E9" opacity="0.4"/>
+    <text x="2" y="7" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#0EA5E9" font-weight="bold">Hecate Node</text>
+  </g>
+  <!-- Macula Realm -->
+  <g transform="translate(450, 75)">
+    <rect x="-70" y="-12" width="140" height="28" rx="6" fill="#F97316" opacity="0.15" stroke="#F97316" stroke-width="1.5"/>
+    <circle cx="-48" cy="2" r="8" fill="#0C1929" stroke="#F97316" stroke-width="1.5"/>
+    <circle cx="-48" cy="2" r="4" fill="#F97316" opacity="0.4"/>
+    <text x="2" y="7" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#F97316" font-weight="bold">Macula Realm</text>
+  </g>
+  <!-- User -->
+  <g transform="translate(750, 75)">
+    <rect x="-55" y="-12" width="110" height="28" rx="6" fill="#10B981" opacity="0.15" stroke="#10B981" stroke-width="1.5"/>
+    <circle cx="-33" cy="2" r="8" fill="#0C1929" stroke="#10B981" stroke-width="1.5"/>
+    <circle cx="-33" cy="2" r="4" fill="#10B981" opacity="0.4"/>
+    <text x="7" y="7" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#10B981" font-weight="bold">User</text>
+  </g>
+
+  <!-- Swimlane vertical lines -->
+  <line x1="150" y1="100" x2="150" y2="520" stroke="#0EA5E9" stroke-width="1" stroke-dasharray="4,6" opacity="0.2"/>
+  <line x1="450" y1="100" x2="450" y2="520" stroke="#F97316" stroke-width="1" stroke-dasharray="4,6" opacity="0.2"/>
+  <line x1="750" y1="100" x2="750" y2="520" stroke="#10B981" stroke-width="1" stroke-dasharray="4,6" opacity="0.2"/>
+
+  <!-- Step 1: User signs in to Realm -->
+  <g id="step1">
+    <rect x="569" y="110" width="130" height="22" rx="4" fill="#10B981" opacity="0.15"/>
+    <text x="575" y="125" font-family="system-ui, sans-serif" font-size="9" fill="#10B981" font-weight="bold">1</text>
+    <text x="590" y="125" font-family="system-ui, sans-serif" font-size="9" fill="#6ee7b7">Sign in to Realm</text>
+    <path id="step1-path" d="M 735 121 L 465 121" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.5" marker-end="url(#arrowGreen)"/>
+  </g>
+
+  <!-- Step 2: User runs hecate pair -->
+  <g id="step2">
+    <rect x="350" y="145" width="200" height="22" rx="4" fill="#10B981" opacity="0.15"/>
+    <text x="356" y="160" font-family="system-ui, sans-serif" font-size="9" fill="#10B981" font-weight="bold">2</text>
+    <text x="371" y="160" font-family="monospace" font-size="9" fill="#6ee7b7">hecate pair</text>
+    <text x="455" y="160" font-family="system-ui, sans-serif" font-size="9" fill="#6ee7b7">on node</text>
+    <path d="M 735 156 L 165 156" fill="none" stroke="#10B981" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.5" marker-end="url(#arrowGreen)"/>
+  </g>
+
+  <!-- Step 3: Node sends pairing session request -->
+  <g id="step3">
+    <path id="step3-path" d="M 165 200 L 435 200" fill="none" stroke="#0EA5E9" stroke-width="2" opacity="0.7" marker-end="url(#arrowBlue)"/>
+    <rect x="220" y="185" width="170" height="22" rx="4" fill="#0EA5E9" opacity="0.15"/>
+    <text x="226" y="200" font-family="system-ui, sans-serif" font-size="9" fill="#0EA5E9" font-weight="bold">3</text>
+    <text x="241" y="200" font-family="system-ui, sans-serif" font-size="9" fill="#7dd3fc">Pairing request (pubkey)</text>
+    <!-- Animated packet -->
+    <circle r="4" fill="#0EA5E9" filter="url(#glow)">
+      <animateMotion dur="2.5s" repeatCount="indefinite" begin="0s">
+        <mpath href="#step3-path"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" begin="0s"/>
+    </circle>
+  </g>
+
+  <!-- Step 4: Realm returns session ID + confirm code -->
+  <g id="step4">
+    <path id="step4-path" d="M 435 240 L 165 240" fill="none" stroke="#F97316" stroke-width="2" opacity="0.7" marker-end="url(#arrowOrange)"/>
+    <rect x="220" y="225" width="185" height="22" rx="4" fill="#F97316" opacity="0.15"/>
+    <text x="226" y="240" font-family="system-ui, sans-serif" font-size="9" fill="#F97316" font-weight="bold">4</text>
+    <text x="241" y="240" font-family="system-ui, sans-serif" font-size="9" fill="#fdba74">Session ID + 6-digit code</text>
+    <!-- Animated packet -->
+    <circle r="4" fill="#F97316" filter="url(#glow)">
+      <animateMotion dur="2.5s" repeatCount="indefinite" begin="1s">
+        <mpath href="#step4-path"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" begin="1s"/>
+    </circle>
+  </g>
+
+  <!-- Step 5: Node displays confirm code -->
+  <g id="step5">
+    <rect x="80" y="268" width="140" height="50" rx="8" fill="#0C1929" stroke="#0EA5E9" stroke-width="1.5" opacity="0.9"/>
+    <text x="100" y="283" font-family="system-ui, sans-serif" font-size="9" fill="#0EA5E9" font-weight="bold">5</text>
+    <text x="113" y="283" font-family="system-ui, sans-serif" font-size="9" fill="#7dd3fc">Shows code:</text>
+    <rect x="100" y="290" width="100" height="22" rx="4" fill="#0EA5E9" opacity="0.2" stroke="#0EA5E9" stroke-width="1">
+      <animate attributeName="opacity" values="0.2;0.4;0.2" dur="2s" repeatCount="indefinite"/>
+    </rect>
+    <text x="150" y="305" text-anchor="middle" font-family="monospace" font-size="14" fill="#0EA5E9" font-weight="bold" filter="url(#softGlow)">
+      847 293
+    </text>
+  </g>
+
+  <!-- Step 6: User enters confirm code in Realm -->
+  <g id="step6">
+    <rect x="530" y="340" width="180" height="22" rx="4" fill="#10B981" opacity="0.15"/>
+    <text x="536" y="355" font-family="system-ui, sans-serif" font-size="9" fill="#10B981" font-weight="bold">6</text>
+    <text x="551" y="355" font-family="system-ui, sans-serif" font-size="9" fill="#6ee7b7">Enter confirm code in Realm</text>
+    <path id="step6-path" d="M 735 351 L 465 351" fill="none" stroke="#10B981" stroke-width="2" opacity="0.7" marker-end="url(#arrowGreen)"/>
+    <!-- Animated packet -->
+    <circle r="4" fill="#10B981" filter="url(#glow)">
+      <animateMotion dur="2s" repeatCount="indefinite" begin="2.5s">
+        <mpath href="#step6-path"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" begin="2.5s"/>
+    </circle>
+  </g>
+
+  <!-- Step 7: Realm validates, creates app + cert + token -->
+  <g id="step7">
+    <rect x="370" y="380" width="160" height="42" rx="8" fill="#0C1929" stroke="#F97316" stroke-width="1.5" opacity="0.9"/>
+    <text x="390" y="395" font-family="system-ui, sans-serif" font-size="9" fill="#F97316" font-weight="bold">7</text>
+    <text x="403" y="395" font-family="system-ui, sans-serif" font-size="9" fill="#fdba74">Validates code</text>
+    <text x="450" y="412" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#64748B">Creates app + cert + token</text>
+    <!-- Success checkmark -->
+    <circle cx="520" cy="396" r="8" fill="#10B981" opacity="0.3">
+      <animate attributeName="opacity" values="0.3;0.6;0.3" dur="2s" repeatCount="indefinite" begin="3s"/>
+    </circle>
+    <text x="520" y="400" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#10B981">&#10003;</text>
+  </g>
+
+  <!-- Step 8: Node polls and receives credentials -->
+  <g id="step8">
+    <path id="step8-path" d="M 435 445 L 165 445" fill="none" stroke="#10B981" stroke-width="2.5" opacity="0.8" marker-end="url(#arrowGreen)"/>
+    <rect x="210" y="430" width="195" height="22" rx="4" fill="#10B981" opacity="0.15"/>
+    <text x="216" y="445" font-family="system-ui, sans-serif" font-size="9" fill="#10B981" font-weight="bold">8</text>
+    <text x="231" y="445" font-family="system-ui, sans-serif" font-size="9" fill="#6ee7b7">Credentials (cert + token)</text>
+    <!-- Animated credential packet (larger) -->
+    <rect x="-6" y="-4" width="12" height="8" rx="2" fill="#10B981" filter="url(#glow)">
+      <animateMotion dur="2.5s" repeatCount="indefinite" begin="4s">
+        <mpath href="#step8-path"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" begin="4s"/>
+    </rect>
+  </g>
+
+  <!-- Step 9: Node paired - success -->
+  <g id="step9">
+    <rect x="80" y="475" width="140" height="38" rx="8" fill="#10B981" opacity="0.1" stroke="#10B981" stroke-width="2">
+      <animate attributeName="opacity" values="0.1;0.25;0.1" dur="3s" repeatCount="indefinite" begin="5s"/>
+    </rect>
+    <text x="100" y="493" font-family="system-ui, sans-serif" font-size="9" fill="#10B981" font-weight="bold">9</text>
+    <text x="113" y="493" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">Node Paired</text>
+    <text x="150" y="507" text-anchor="middle" font-family="system-ui, sans-serif" font-size="8" fill="#6ee7b7">Mesh connectivity active</text>
+
+    <!-- Success pulse on Realm too -->
+    <rect x="380" y="475" width="140" height="38" rx="8" fill="#10B981" opacity="0.1" stroke="#10B981" stroke-width="2">
+      <animate attributeName="opacity" values="0.1;0.25;0.1" dur="3s" repeatCount="indefinite" begin="5s"/>
+    </rect>
+    <text x="450" y="498" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#10B981" font-weight="bold">Realm Linked</text>
+
+    <!-- Connection line between paired entities -->
+    <path d="M 220 494 L 380 494" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="3,3" opacity="0.4">
+      <animate attributeName="opacity" values="0.2;0.6;0.2" dur="2s" repeatCount="indefinite" begin="5s"/>
+    </path>
+  </g>
+
+  <!-- Bottom Panel: Security Notes (left) -->
+  <g id="security-notes" transform="translate(20, 540)">
+    <rect x="0" y="0" width="270" height="140" rx="8" fill="#0C1929" stroke="#8B5CF6" stroke-width="1" opacity="0.9"/>
+    <text x="20" y="22" font-family="system-ui, sans-serif" font-size="11" fill="#8B5CF6" font-weight="bold">Security</text>
+
+    <circle cx="20" cy="42" r="3" fill="#8B5CF6" opacity="0.5"/>
+    <text x="30" y="46" font-family="system-ui, sans-serif" font-size="9" fill="#c4b5fd">10-minute session TTL</text>
+
+    <circle cx="20" cy="62" r="3" fill="#8B5CF6" opacity="0.5"/>
+    <text x="30" y="66" font-family="system-ui, sans-serif" font-size="9" fill="#c4b5fd">Single-use confirm code</text>
+
+    <circle cx="20" cy="82" r="3" fill="#8B5CF6" opacity="0.5"/>
+    <text x="30" y="86" font-family="system-ui, sans-serif" font-size="9" fill="#c4b5fd">Ed25519 keypair per node</text>
+
+    <circle cx="20" cy="102" r="3" fill="#8B5CF6" opacity="0.5"/>
+    <text x="30" y="106" font-family="system-ui, sans-serif" font-size="9" fill="#c4b5fd">TLS-encrypted transport</text>
+
+    <circle cx="20" cy="122" r="3" fill="#8B5CF6" opacity="0.5"/>
+    <text x="30" y="126" font-family="system-ui, sans-serif" font-size="9" fill="#c4b5fd">Cert auto-renewal</text>
+  </g>
+
+  <!-- Bottom Panel: What Gets Exchanged (center) -->
+  <g id="exchange-panel" transform="translate(310, 540)">
+    <rect x="0" y="0" width="280" height="140" rx="8" fill="#0C1929" stroke="#334155" stroke-width="1" opacity="0.9"/>
+    <text x="20" y="22" font-family="system-ui, sans-serif" font-size="11" fill="#94A3B8" font-weight="bold">What Gets Exchanged</text>
+
+    <!-- Flow visualization -->
+    <text x="20" y="46" font-family="system-ui, sans-serif" font-size="9" fill="#0EA5E9">Node sends:</text>
+    <text x="90" y="46" font-family="monospace" font-size="8" fill="#7dd3fc">Ed25519 public key + agent info</text>
+
+    <text x="130" y="60" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">&#8595;</text>
+
+    <text x="20" y="76" font-family="system-ui, sans-serif" font-size="9" fill="#F97316">Realm returns:</text>
+    <text x="100" y="76" font-family="monospace" font-size="8" fill="#fdba74">session_id + 6-digit code</text>
+
+    <text x="130" y="90" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">&#8595;</text>
+
+    <text x="20" y="106" font-family="system-ui, sans-serif" font-size="9" fill="#10B981">After confirm:</text>
+    <text x="100" y="106" font-family="monospace" font-size="8" fill="#6ee7b7">realm cert + refresh token</text>
+
+    <text x="130" y="120" font-family="system-ui, sans-serif" font-size="10" fill="#64748B">&#8595;</text>
+
+    <text x="20" y="136" font-family="system-ui, sans-serif" font-size="9" fill="#64748B">Result:</text>
+    <text x="70" y="136" font-family="system-ui, sans-serif" font-size="8" fill="#94a3b8">Authenticated node in your Realm</text>
+  </g>
+
+  <!-- Bottom Panel: Legend (right) -->
+  <g id="legend" transform="translate(610, 540)">
+    <rect x="0" y="0" width="270" height="140" rx="8" fill="#0C1929" stroke="#334155" stroke-width="1" opacity="0.9"/>
+    <text x="20" y="22" font-family="system-ui, sans-serif" font-size="11" fill="#94A3B8" font-weight="bold">Legend</text>
+
+    <!-- Node action -->
+    <line x1="20" y1="42" x2="55" y2="42" stroke="#0EA5E9" stroke-width="2"/>
+    <circle cx="37" cy="42" r="3" fill="#0EA5E9"/>
+    <text x="65" y="46" font-family="system-ui, sans-serif" font-size="9" fill="#0EA5E9">Node request</text>
+
+    <!-- Realm response -->
+    <line x1="20" y1="62" x2="55" y2="62" stroke="#F97316" stroke-width="2"/>
+    <circle cx="37" cy="62" r="3" fill="#F97316"/>
+    <text x="65" y="66" font-family="system-ui, sans-serif" font-size="9" fill="#F97316">Realm response</text>
+
+    <!-- User action -->
+    <line x1="20" y1="82" x2="55" y2="82" stroke="#10B981" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="65" y="86" font-family="system-ui, sans-serif" font-size="9" fill="#10B981">User action</text>
+
+    <!-- Credential delivery -->
+    <line x1="20" y1="102" x2="55" y2="102" stroke="#10B981" stroke-width="2.5"/>
+    <rect x="32" y="98" width="10" height="8" rx="2" fill="#10B981"/>
+    <text x="65" y="106" font-family="system-ui, sans-serif" font-size="9" fill="#10B981">Credential delivery</text>
+
+    <!-- Animated packet -->
+    <circle cx="37" cy="122" r="4" fill="#0EA5E9" filter="url(#softGlow)">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <text x="65" y="126" font-family="system-ui, sans-serif" font-size="9" fill="#64748B">Animated data packet</text>
+  </g>
+</svg>
