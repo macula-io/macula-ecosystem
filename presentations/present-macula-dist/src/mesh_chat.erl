@@ -360,9 +360,14 @@ normalize_relay_url(<<"https://", _/binary>> = Url) -> Url;
 normalize_relay_url(<<"http://", _/binary>> = Url) -> Url;
 normalize_relay_url(Host) ->
     Port = list_to_binary(os:getenv("MACULA_QUIC_PORT", "4433")),
-    case binary:match(Host, <<":">>) of
-        {_, _} -> <<"https://", Host/binary>>;
-        nomatch -> <<"https://", Host/binary, ":", Port/binary>>
+    %% Append .macula.io if bare relay name (e.g., "relay-fi-helsinki")
+    Host2 = case binary:match(Host, <<".">>) of
+        nomatch -> <<Host/binary, ".macula.io">>;
+        _ -> Host
+    end,
+    case binary:match(Host2, <<":">>) of
+        {_, _} -> <<"https://", Host2/binary>>;
+        nomatch -> <<"https://", Host2/binary, ":", Port/binary>>
     end.
 
 strip_url(<<"https://", Rest/binary>>) -> strip_port(Rest);
