@@ -295,7 +295,7 @@ about() ->
 %%====================================================================
 
 discover_and_connect_peers() ->
-    timer:sleep(2000),  %% let mesh stabilize
+    timer:sleep(2000),
     Client = macula_dist_relay:get_mesh_client(),
     connect_peers_from(Client).
 
@@ -304,22 +304,26 @@ connect_peers_from(Client) ->
     case macula:list_nodes(Client) of
         {ok, #{<<"nodes">> := Nodes}} ->
             MyNode = node(),
-            lists:foreach(fun(NodeInfo) ->
-                Name = maps:get(<<"name">>, NodeInfo, <<>>),
-                Peer = binary_to_atom(Name),
-                case Peer =/= MyNode andalso Peer =/= undefined of
-                    true ->
-                        case net_adm:ping(Peer) of
-                            pong ->
-                                io:format("\e[32m[mesh]\e[0m Connected to \e[1m~s\e[0m~n",
-                                          [short_node(Peer)]);
-                            pang -> ok
-                        end;
-                    false -> ok
+            Peers = [binary_to_atom(maps:get(<<"name">>, N, <<>>))
+                     || N <- Nodes,
+                        is_dist_peer(maps:get(<<"name">>, N, <<>>), MyNode)],
+            lists:foreach(fun(Peer) ->
+                case net_adm:ping(Peer) of
+                    pong ->
+                        io:format("\e[32m[mesh]\e[0m Connected to \e[1m~s\e[0m~n",
+                                  [short_node(Peer)]);
+                    pang -> ok
                 end
-            end, Nodes);
+            end, Peers);
         _ -> ok
     end.
+
+%% Only ping nodes that look like interactive peers (name@host),
+%% not stubs (famille-mueller-13, arnhem-forge-hub-344, etc.).
+is_dist_peer(<<>>, _) -> false;
+is_dist_peer(Name, MyNode) ->
+    Peer = binary_to_atom(Name),
+    Peer =/= MyNode andalso binary:match(Name, <<"@">>) =/= nomatch.
 
 %%====================================================================
 %% Internal
