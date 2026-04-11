@@ -20,11 +20,12 @@ style: |
 
 <!-- Render: npx @marp-team/marp-cli SLIDES.md -o slides.html --allow-local-files -->
 
-# Erlang Distribution Through a Relay Mesh
+# Erlang Distribution
+# Through the Macula Relay Mesh
 
 **net_adm:ping across firewalls, NATs, and continents**
 
-macula v1.0 — April 2026
+macula v1.4 — April 2026
 
 ![width:100px](assets/logo.svg)
 
@@ -46,7 +47,9 @@ What if nodes only needed **outbound** connectivity?
 
 ---
 
-## The Solution: Relay Mesh
+## The Solution: MFRM
+
+**Macula Federated Relay Mesh** — stateless QUIC routers.
 
 ![width:700px](assets/connect_flow.svg)
 
@@ -121,12 +124,12 @@ Four terminals. Four relays. Four countries. One mesh.
 ```
 Terminal 1 (Alice)    Terminal 2 (Bob)     Terminal 3 (Chris)   Terminal 4 (Diana)
 ──────────────────    ─────────────────    ──────────────────   ──────────────────
-relay-cz-prague    relay-dk-copenhagen    relay-nl-amsterdam       relay-de-munich
-    (Czech Republic)            (Denmark)            (Netherlands)             (Germany)
+relay-cz-prague      relay-dk-copenhagen  relay-nl-amsterdam   relay-de-munich
+    (Czech Republic)         (Denmark)        (Netherlands)         (Germany)
 ```
 
 No node can reach any other directly.
-All connect **outbound** to their local relay.
+All connect **outbound** to their nearest virtual relay identity.
 
 ---
 
@@ -141,14 +144,13 @@ $ MACULA_DIST_MODE=relay ERL_FLAGS="-proto_dist macula -no_epmd" \
 1> mesh_chat:connect("relay-cz-prague.macula.io").
 [chat] Connecting to relay-cz-prague.macula.io...
 [chat] Connected! Node: 'alice@127.0.0.1'
-[chat] Ready!
 ok
 
 2> mesh_chat:join("lobby").
 [chat] Joined #lobby
 ```
 
-Alice connected to Nuremberg relay. Joined the lobby.
+Alice connected to Prague relay via QUIC over IPv6. Joined the lobby.
 
 ---
 
@@ -163,7 +165,6 @@ $ MACULA_DIST_MODE=relay ERL_FLAGS="-proto_dist macula -no_epmd" \
 1> mesh_chat:connect("relay-dk-copenhagen.macula.io").
 [chat] Connecting to relay-dk-copenhagen.macula.io...
 [chat] Connected! Node: 'bob@127.0.0.1'
-[chat] Ready!
 ok
 
 2> mesh_chat:join("lobby").
@@ -173,13 +174,13 @@ ok
 pong
 ```
 
-Bob connects to Helsinki. Joins lobby. Pings Alice through the mesh. **pong.**
+Bob connects to Copenhagen. Pings Alice through the mesh. **pong.**
 
 ---
 
 <!-- _class: "" -->
 
-## Demo: Chris Joins (Terminal 3 — Paris)
+## Demo: Chris Joins (Terminal 3)
 
 ```erlang
 $ MACULA_DIST_MODE=relay ERL_FLAGS="-proto_dist macula -no_epmd" \
@@ -204,7 +205,7 @@ Three nodes, three relays, three countries. One lobby.
 
 <!-- _class: "" -->
 
-## Demo: Diana Joins (Terminal 4 — Naples)
+## Demo: Diana Joins (Terminal 4)
 
 ```erlang
 $ MACULA_DIST_MODE=relay ERL_FLAGS="-proto_dist macula -no_epmd" \
@@ -216,16 +217,16 @@ $ MACULA_DIST_MODE=relay ERL_FLAGS="-proto_dist macula -no_epmd" \
 2> mesh_chat:join("lobby").
 [chat] Joined #lobby
 
-3> mesh_chat:join("italian").
-[chat] Joined #italian
+3> mesh_chat:join("german").
+[chat] Joined #german
 
 4> mesh_chat:rooms().
 [chat] 2 room(s):
-  # italian (1 member)
+  # german (1 member)
   # lobby (4 members)
 ```
 
-Diana is in two rooms. Four nodes across four relays in four countries.
+Diana is in two rooms. Four nodes across four relays.
 
 ---
 
@@ -234,32 +235,29 @@ Diana is in two rooms. Four nodes across four relays in four countries.
 ## Demo: Ping!
 
 ```erlang
-%% Alice pings Diana (Germany → Italy):
+%% Alice pings Diana (Prague → Munich — different relays):
 4> mesh_chat:ping('diana@127.0.0.1').
 [ping] Pinging diana...
 
   ● alice  via relay-cz-prague.macula.io
-  │ tunnel (encrypted)
-  │   ⋮  relay mesh
-  │ tunnel (encrypted)
+  │ ↕ QUIC tunnel (TLS 1.3)
+  │ ↕ relay mesh peering
+  │ ↕ QUIC tunnel (TLS 1.3)
   ● diana  via relay-de-munich.macula.io
 
-  RTT: 23.4ms
+  RTT: 23.4ms  (Erlang RPC over QUIC relay mesh)
 
-%% Bob pings Alice (same relay? different relay?):
+%% Bob pings Alice (Copenhagen → Prague):
 4> mesh_chat:ping('alice@127.0.0.1').
-[ping] Pinging alice...
 
   ● bob    via relay-dk-copenhagen.macula.io
-  │ tunnel (encrypted)
-  │   ⋮  relay mesh
-  │ tunnel (encrypted)
+  │ ↕ QUIC tunnel (TLS 1.3)
+  │ ↕ relay mesh peering
+  │ ↕ QUIC tunnel (TLS 1.3)
   ● alice  via relay-cz-prague.macula.io
 
   RTT: 18.7ms
 ```
-
-Real RTT. Real relay endpoints. The path through the mesh is encrypted — we don't pretend to see it.
 
 ---
 
@@ -269,26 +267,25 @@ Real RTT. Real relay endpoints. The path through the mesh is encrypted — we do
 
 ```erlang
 %% Alice says hello — all 4 terminals see it:
-3> mesh_chat:say("lobby", "Hello from Germany!").
-[alice/#lobby] Hello from Germany!
+3> mesh_chat:say("lobby", "Hello from Prague!").
+[alice/#lobby] Hello from Prague!
 
-%% Chris replies from Paris:
-5> mesh_chat:say("lobby", "Salut from France!").
-[chris/#lobby] Salut from France!
+%% Chris replies from Amsterdam:
+5> mesh_chat:say("lobby", "Hallo from Amsterdam!").
+[chris/#lobby] Hallo from Amsterdam!
 
 %% Diana whispers to Chris (only Chris sees it):
-5> mesh_chat:whisper('chris@127.0.0.1', "Ciao, ci vediamo dopo").
-[diana → chris] Ciao, ci vediamo dopo
+5> mesh_chat:whisper('chris@127.0.0.1', "Pssst, Biergarten?").
+[diana → chris] Pssst, Biergarten?
 
-%% Diana says something in the italian room (only she is in it):
-6> mesh_chat:say("italian", "Nessuno qui ancora...").
-[diana/#italian] Nessuno qui ancora...
+%% Diana says something in the german room:
+6> mesh_chat:say("german", "Ist jemand hier?").
+[diana/#german] Ist jemand hier?
 
-%% Chris joins italian too:
-6> mesh_chat:join("italian").
-[chat] Joined #italian
-7> mesh_chat:say("italian", "Je suis ici!").
-[chris/#italian] Je suis ici!
+%% Chris joins german too:
+6> mesh_chat:join("german").
+7> mesh_chat:say("german", "Ja, ik ben er!").
+[chris/#german] Ja, ik ben er!
 ```
 
 ---
@@ -296,20 +293,20 @@ Real RTT. Real relay endpoints. The path through the mesh is encrypted — we do
 ## What Just Happened
 
 ```
-Alice                  Relay (Nuremberg)    Relay (Helsinki)       Bob
-  │                        │                     │                  │
-  ├─ QUIC connect ────────►│                     │◄──── QUIC ──────┤
-  │                        │◄═══ peering DHT ═══►│                  │
-  │                        │                     │                  │
-  ├─ RPC: tunnel ─────────►├─── DHT lookup ─────►├── tunnel req ──►│
-  │◄─ tunnel_id ───────────┤◄────────────────────┤◄── tunnel ack ──┤
-  │                        │                     │                  │
-  ├── dist handshake bytes ►├─────────────────────►├────────────────►│
-  │◄── dist handshake bytes ┤◄─────────────────────┤◄────────────────┤
-  │                        │                     │                  │
-  │◄══════════ OTP Distribution Connected ══════════════════════════►│
-  │                        │                     │                  │
-  ├── pg:join / say() ─────►├─────────────────────►├── message ─────►│
+Alice               Relay (Prague)       Relay (Copenhagen)        Bob
+  │                      │                     │                    │
+  ├─ QUIC connect ──────►│                     │◄──── QUIC ────────┤
+  │                      │◄═══ mesh peering ══►│                    │
+  │                      │                     │                    │
+  ├─ RPC: tunnel ───────►├─── DHT lookup ─────►├── tunnel req ────►│
+  │◄─ tunnel_id ─────────┤◄────────────────────┤◄── tunnel ack ────┤
+  │                      │                     │                    │
+  ├── dist handshake ───►├────────────────────►├──────────────────►│
+  │◄── dist handshake ───┤◄────────────────────┤◄──────────────────┤
+  │                      │                     │                    │
+  │◄══════════ OTP Distribution Connected ═════════════════════════►│
+  │                      │                     │                    │
+  ├── pg:join / say() ──►├────────────────────►├── message ───────►│
 ```
 
 Standard OTP distribution. AES-256-GCM encrypted. Relay sees only ciphertext.
@@ -337,7 +334,7 @@ Tunnel encrypted with AES-256-GCM — key derived from distribution cookie.
 <div class="columns">
 <div>
 
-**macula SDK** (hex.pm)
+**macula SDK** (hex.pm/macula)
 - `macula_dist.erl` — carrier interface (533 lines)
 - `macula_dist_bridge.erl` — relay bridge (252 lines)
 - `macula_dist_relay.erl` — tunnel setup
@@ -370,8 +367,8 @@ Or use `mesh_chat:connect/1` for the demo.
 - **Store-and-forward** — offline nodes catch up via event replay
 - **E2EE tunnels** — endpoint encryption beyond the relay layer
 
-The mesh already has 303 relays across 35 European countries,
-10,000+ stub nodes, and 3 physical relay boxes.
+The MFRM has 200+ virtual relay identities across 30+ European countries,
+10,000 stub nodes, and 3 physical relay boxes — ~30 EUR/month total.
 
 ---
 
@@ -385,8 +382,8 @@ Outbound QUIC to a relay. That's all.
 <div>
 
 **Code:** github.com/macula-io/macula
-**Package:** hex.pm/macula
-**Demo:** github.com/macula-io/macula-demo
+**Package:** hex.pm/packages/macula
+**Ecosystem:** github.com/macula-io/macula-ecosystem
 
 </div>
 <div>
