@@ -59,8 +59,9 @@ connect(Relay, Realm) ->
     RelayUrl = normalize_relay_url(Relay),
     ensure_pg(),
     join_mesh(RelayUrl, Realm),
+    print_banner(RelayUrl),
     ensure_registered(mesh_chat_rx, fun rx_loop/0),
-    spawn(fun() -> start_presence(RelayUrl) end),
+    spawn(fun() -> start_presence() end),
     ok.
 
 -spec disconnect() -> ok.
@@ -218,13 +219,12 @@ about() ->
 %% Internal — Presence Discovery
 %%====================================================================
 
-start_presence(RelayUrl) ->
+start_presence() ->
     timer:sleep(1000),
     Client = macula_dist_relay:get_mesh_client(),
     subscribe_presence(Client),
     timer:sleep(1000),
-    announce(Client),
-    print_banner(RelayUrl).
+    announce(Client).
 
 subscribe_presence(undefined) -> ok;
 subscribe_presence(Client) ->
