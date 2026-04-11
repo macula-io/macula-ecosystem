@@ -40,7 +40,7 @@ init([]) ->
     %% Connect to mesh
     case RelayUrl of
         undefined ->
-            log("WARNING: No MACULA_RELAY set — running without mesh");
+            log("WARNING: No MACULA_RELAY set — running without mesh", []);
         _ ->
             case pg:start(pg) of
                 {ok, _} -> ok;
