@@ -78,6 +78,10 @@ connect(Relay, Realm) ->
             register(mesh_chat_rx, Pid);
         _ -> ok
     end,
+
+    %% Auto-discover and connect to mesh peers via Erlang distribution.
+    %% This makes pg groups, rpc:call, gen_server:call work transparently.
+    spawn(fun() -> discover_and_connect_peers() end),
     ok.
 
 -spec disconnect() -> ok.
@@ -285,6 +289,37 @@ about() ->
     io:format("  \e[90mmacula.io — github.com/macula-io/macula\e[0m~n"),
     io:format("~n"),
     ok.
+
+%%====================================================================
+%% Internal — Peer Discovery
+%%====================================================================
+
+discover_and_connect_peers() ->
+    timer:sleep(2000),  %% let mesh stabilize
+    Client = macula_dist_relay:get_mesh_client(),
+    connect_peers_from(Client).
+
+connect_peers_from(undefined) -> ok;
+connect_peers_from(Client) ->
+    case macula:list_nodes(Client) of
+        {ok, #{<<"nodes">> := Nodes}} ->
+            MyNode = node(),
+            lists:foreach(fun(NodeInfo) ->
+                Name = maps:get(<<"name">>, NodeInfo, <<>>),
+                Peer = binary_to_atom(Name),
+                case Peer =/= MyNode andalso Peer =/= undefined of
+                    true ->
+                        case net_adm:ping(Peer) of
+                            pong ->
+                                io:format("\e[32m[mesh]\e[0m Connected to \e[1m~s\e[0m~n",
+                                          [short_node(Peer)]);
+                            pang -> ok
+                        end;
+                    false -> ok
+                end
+            end, Nodes);
+        _ -> ok
+    end.
 
 %%====================================================================
 %% Internal
