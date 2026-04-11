@@ -1,7 +1,8 @@
 {application, dist_test, [
-    {description, "Interactive Erlang distribution over Macula relay mesh"},
-    {vsn, "0.2.0"},
-    {registered, []},
+    {description, "Erlang distribution over Macula relay mesh — test + demo"},
+    {vsn, "0.3.0"},
+    {registered, [dist_test_server]},
+    {mod, {dist_test_app, []}},
     {applications, [kernel, stdlib, crypto, public_key, ssl, macula]},
     {env, []},
     {modules, []}
