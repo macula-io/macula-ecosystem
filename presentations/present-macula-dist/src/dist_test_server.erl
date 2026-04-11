@@ -52,8 +52,12 @@ init([]) ->
             end
     end,
 
-    %% Start pinging after 10s (let mesh stabilize)
-    erlang:send_after(10000, self(), ping_peers),
+    %% Only start auto-ping loop when targets are configured (Docker mode).
+    %% Interactive shell sessions use mesh_chat commands instead.
+    case Targets of
+        [] -> ok;
+        _  -> erlang:send_after(10000, self(), ping_peers)
+    end,
 
     {ok, #{
         targets => Targets,
