@@ -1,0 +1,5 @@
+-name alice@127.0.0.1
+-setcookie DEMO
+-proto_dist macula
+-no_epmd
+-env MACULA_DIST_MODE relay

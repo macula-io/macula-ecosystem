@@ -1,0 +1,8 @@
+{application, dist_test, [
+    {description, "Interactive Erlang distribution over Macula relay mesh"},
+    {vsn, "0.2.0"},
+    {registered, []},
+    {applications, [kernel, stdlib, crypto, public_key, ssl, macula]},
+    {env, []},
+    {modules, []}
+]}.

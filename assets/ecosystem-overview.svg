@@ -185,7 +185,7 @@
   <rect x="890" y="670" width="250" height="55" rx="8" fill="#9f1239" opacity="0.7"/>
   <rect x="890" y="670" width="250" height="55" rx="8" fill="none" stroke="#e11d48" stroke-width="1" opacity="0.5"/>
   <text x="1015" y="697" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fda4af">hecate-gitops</text>
-  <text x="1015" y="715" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fb7185">K8s &#183; Flux &#183; Deployment</text>
+  <text x="1015" y="715" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fb7185">systemd &#183; podman &#183; Deployment</text>
 
   <!-- Hecate "depends on" label -->
   <text x="885" y="760" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#fda4af" opacity="0.7">
