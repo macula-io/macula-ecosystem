@@ -237,9 +237,11 @@ announce(Client) ->
     macula_mesh_client:publish(Client, ?PRESENCE_TOPIC, Payload).
 
 handle_peer_announcement(Msg) ->
-    Bin = macula_dist_relay:extract_payload(Msg),
-    #{<<"node">> := NodeBin} = json:decode(Bin),
-    maybe_connect_peer(binary_to_atom(NodeBin)).
+    Node = extract_node(macula_dist_relay:extract_payload(Msg)),
+    maybe_connect_peer(binary_to_atom(Node)).
+
+extract_node(#{<<"node">> := N}) -> N;
+extract_node(Bin) when is_binary(Bin) -> extract_node(json:decode(Bin)).
 
 maybe_connect_peer(Peer) when Peer =:= node() -> ok;
 maybe_connect_peer(Peer) ->
