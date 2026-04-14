@@ -357,23 +357,47 @@ current_room_display() ->
 help() ->
     io:format("~n"
         "\e[36m  Mesh Chat — Erlang Distribution over MFRM using QUIC\e[0m~n~n"
+
+        "\e[36m  Connect\e[0m~n"
+        "  \e[32mmesh_chat:connect(\"city\").\e[0m        connect to relay-<city>.macula.io~n"
+        "  \e[32mmesh_chat:connect(\"c\",\"realm\").\e[0m  connect with an explicit realm~n"
+        "  \e[32mmesh_chat:tour(\"city\").\e[0m           connect + join \"lobby\"~n"
+        "  \e[32mmesh_chat:tour(\"c\",\"room\").\e[0m      connect + join a named room~n"
+        "  \e[32mmesh_chat:disconnect().\e[0m           leave the mesh, reset prompt~n~n"
+
+        "\e[36m  Rooms\e[0m~n"
+        "  \e[32mmesh_chat:join(\"room\").\e[0m            join; becomes the current room~n"
+        "  \e[32mmesh_chat:leave(\"room\").\e[0m           leave; rotates current~n"
+        "  \e[32mmesh_chat:rooms().\e[0m                 rooms you're in + member counts~n"
+        "  \e[32mmesh_chat:who(\"room\").\e[0m             who's in a room~n~n"
+
         "\e[36m  Chat\e[0m~n"
-        "  \e[32mmesh_chat:join(\"room\").\e[0m          join a room~n"
-        "  \e[32mmesh_chat:say(\"Hello!\").\e[0m        say in current room~n"
-        "  \e[32mmesh_chat:say(\"r\",\"msg\").\e[0m      say in specific room~n"
-        "  \e[32mmesh_chat:who(\"room\").\e[0m          who's in a room~n"
-        "  \e[32mmesh_chat:whisper(Node,\"m\").\e[0m    private message~n"
-        "  \e[32mmesh_chat:ping(Node).\e[0m           RTT over mesh~n"
-        "  \e[32mmesh_chat:roster().\e[0m              flag·city·rooms per peer~n"
-        "  \e[32mmesh_chat:tour(\"city\").\e[0m         one-command demo boot~n~n"
+        "  \e[32mmesh_chat:say(\"Hello!\").\e[0m          say in current room~n"
+        "  \e[32mmesh_chat:say(\"r\",\"msg\").\e[0m        say in a specific room~n"
+        "  \e[32mmesh_chat:whisper(Node,\"m\").\e[0m      private message to one node~n~n"
+
+        "\e[36m  Presence\e[0m~n"
+        "  \e[32mmesh_chat:peers().\e[0m                connected BEAM nodes~n"
+        "  \e[32mmesh_chat:relays().\e[0m               relay URL you joined via~n"
+        "  \e[32mmesh_chat:roster().\e[0m               flag · city · rooms per peer~n"
+        "  \e[32mmesh_chat:ping(Node).\e[0m             coloured RTT + route breadcrumb~n~n"
+
         "\e[36m  Erlang Distribution\e[0m  \e[90m(all work over the QUIC relay mesh)\e[0m~n"
-        "  \e[32mnodes().\e[0m                        connected peers~n"
-        "  \e[32mnet_adm:ping(Node).\e[0m             ping a node~n"
-        "  \e[32mrpc:call(Node, M, F, A).\e[0m        remote function call~n"
-        "  \e[32mgen_server:call({N,Node},m).\e[0m    cross-node gen_server~n"
-        "  \e[32mpg:get_members(pg, Group).\e[0m      cluster-wide pg groups~n"
-        "  \e[32merlang:monitor(process,{N,Nd}).\e[0m cross-node monitor~n~n"
-        "  \e[32mmesh_chat:about().\e[0m              what is MFRM?~n~n").
+        "  \e[32mnodes().\e[0m                         connected peers~n"
+        "  \e[32mnet_adm:ping(Node).\e[0m              liveness ping~n"
+        "  \e[32mrpc:call(Node, M, F, A).\e[0m         remote function call~n"
+        "  \e[32mgen_server:call({N,Node},m).\e[0m     cross-node gen_server~n"
+        "  \e[32mpg:get_members(pg, Group).\e[0m       cluster-wide pg groups~n"
+        "  \e[32merlang:monitor(process,{N,Nd}).\e[0m  cross-node monitor~n~n"
+
+        "\e[36m  Shell\e[0m~n"
+        "  \e[32mshell:prompt_func(default).\e[0m      reset prompt to default~n"
+        "  \e[90mCtrl-G then q\e[0m                       break out of a stuck shell~n"
+        "  \e[90mq().\e[0m                               graceful BEAM shutdown~n~n"
+
+        "\e[36m  Info\e[0m~n"
+        "  \e[32mmesh_chat:help().\e[0m                 this screen~n"
+        "  \e[32mmesh_chat:about().\e[0m                what is MFRM?~n~n").
 
 about() ->
     io:format("~n"
