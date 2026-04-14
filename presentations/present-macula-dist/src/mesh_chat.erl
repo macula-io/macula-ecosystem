@@ -132,7 +132,7 @@ say_to_current(Room, Message) ->
 -spec say(string(), string()) -> ok.
 say(Room, Message) when is_list(Room), is_list(Message) ->
     From = display_name(),
-    io:format("\e[33m[~s/#~s]\e[0m ~s~n", [From, Room, Message]),
+    io:format("\e[33m[~ts/#~ts]\e[0m ~ts~n", [From, Room, Message]),
     Rx = whereis(mesh_chat_rx),
     [Pid ! {room_msg, Room, From, Message}
      || Pid <- pg:get_members(pg, room_key(Room)), Pid =/= Rx],
@@ -152,7 +152,7 @@ display_name() ->
 -spec whisper(atom(), string()) -> ok.
 whisper(Node, Message) when is_atom(Node), is_list(Message) ->
     From = display_name(),
-    io:format("\e[35m[~s → ~s]\e[0m ~s~n", [From, short_node(Node), Message]),
+    io:format("\e[35m[~ts → ~ts]\e[0m ~ts~n", [From, short_node(Node), Message]),
     case rpc:call(Node, erlang, whereis, [mesh_chat_rx]) of
         Pid when is_pid(Pid) -> Pid ! {whisper, From, Message};
         _                    -> io:format("\e[31m[chat]\e[0m ~p not in chat~n", [Node])
@@ -207,10 +207,10 @@ rpc_safe(Node, M, F, A) ->
     end.
 
 print_roster_row({self_row, Node, Country, City, Rooms}) ->
-    io:format("  \e[32m●\e[0m ~s \e[1m~s\e[0m  (you)        \e[90m~s~s\e[0m~n",
+    io:format("  \e[32m●\e[0m ~ts \e[1m~ts\e[0m  (you)        \e[90m~ts~ts\e[0m~n",
               [format_flag(Country), short_node(Node), City, fmt_rooms(Rooms)]);
 print_roster_row({peer_row, Node, Country, City, Rooms}) ->
-    io:format("  \e[32m●\e[0m ~s \e[1m~s\e[0m              \e[90m~s~s\e[0m~n",
+    io:format("  \e[32m●\e[0m ~ts \e[1m~ts\e[0m              \e[90m~ts~ts\e[0m~n",
               [format_flag(Country), short_node(Node), City, fmt_rooms(Rooms)]).
 
 format_flag("") -> "  ";
@@ -247,7 +247,7 @@ ping(Node) when is_atom(Node) ->
 -spec prompt(list()) -> iolist().
 prompt(L) ->
     N = proplists:get_value(history, L, 0),
-    io_lib:format("\e[36m~s\e[0m@\e[33m~s\e[0m ~s\e[90m(~p)\e[0m> ",
+    io_lib:format("\e[36m~ts\e[0m@\e[33m~ts\e[0m ~ts\e[90m(~p)\e[0m> ",
                   [short_node(node()),
                    current_city(),
                    current_room_display(),
@@ -347,7 +347,7 @@ regional_indicator(Letter) when Letter >= $A, Letter =< $Z ->
 current_room_display() ->
     case current_room() of
         undefined -> "";
-        Room      -> io_lib:format("\e[32m#~s\e[0m ", [Room])
+        Room      -> io_lib:format("\e[32m#~ts\e[0m ", [Room])
     end.
 
 %%====================================================================
@@ -524,9 +524,9 @@ maybe_leave_pg(Room) ->
 rx_loop() ->
     receive
         {room_msg, Room, From, Message} ->
-            io:format("\e[33m[~s/#~s]\e[0m ~s~n", [From, Room, Message]);
+            io:format("\e[33m[~ts/#~ts]\e[0m ~ts~n", [From, Room, Message]);
         {whisper, From, Message} ->
-            io:format("\e[35m[~s → you]\e[0m ~s~n", [From, Message]);
+            io:format("\e[35m[~ts → you]\e[0m ~ts~n", [From, Message]);
         _ -> ok
     end,
     rx_loop().
