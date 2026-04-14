@@ -24,9 +24,13 @@
 -export([peers/0, relays/0]).
 -export([help/0, about/0]).
 
+%% Interactive-demo helpers
+-export([prompt/1, tour/1, tour/2, current_room/0]).
+
 %% Exported for testing
 -export([normalize_relay_url/1, strip_url/1, short_node/1, room_key/1, plural/1]).
 -export([maybe_connect_peer/1, maybe_append_domain/1, maybe_append_port/2]).
+-export([extract_city/1]).
 
 -define(PRESENCE_TOPIC, <<"_chat.presence">>).
 
@@ -61,12 +65,16 @@ connect(Relay, Realm) ->
     join_mesh(RelayUrl, Realm),
     print_banner(RelayUrl),
     ensure_registered(mesh_chat_rx, fun rx_loop/0),
-    spawn(fun() -> start_presence() end),
+    ensure_registered(mesh_chat_presence, fun presence_loop/0),
+    install_prompt(),
     ok.
 
 -spec disconnect() -> ok.
 disconnect() ->
+    stop_registered(mesh_chat_presence),
     stop_registered(mesh_chat_rx),
+    reset_prompt(),
+    persistent_term:erase({mesh_chat, current_room}),
     io:format("\e[36m[mesh]\e[0m Disconnected.~n").
 
 %%====================================================================
@@ -78,12 +86,15 @@ join(Room) when is_list(Room) ->
     Rx = ensure_rx(),
     pg:join(pg, room_key(Room), Rx),
     persistent_term:put({mesh_chat, rooms}, lists:usort([Room | my_rooms()])),
+    set_current_room(Room),
     io:format("\e[32m[chat]\e[0m Joined \e[1m#~s\e[0m~n", [Room]).
 
 -spec leave(string()) -> ok.
 leave(Room) when is_list(Room) ->
     maybe_leave_pg(Room),
-    persistent_term:put({mesh_chat, rooms}, my_rooms() -- [Room]),
+    Remaining = my_rooms() -- [Room],
+    persistent_term:put({mesh_chat, rooms}, Remaining),
+    rotate_current_room(Room, Remaining),
     io:format("\e[36m[chat]\e[0m Left #~s~n", [Room]).
 
 -spec rooms() -> [string()].
@@ -109,12 +120,14 @@ who(Room) when is_list(Room) ->
 
 -spec say(string()) -> ok.
 say(Message) when is_list(Message) ->
-    case my_rooms() of
-        [Room] -> say(Room, Message);
-        []     -> io:format("\e[31m[chat]\e[0m Join a room first: mesh_chat:join(\"lobby\").~n");
-        Rs     -> io:format("\e[31m[chat]\e[0m In ~p rooms — use mesh_chat:say(\"room\", \"msg\").~n", [length(Rs)])
-    end,
-    ok.
+    say_to_current(current_room(), Message).
+
+%% @private
+say_to_current(undefined, _Message) ->
+    io:format("\e[31m[chat]\e[0m Join a room first: mesh_chat:join(\"lobby\").~n"),
+    ok;
+say_to_current(Room, Message) ->
+    say(Room, Message).
 
 -spec say(string(), string()) -> ok.
 say(Room, Message) when is_list(Room), is_list(Message) ->
@@ -172,6 +185,88 @@ ping(Node) when is_atom(Node) ->
     ok.
 
 %%====================================================================
+%% Interactive-demo helpers (prompt, tour, current room)
+%%====================================================================
+
+%% @doc Shell prompt: `alice@lyon #cars (3)> `. Installed automatically
+%% by `connect/2'; reads live state so room / relay changes appear without
+%% re-installing. Called by the shell on every new input line.
+-spec prompt(list()) -> iolist().
+prompt(L) ->
+    N = proplists:get_value(history, L, 0),
+    io_lib:format("\e[36m~s\e[0m@\e[33m~s\e[0m ~s\e[90m(~p)\e[0m> ",
+                  [short_node(node()),
+                   current_city(),
+                   current_room_display(),
+                   N]).
+
+%% @doc One-command demo: connect, join the given room, print a greeting.
+%%      mesh_chat:tour("it-palermo", "cars").
+-spec tour(string() | binary()) -> ok.
+tour(Relay) -> tour(Relay, "lobby").
+
+-spec tour(string() | binary(), string()) -> ok.
+tour(Relay, Room) ->
+    connect(Relay),
+    join(Room),
+    timer:sleep(300),
+    Peers = nodes(),
+    io:format("\e[36m[tour]\e[0m ~p peer(s) so far~n", [length(Peers)]),
+    say("I'm in — " ++ current_city()),
+    ok.
+
+%% @doc Currently-active room (last joined; reset on leave).
+-spec current_room() -> string() | undefined.
+current_room() ->
+    persistent_term:get({mesh_chat, current_room}, undefined).
+
+%% @private
+set_current_room(Room) ->
+    persistent_term:put({mesh_chat, current_room}, Room).
+
+%% @private Leaving the active room rotates to another joined room if any.
+rotate_current_room(LeftRoom, Remaining) ->
+    case current_room() of
+        LeftRoom -> rotate_to(Remaining);
+        _        -> ok
+    end.
+
+rotate_to([]) ->
+    persistent_term:erase({mesh_chat, current_room}),
+    ok;
+rotate_to([Next | _]) ->
+    set_current_room(Next).
+
+%% @private
+install_prompt() ->
+    catch shell:prompt_func({?MODULE, prompt}),
+    ok.
+
+reset_prompt() ->
+    catch shell:prompt_func(default),
+    ok.
+
+%% @private City component of the current relay URL — `relay-it-palermo.…' → `palermo'.
+current_city() ->
+    extract_city(persistent_term:get({mesh_chat, relay}, undefined)).
+
+%% @doc Extract the city slug from a relay URL. `relay-pt-lisbon.macula.io' → `"lisbon"'.
+-spec extract_city(binary() | undefined) -> string().
+extract_city(undefined) -> "—";
+extract_city(Url) when is_binary(Url) ->
+    case re:run(Url, <<"relay-[a-z]{2}-([^.:/]+)">>, [{capture, [1], list}]) of
+        {match, [City]} -> City;
+        _               -> strip_url(Url)
+    end.
+
+%% @private
+current_room_display() ->
+    case current_room() of
+        undefined -> "";
+        Room      -> io_lib:format("\e[32m#~s\e[0m ", [Room])
+    end.
+
+%%====================================================================
 %% Help / About
 %%====================================================================
 
@@ -184,7 +279,8 @@ help() ->
         "  \e[32mmesh_chat:say(\"r\",\"msg\").\e[0m      say in specific room~n"
         "  \e[32mmesh_chat:who(\"room\").\e[0m          who's in a room~n"
         "  \e[32mmesh_chat:whisper(Node,\"m\").\e[0m    private message~n"
-        "  \e[32mmesh_chat:ping(Node).\e[0m           RTT over mesh~n~n"
+        "  \e[32mmesh_chat:ping(Node).\e[0m           RTT over mesh~n"
+        "  \e[32mmesh_chat:tour(\"city\").\e[0m         one-command demo boot~n~n"
         "\e[36m  Erlang Distribution\e[0m  \e[90m(all work over the QUIC relay mesh)\e[0m~n"
         "  \e[32mnodes().\e[0m                        connected peers~n"
         "  \e[32mnet_adm:ping(Node).\e[0m             ping a node~n"
@@ -219,12 +315,27 @@ about() ->
 %% Internal — Presence Discovery
 %%====================================================================
 
-start_presence() ->
+%% Presence interval — re-announce every 30s. This makes discovery
+%% self-healing: if a peer's mesh_client silently reconnects, our
+%% next announcement re-introduces us and peers will re-ping us.
+-define(PRESENCE_INTERVAL_MS, 30_000).
+
+%% Long-lived presence process. Subscribes once, then re-announces
+%% periodically so the mesh stays aware of us across silent reconnects.
+presence_loop() ->
+    %% Give join_mesh a moment to settle before subscribing
     timer:sleep(1000),
     Client = macula_dist_relay:get_mesh_client(),
     subscribe_presence(Client),
-    timer:sleep(1000),
-    announce(Client).
+    announce_forever(Client).
+
+announce_forever(Client) ->
+    announce(Client),
+    receive
+        stop -> ok
+    after ?PRESENCE_INTERVAL_MS ->
+        announce_forever(macula_dist_relay:get_mesh_client())
+    end.
 
 subscribe_presence(undefined) -> ok;
 subscribe_presence(Client) ->
@@ -385,8 +496,19 @@ normalize_relay_url(<<"https://", _/binary>> = Url) -> Url;
 normalize_relay_url(<<"http://", _/binary>> = Url) -> Url;
 normalize_relay_url(Host) ->
     Port = list_to_binary(os:getenv("MACULA_QUIC_PORT", "4433")),
-    Host2 = maybe_append_domain(Host),
-    maybe_append_port(Host2, Port).
+    Host2 = maybe_prepend_relay(Host),
+    Host3 = maybe_append_domain(Host2),
+    maybe_append_port(Host3, Port).
+
+%% Short-form convenience: `it-palermo' → `relay-it-palermo'.
+%% Only applied when the host has no dot (i.e. the user typed a bare name);
+%% FQDNs and names already starting with `relay-' are left alone.
+maybe_prepend_relay(<<"relay-", _/binary>> = H) -> H;
+maybe_prepend_relay(H) ->
+    case binary:match(H, <<".">>) of
+        nomatch -> <<"relay-", H/binary>>;
+        _       -> H
+    end.
 
 maybe_append_domain(Host) ->
     case binary:match(Host, <<".">>) of
