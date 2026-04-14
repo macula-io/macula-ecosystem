@@ -116,6 +116,24 @@ extract_city_non_standard_test() ->
                  mesh_chat:extract_city(<<"https://box.example.com:4433">>)).
 
 %%====================================================================
+%% extract_country + country_flag
+%%====================================================================
+
+extract_country_test() ->
+    ?assertEqual("pt", mesh_chat:extract_country(<<"relay-pt-lisbon.macula.io">>)),
+    ?assertEqual("it", mesh_chat:extract_country(<<"https://relay-it-palermo.macula.io:4433">>)),
+    ?assertEqual("",   mesh_chat:extract_country(<<"https://box.example.com">>)),
+    ?assertEqual("",   mesh_chat:extract_country(undefined)).
+
+country_flag_test() ->
+    ?assertEqual("🇵🇹", mesh_chat:country_flag("pt")),
+    ?assertEqual("🇮🇹", mesh_chat:country_flag("it")),
+    ?assertEqual("🇩🇪", mesh_chat:country_flag(<<"de">>)),
+    ?assertEqual("🇫🇷", mesh_chat:country_flag("FR")),
+    ?assertEqual("",     mesh_chat:country_flag("")),
+    ?assertEqual("",     mesh_chat:country_flag("xyz")).
+
+%%====================================================================
 %% URL helpers
 %%====================================================================
 

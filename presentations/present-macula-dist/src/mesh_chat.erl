@@ -21,7 +21,7 @@
 -export([join/1, leave/1, rooms/0, who/1]).
 -export([ping/1]).
 -export([say/1, say/2, whisper/2]).
--export([peers/0, relays/0]).
+-export([peers/0, relays/0, roster/0]).
 -export([help/0, about/0]).
 
 %% Interactive-demo helpers
@@ -30,7 +30,7 @@
 %% Exported for testing
 -export([normalize_relay_url/1, strip_url/1, short_node/1, room_key/1, plural/1]).
 -export([maybe_connect_peer/1, maybe_append_domain/1, maybe_append_port/2]).
--export([extract_city/1]).
+-export([extract_city/1, extract_country/1, country_flag/1]).
 
 -define(PRESENCE_TOPIC, <<"_chat.presence">>).
 
@@ -131,19 +131,30 @@ say_to_current(Room, Message) ->
 
 -spec say(string(), string()) -> ok.
 say(Room, Message) when is_list(Room), is_list(Message) ->
-    Nick = nick(),
-    io:format("\e[33m[~s/#~s]\e[0m ~s~n", [Nick, Room, Message]),
+    From = display_name(),
+    io:format("\e[33m[~s/#~s]\e[0m ~s~n", [From, Room, Message]),
     Rx = whereis(mesh_chat_rx),
-    [Pid ! {room_msg, Room, Nick, Message}
+    [Pid ! {room_msg, Room, From, Message}
      || Pid <- pg:get_members(pg, room_key(Room)), Pid =/= Rx],
     ok.
 
+%% @private Flag + short nick, e.g. `🇵🇹 alice`. Sender-side so the receiver
+%% never needs to look up geography for a message that already knows where
+%% it came from.
+display_name() ->
+    Flag = country_flag(current_country()),
+    Nick = nick(),
+    case Flag of
+        "" -> Nick;
+        _  -> [Flag, " ", Nick]
+    end.
+
 -spec whisper(atom(), string()) -> ok.
 whisper(Node, Message) when is_atom(Node), is_list(Message) ->
-    Nick = nick(),
-    io:format("\e[35m[~s → ~s]\e[0m ~s~n", [Nick, short_node(Node), Message]),
+    From = display_name(),
+    io:format("\e[35m[~s → ~s]\e[0m ~s~n", [From, short_node(Node), Message]),
     case rpc:call(Node, erlang, whereis, [mesh_chat_rx]) of
-        Pid when is_pid(Pid) -> Pid ! {whisper, Nick, Message};
+        Pid when is_pid(Pid) -> Pid ! {whisper, From, Message};
         _                    -> io:format("\e[31m[chat]\e[0m ~p not in chat~n", [Node])
     end,
     ok.
@@ -165,6 +176,48 @@ relays() ->
         undefined -> io:format("\e[36m[mesh]\e[0m Not connected~n"), [];
         Url       -> io:format("\e[36m[mesh]\e[0m Relay: ~s~n", [Url]), [Url]
     end.
+
+%% @doc Formatted list of connected peers with flags, cities, rooms.
+%%      Each row fetched via `rpc:call/4' to the peer — one round-trip
+%%      per peer, acceptable cost for an on-demand command.
+-spec roster() -> [atom()].
+roster() ->
+    Peers = [node() | nodes()],
+    Rows = [roster_row(N) || N <- Peers],
+    io:format("~n\e[36m[mesh]\e[0m ~p node(s) in the quartet:~n~n", [length(Peers)]),
+    [print_roster_row(R) || R <- Rows],
+    io:format("~n"),
+    Peers.
+
+%% @private
+roster_row(Node) when Node =:= node() ->
+    {self_row, Node, current_country(), current_city(),
+     persistent_term:get({mesh_chat, rooms}, [])};
+roster_row(Node) ->
+    Relay = rpc_safe(Node, persistent_term, get,
+                     [{mesh_chat, relay}, undefined]),
+    Rooms = rpc_safe(Node, persistent_term, get,
+                     [{mesh_chat, rooms}, []]),
+    {peer_row, Node, extract_country(Relay), extract_city(Relay), Rooms}.
+
+rpc_safe(Node, M, F, A) ->
+    case rpc:call(Node, M, F, A, 1500) of
+        {badrpc, _} -> undefined;
+        Reply       -> Reply
+    end.
+
+print_roster_row({self_row, Node, Country, City, Rooms}) ->
+    io:format("  \e[32m●\e[0m ~s \e[1m~s\e[0m  (you)        \e[90m~s~s\e[0m~n",
+              [format_flag(Country), short_node(Node), City, fmt_rooms(Rooms)]);
+print_roster_row({peer_row, Node, Country, City, Rooms}) ->
+    io:format("  \e[32m●\e[0m ~s \e[1m~s\e[0m              \e[90m~s~s\e[0m~n",
+              [format_flag(Country), short_node(Node), City, fmt_rooms(Rooms)]).
+
+format_flag("") -> "  ";
+format_flag(CC) -> country_flag(CC).
+
+fmt_rooms([]) -> "";
+fmt_rooms(Rs) -> [" · ", string:join([[$# | R] || R <- Rs], " ")].
 
 %%====================================================================
 %% Ping
@@ -259,6 +312,37 @@ extract_city(Url) when is_binary(Url) ->
         _               -> strip_url(Url)
     end.
 
+%% @doc Extract 2-letter lowercase ISO country code from a relay URL.
+%%      `relay-pt-lisbon.macula.io' → `"pt"'. `"" for unrecognised shape.
+-spec extract_country(binary() | undefined) -> string().
+extract_country(undefined) -> "";
+extract_country(Url) when is_binary(Url) ->
+    case re:run(Url, <<"relay-([a-z]{2})-">>, [{capture, [1], list}]) of
+        {match, [CC]} -> CC;
+        _             -> ""
+    end.
+
+%% @doc Current node's country derived from its relay URL.
+-spec current_country() -> string().
+current_country() ->
+    extract_country(persistent_term:get({mesh_chat, relay}, undefined)).
+
+%% @doc Convert a 2-letter country code to its Unicode flag emoji.
+%%      `"pt"' → `"🇵🇹"'. Returns `"" for anything that isn't two letters.
+-spec country_flag(string() | binary()) -> string().
+country_flag(CC) when is_binary(CC) ->
+    country_flag(binary_to_list(CC));
+country_flag([A, B]) when A >= $a, A =< $z, B >= $a, B =< $z ->
+    unicode:characters_to_list([regional_indicator(A - $a + $A),
+                                regional_indicator(B - $a + $A)]);
+country_flag([A, B]) when A >= $A, A =< $Z, B >= $A, B =< $Z ->
+    unicode:characters_to_list([regional_indicator(A),
+                                regional_indicator(B)]);
+country_flag(_) -> "".
+
+regional_indicator(Letter) when Letter >= $A, Letter =< $Z ->
+    16#1F1E6 + (Letter - $A).
+
 %% @private
 current_room_display() ->
     case current_room() of
@@ -280,6 +364,7 @@ help() ->
         "  \e[32mmesh_chat:who(\"room\").\e[0m          who's in a room~n"
         "  \e[32mmesh_chat:whisper(Node,\"m\").\e[0m    private message~n"
         "  \e[32mmesh_chat:ping(Node).\e[0m           RTT over mesh~n"
+        "  \e[32mmesh_chat:roster().\e[0m              flag·city·rooms per peer~n"
         "  \e[32mmesh_chat:tour(\"city\").\e[0m         one-command demo boot~n~n"
         "\e[36m  Erlang Distribution\e[0m  \e[90m(all work over the QUIC relay mesh)\e[0m~n"
         "  \e[32mnodes().\e[0m                        connected peers~n"
@@ -455,8 +540,18 @@ print_ping_result(MyRelay, TheirRelay, Node, Rtt) ->
     io:format("~n  \e[32m●\e[0m \e[1m~s\e[0m  via ~s~n", [nick(), strip_url(MyRelay)]),
     print_relay_path(MyRelay =:= TheirRelay),
     io:format("  \e[32m●\e[0m \e[1m~s\e[0m  via ~s~n~n"
-              "  \e[36mRTT: \e[1m~.1fms\e[0m  \e[90m(Erlang RPC over QUIC relay mesh)\e[0m~n~n",
-              [short_node(Node), strip_url(TheirRelay), Rtt]).
+              "  \e[36mRTT: ~s  \e[90m(Erlang RPC over QUIC relay mesh)\e[0m~n~n",
+              [short_node(Node), strip_url(TheirRelay), color_rtt(Rtt)]).
+
+%% Colour bands: green <30ms (same city), yellow <100ms (same continent),
+%% red beyond. Matches what a BEAM audience expects visually for a "fast
+%% round-trip" indicator in a live demo.
+color_rtt(Rtt) when Rtt < 30 ->
+    io_lib:format("\e[32m\e[1m~.1f ms\e[0m", [Rtt]);
+color_rtt(Rtt) when Rtt < 100 ->
+    io_lib:format("\e[33m\e[1m~.1f ms\e[0m", [Rtt]);
+color_rtt(Rtt) ->
+    io_lib:format("\e[31m\e[1m~.1f ms\e[0m", [Rtt]).
 
 print_relay_path(true) ->
     io:format("  \e[90m│\e[0m \e[90msame relay\e[0m~n");
