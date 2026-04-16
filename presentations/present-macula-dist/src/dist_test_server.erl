@@ -6,11 +6,16 @@
 %%%
 %%% Environment variables:
 %%%   MACULA_RELAY           — station URL for pub/sub (mesh_chat): https://relay-it-milan.macula.io:4433
-%%%   MACULA_DIST_RELAY_URL  — dedicated dist relay URL for Erlang distribution:
-%%%                            quic://dist-relay.example:4434 (macula-dist-relay).
-%%%                            When set, dist traffic bypasses the pub/sub bridge
-%%%                            and uses raw QUIC stream routing.
-%%%   PING_TARGETS           — comma-separated peer node names (e.g., alice@nanode-milan)
+%%%   MACULA_DIST_RELAY_URL  — explicit dist relay URL (quic://...:4434). Overrides
+%%%                            the auto-derived geo URL. Use when pointing at a
+%%%                            specific box or a non-standard identity.
+%%%   MACULA_GEO_COUNTRY     — ISO 3166-1 alpha-2 (e.g., "BE", "IT"). Combined with
+%%%                            MACULA_GEO_CITY, the dist-relay URL is auto-derived as
+%%%                            quic://dist-{cc-lower}-{city-slug}.macula.io:4434 —
+%%%                            matching the dist-{cc}-{city} virtual identity naming
+%%%                            on the dist-relay fleet.
+%%%   MACULA_GEO_CITY        — City name (e.g., "Brussels", "Banja Luka"). Slugged.
+%%%   PING_TARGETS           — comma-separated peer node names
 %%%   PING_INTERVAL_MS       — ping interval in ms (default: 15000)
 %%%
 %%% Results logged to stdout. Process stays alive — run as a Docker
@@ -21,6 +26,7 @@
 -behaviour(gen_server).
 
 -export([start_link/0]).
+-export([derive_dist_relay_url/0]).  %% Exported for tests + diagnostic shell use
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2]).
 
 -define(DEFAULT_INTERVAL, 15000).
@@ -32,7 +38,7 @@ init([]) ->
     Interval = env_int("PING_INTERVAL_MS", ?DEFAULT_INTERVAL),
     Targets = parse_targets(os:getenv("PING_TARGETS", "")),
     RelayUrl = env_bin("MACULA_RELAY"),
-    DistRelayUrl = env_bin("MACULA_DIST_RELAY_URL"),
+    DistRelayUrl = derive_dist_relay_url(),
 
     log("Starting dist_test_server on ~s", [node()]),
     log("Station relay: ~s", [RelayUrl]),
@@ -177,6 +183,33 @@ env_bin(Key) ->
         "" -> undefined;
         Val -> list_to_binary(Val)
     end.
+
+%% Explicit MACULA_DIST_RELAY_URL wins; otherwise derive from geo vars
+%% (MACULA_GEO_COUNTRY + MACULA_GEO_CITY) to match the dist-{cc}-{city}
+%% virtual identity naming. Returns undefined when nothing is configured,
+%% which keeps dist on the legacy pub/sub bridge.
+derive_dist_relay_url() ->
+    pick_dist_url(env_bin("MACULA_DIST_RELAY_URL"),
+                  env_bin("MACULA_GEO_COUNTRY"),
+                  env_bin("MACULA_GEO_CITY")).
+
+pick_dist_url(Explicit, _CC, _City) when Explicit =/= undefined ->
+    Explicit;
+pick_dist_url(_Explicit, undefined, _City) ->
+    undefined;
+pick_dist_url(_Explicit, _CC, undefined) ->
+    undefined;
+pick_dist_url(_Explicit, CC, City) ->
+    CcLower = string:lowercase(CC),
+    CitySlug = slug(City),
+    iolist_to_binary(["quic://dist-", CcLower, "-", CitySlug, ".macula.io:4434"]).
+
+%% Kebab-case a city name: lowercase + collapse whitespace to single hyphens.
+%% Matches the convention in relay-identities.txt / dist-identities.txt
+%% (e.g., "Banja Luka" → "banja-luka").
+slug(Bin) when is_binary(Bin) ->
+    Lower = string:lowercase(Bin),
+    re:replace(Lower, <<"\\s+">>, <<"-">>, [global, {return, binary}]).
 
 ensure_pg() ->
     case pg:start(pg) of
