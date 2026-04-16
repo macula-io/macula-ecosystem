@@ -224,12 +224,28 @@ start_dist_relay_client(Url) ->
     case macula_dist_relay_client:start_link(Url, NodeName) of
         {ok, _Pid} ->
             os:putenv("MACULA_DIST_MODE", "dist_relay"),
+            %% Register net_kernel with the client so inbound tunnels
+            %% can deliver {accept, ...} messages. Normally done by
+            %% macula_dist:accept/1 at boot when MACULA_DIST_MODE is
+            %% set in vm.args, but in shell mode the env var is set
+            %% AFTER boot — so accept/1 already ran in direct mode and
+            %% never called set_kernel.
+            register_kernel_with_client(),
             io:format("\e[32m[dist]\e[0m Connected to ~s~n", [Url]);
         {error, {already_started, _Pid}} ->
             os:putenv("MACULA_DIST_MODE", "dist_relay"),
+            register_kernel_with_client(),
             io:format("\e[32m[dist]\e[0m Already connected~n");
         {error, Reason} ->
             io:format("\e[31m[dist]\e[0m Client failed: ~p~n", [Reason])
+    end.
+
+register_kernel_with_client() ->
+    case {erlang:whereis(net_kernel), macula_dist_relay_client:whereis_client()} of
+        {Kernel, Client} when is_pid(Kernel), is_pid(Client) ->
+            ok = macula_dist_relay_client:set_kernel(Client, Kernel);
+        _ ->
+            ok
     end.
 
 %% If PING_TARGETS env is set (Docker/headless mode), auto-connect.
