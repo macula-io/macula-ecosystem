@@ -60,10 +60,16 @@ connect() ->
     Url = dist_test_server:derive_dist_relay_url(),
     connect_with_url(Url).
 
-connect(Url) when is_list(Url) ->
-    connect(list_to_binary(Url));
-connect(Url) when is_binary(Url) ->
-    connect_with_url(Url).
+%% Accepts:
+%%   "de-nuremberg"                         → quic://dist-de-nuremberg.macula.io:4434
+%%   "dist-de-nuremberg"                    → quic://dist-de-nuremberg.macula.io:4434
+%%   "dist-de-nuremberg.macula.io"          → quic://dist-de-nuremberg.macula.io:4434
+%%   "quic://dist-de-nuremberg.macula.io:4434" → as-is
+%%   <<"...">>                              → same rules
+connect(Identity) when is_list(Identity) ->
+    connect(list_to_binary(Identity));
+connect(Identity) when is_binary(Identity) ->
+    connect_with_url(normalize_identity(Identity)).
 
 connect_with_url(undefined) ->
     io:format("\e[31m[dist]\e[0m Cannot derive URL. Pass one explicitly:~n"
@@ -215,6 +221,23 @@ ensure_pg() ->
     case pg:start(pg) of
         {ok, _} -> ok;
         {error, {already_started, _}} -> ok
+    end.
+
+%% Normalize short identity names to full quic:// URLs.
+%% "de-nuremberg" → "quic://dist-de-nuremberg.macula.io:4434"
+normalize_identity(<<"quic://", _/binary>> = Full) -> Full;
+normalize_identity(Id) ->
+    WithPrefix = ensure_dist_prefix(Id),
+    WithDomain = ensure_domain(WithPrefix),
+    <<"quic://", WithDomain/binary, ":4434">>.
+
+ensure_dist_prefix(<<"dist-", _/binary>> = Id) -> Id;
+ensure_dist_prefix(Id) -> <<"dist-", Id/binary>>.
+
+ensure_domain(Id) ->
+    case binary:match(Id, <<".">>) of
+        nomatch -> <<Id/binary, ".macula.io">>;
+        _ -> Id
     end.
 
 %% Start the dist_relay_client directly — the library provides the
