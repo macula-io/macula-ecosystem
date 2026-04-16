@@ -1,6 +1,0 @@
--name bob@127.0.0.1
--setcookie DEMO
--proto_dist macula
--no_epmd
--kernel net_ticktime 120
--env MACULA_DIST_MODE relay
