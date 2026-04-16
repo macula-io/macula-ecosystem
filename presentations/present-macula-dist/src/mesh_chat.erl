@@ -61,9 +61,14 @@ connect(Relay, Realm) when is_list(Relay) ->
     connect(list_to_binary(Relay), Realm);
 connect(Relay, Realm) ->
     RelayUrl = normalize_relay_url(Relay),
-    %% WAN-over-mesh adds latency to dist ticks. Default 60s triggers
-    %% false disconnects via global:prevent_overlapping_partitions.
+    %% WAN-over-mesh adds latency to every dist operation.
+    %% net_ticktime 120: default 60s triggers false disconnects via
+    %%   global:prevent_overlapping_partitions on high-latency relays.
+    %% net_setuptime 15: default 7s is too tight for tunnel RPC on a
+    %%   loaded relay (1400+ nodes). SDK's DIST_TIMEOUT is 10s; OTP
+    %%   kills setup at SetupTime with zero diagnostics (just pang).
     net_kernel:set_net_ticktime(120),
+    application:set_env(kernel, net_setuptime, 15),
     ensure_pg(),
     join_mesh(RelayUrl, Realm),
     print_banner(RelayUrl),
