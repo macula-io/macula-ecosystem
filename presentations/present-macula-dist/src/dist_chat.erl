@@ -74,7 +74,10 @@ connect_with_url(Url) ->
     net_kernel:set_net_ticktime(120),
     application:set_env(kernel, net_setuptime, 15),
     ensure_pg(),
-    join_dist_relay(Url),
+    %% The HOST APP starts the client — not the library. macula SDK
+    %% provides macula_dist_relay_client:start_link/2; we own the
+    %% supervision here (linked to the shell process for demo use).
+    start_dist_relay_client(Url),
     ensure_registered(dist_chat_rx, fun rx_loop/0),
     print_banner(Url),
     auto_ping_targets(),
@@ -214,12 +217,19 @@ ensure_pg() ->
         {error, {already_started, _}} -> ok
     end.
 
-join_dist_relay(Url) ->
-    case macula:join_dist_relay(#{url => Url}) of
-        ok ->
-            io:format("\e[32m[dist]\e[0m Joined dist-relay ~s~n", [Url]);
+%% Start the dist_relay_client directly — the library provides the
+%% module, the host app (us) owns the process lifecycle.
+start_dist_relay_client(Url) ->
+    NodeName = atom_to_binary(node()),
+    case macula_dist_relay_client:start_link(Url, NodeName) of
+        {ok, _Pid} ->
+            os:putenv("MACULA_DIST_MODE", "dist_relay"),
+            io:format("\e[32m[dist]\e[0m Connected to ~s~n", [Url]);
+        {error, {already_started, _Pid}} ->
+            os:putenv("MACULA_DIST_MODE", "dist_relay"),
+            io:format("\e[32m[dist]\e[0m Already connected~n");
         {error, Reason} ->
-            io:format("\e[31m[dist]\e[0m join_dist_relay failed: ~p~n", [Reason])
+            io:format("\e[31m[dist]\e[0m Client failed: ~p~n", [Reason])
     end.
 
 %% If PING_TARGETS env is set (Docker/headless mode), auto-connect.
