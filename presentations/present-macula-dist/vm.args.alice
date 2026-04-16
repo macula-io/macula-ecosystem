@@ -2,4 +2,5 @@
 -setcookie DEMO
 -proto_dist macula
 -no_epmd
+-kernel net_ticktime 120
 -env MACULA_DIST_MODE relay

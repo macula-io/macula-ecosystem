@@ -61,6 +61,9 @@ connect(Relay, Realm) when is_list(Relay) ->
     connect(list_to_binary(Relay), Realm);
 connect(Relay, Realm) ->
     RelayUrl = normalize_relay_url(Relay),
+    %% WAN-over-mesh adds latency to dist ticks. Default 60s triggers
+    %% false disconnects via global:prevent_overlapping_partitions.
+    net_kernel:set_net_ticktime(120),
     ensure_pg(),
     join_mesh(RelayUrl, Realm),
     print_banner(RelayUrl),

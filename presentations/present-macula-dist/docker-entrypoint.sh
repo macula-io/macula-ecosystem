@@ -13,6 +13,7 @@ cat > /app/releases/vm.args.generated <<EOF
 -setcookie ${COOKIE}
 -proto_dist macula
 -no_epmd
+-kernel net_ticktime 120
 +A 8
 +P 262144
 EOF
