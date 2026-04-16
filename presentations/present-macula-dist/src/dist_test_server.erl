@@ -5,9 +5,13 @@
 %%% pings peer nodes and tests Erlang distribution primitives.
 %%%
 %%% Environment variables:
-%%%   MACULA_RELAY     — relay URL (e.g., https://relay-it-milan.macula.io:4433)
-%%%   PING_TARGETS     — comma-separated peer node names (e.g., alice@nanode-milan)
-%%%   PING_INTERVAL_MS — ping interval in ms (default: 15000)
+%%%   MACULA_RELAY           — station URL for pub/sub (mesh_chat): https://relay-it-milan.macula.io:4433
+%%%   MACULA_DIST_RELAY_URL  — dedicated dist relay URL for Erlang distribution:
+%%%                            quic://dist-relay.example:4434 (macula-dist-relay).
+%%%                            When set, dist traffic bypasses the pub/sub bridge
+%%%                            and uses raw QUIC stream routing.
+%%%   PING_TARGETS           — comma-separated peer node names (e.g., alice@nanode-milan)
+%%%   PING_INTERVAL_MS       — ping interval in ms (default: 15000)
 %%%
 %%% Results logged to stdout. Process stays alive — run as a Docker
 %%% container for continuous automated testing.
@@ -27,30 +31,20 @@ start_link() ->
 init([]) ->
     Interval = env_int("PING_INTERVAL_MS", ?DEFAULT_INTERVAL),
     Targets = parse_targets(os:getenv("PING_TARGETS", "")),
-    RelayUrl = case os:getenv("MACULA_RELAY") of
-        false -> undefined;
-        "" -> undefined;
-        Url -> list_to_binary(Url)
-    end,
+    RelayUrl = env_bin("MACULA_RELAY"),
+    DistRelayUrl = env_bin("MACULA_DIST_RELAY_URL"),
 
     log("Starting dist_test_server on ~s", [node()]),
-    log("Relay:   ~s", [RelayUrl]),
-    log("Targets: ~p", [Targets]),
+    log("Station relay: ~s", [RelayUrl]),
+    log("Dist relay:    ~s", [DistRelayUrl]),
+    log("Targets:       ~p", [Targets]),
 
-    %% Connect to mesh
-    case RelayUrl of
-        undefined ->
-            log("WARNING: No MACULA_RELAY set — running without mesh", []);
-        _ ->
-            case pg:start(pg) of
-                {ok, _} -> ok;
-                {error, {already_started, _}} -> ok
-            end,
-            case macula:join_mesh(#{relays => [RelayUrl], realm => <<"io.macula">>}) of
-                ok -> log("Mesh joined via ~s", [RelayUrl]);
-                {error, Reason} -> log("ERROR: join_mesh failed: ~p", [Reason])
-            end
-    end,
+    ensure_pg(),
+    maybe_join_mesh(RelayUrl),
+    %% If a dedicated dist relay is configured, use it for dist traffic.
+    %% This sets MACULA_DIST_MODE=dist_relay, overriding the pub/sub
+    %% bridge that join_mesh/1 defaults to.
+    maybe_join_dist_relay(DistRelayUrl),
 
     %% Only start auto-ping loop when targets are configured (Docker mode).
     %% Interactive shell sessions use mesh_chat commands instead.
@@ -175,6 +169,35 @@ env_int(Key, Default) ->
             try list_to_integer(Val)
             catch _:_ -> Default
             end
+    end.
+
+env_bin(Key) ->
+    case os:getenv(Key) of
+        false -> undefined;
+        "" -> undefined;
+        Val -> list_to_binary(Val)
+    end.
+
+ensure_pg() ->
+    case pg:start(pg) of
+        {ok, _} -> ok;
+        {error, {already_started, _}} -> ok
+    end.
+
+maybe_join_mesh(undefined) ->
+    log("WARNING: No MACULA_RELAY set — running without mesh", []);
+maybe_join_mesh(Url) ->
+    case macula:join_mesh(#{relays => [Url], realm => <<"io.macula">>}) of
+        ok -> log("Mesh joined via ~s", [Url]);
+        {error, Reason} -> log("ERROR: join_mesh failed: ~p", [Reason])
+    end.
+
+maybe_join_dist_relay(undefined) ->
+    log("No MACULA_DIST_RELAY_URL — dist will use pub/sub bridge (legacy)", []);
+maybe_join_dist_relay(Url) ->
+    case macula:join_dist_relay(#{url => Url}) of
+        ok -> log("Dist relay joined via ~s — dist_mode=dist_relay", [Url]);
+        {error, Reason} -> log("ERROR: join_dist_relay failed: ~p", [Reason])
     end.
 
 log(Fmt, Args) ->
