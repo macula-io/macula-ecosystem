@@ -130,12 +130,23 @@ roster() ->
 
 join(Room) when is_list(Room) ->
     Rx = ensure_rx(),
-    pg:join(pg, room_key(Room), Rx),
+    Key = room_key(Room),
+    %% `pg:join/3' is a multiset — calling it twice with the same pid
+    %% adds the pid twice. Make this idempotent so repeated join/1 in
+    %% the shell doesn't inflate the member count and confuse `who/1'
+    %% vs. the pg size.
+    ensure_pg_member(Key, Rx),
     persistent_term:put({dist_chat, rooms}, lists:usort([Room | my_rooms()])),
     set_current_room(Room),
-    Members = length(pg:get_members(pg, room_key(Room))),
+    Members = length(pg:get_members(pg, Key)),
     io:format("\e[32m[chat]\e[0m Joined \e[1m#~s\e[0m (~p member~s)~n",
               [Room, Members, plural(Members)]).
+
+ensure_pg_member(Key, Rx) ->
+    maybe_pg_join(lists:member(Rx, pg:get_members(pg, Key)), Key, Rx).
+
+maybe_pg_join(true, _Key, _Rx)  -> ok;
+maybe_pg_join(false, Key, Rx)   -> pg:join(pg, Key, Rx).
 
 leave(Room) when is_list(Room) ->
     maybe_leave_pg(Room),
