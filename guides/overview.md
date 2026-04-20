@@ -26,7 +26,7 @@ The distributed application platform:
 |---------|-------------|
 | [macula](https://hexdocs.pm/macula) | HTTP/3 mesh networking over QUIC |
 | [hecate](https://github.com/hecate-social) | User-facing runtime + extensible app platform |
-| [macula_os](https://github.com/macula-io/macula-os) | Edge node operating system |
+| [hecate-install](https://github.com/hecate-social/hecate-install) | Edge node OS (NixOS, replaces archived `macula-os`) |
 
 ### rgfaber - AI & Neuroevolution
 

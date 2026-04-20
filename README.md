@@ -50,7 +50,7 @@ A BEAM-native HTTP/3 mesh network for edge computing.
 |---------|-------------|-------|
 | **macula** | HTTP/3 mesh networking over QUIC with DHT-based service discovery | [GitHub](https://github.com/macula-io/macula) \| [HexDocs](https://hexdocs.pm/macula) |
 | **hecate** | User-facing runtime + extensible app platform for Macula | [GitHub](https://github.com/hecate-social) |
-| **macula_os** | Immutable edge node operating system | [GitHub](https://github.com/macula-io/macula-os) |
+| **hecate-install** | Immutable edge node OS (NixOS-based, replaces archived `macula-os` / `macula-os-nix`) | [GitHub](https://github.com/hecate-social/hecate-install) |
 
 **Core capabilities:**
 - **DHT PubSub** — Decentralized publish/subscribe via Kademlia DHT
