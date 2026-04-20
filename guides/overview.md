@@ -25,7 +25,7 @@ The distributed application platform:
 | Package | Description |
 |---------|-------------|
 | [macula](https://hexdocs.pm/macula) | HTTP/3 mesh networking over QUIC |
-| [macula_console](https://github.com/macula-io/macula-console) | Management console |
+| [hecate](https://github.com/hecate-social) | User-facing runtime + extensible app platform |
 | [macula_os](https://github.com/macula-io/macula-os) | Edge node operating system |
 
 ### rgfaber - AI & Neuroevolution
