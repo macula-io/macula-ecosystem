@@ -1,5 +1,10 @@
 # MaculaOS Guide
 
+> ⚠️ **OUTDATED (2026-04-20)**: `macula-os` and `macula-os-nix` were
+> archived. The successor is **`hecate-social/hecate-install`** (NixOS
+> ISO + first-boot bootstrap). This guide is kept for historical
+> reference only.
+
 MaculaOS is a Linux-based operating system designed for edge deployment of
 Macula mesh nodes.
 
