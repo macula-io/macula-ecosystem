@@ -55,14 +55,14 @@ Federated mesh networking and the supporting reference services that operators n
 
 | Package | Description | Status | Links |
 |---------|-------------|--------|-------|
-| **macula** | Federated mesh-networking SDK and protocol over QUIC and HTTP/3. The canonical client library and the protocol specification. | Public, on hex.pm | [GitHub](https://github.com/macula-io/macula) \| [HexDocs](https://hexdocs.pm/macula) |
+| **macula** | Federated mesh-networking SDK and protocol over QUIC and HTTP/3. The canonical client library and the protocol specification. | Public, on hex.pm | [Codeberg](https://codeberg.org/macula-io/macula) \| [HexDocs](https://hexdocs.pm/macula) |
 | **macula-station** | Reference Macula V2 station. The infrastructure node that provides DHT participation, SWIM liveness, source-routing, bootstrap, and overlay services to Macula clients. Realm-agnostic infrastructure (a single station can serve multiple realms). Renamed from `hecate-social/hecate-station` and transferred on 2026-04-30; supersedes `macula-relay`. | Repo currently private, design phase | (private) |
 | **macula-relay** | First-generation reference relay server. Superseded by `macula-station`; kept for historical reference and for V1-network compatibility windows. | Repo currently private, archival | (private) |
-| **macula-dist-relay** | Distributed-relay reference implementation used during V1 multi-relay testing. Federation-of-relays cross-routing experiments live here. | Public | [GitHub](https://github.com/macula-io/macula-dist-relay) |
+| **macula-dist-relay** | Distributed-relay reference implementation used during V1 multi-relay testing. Federation-of-relays cross-routing experiments live here. | Public | [Codeberg](https://codeberg.org/macula-io/macula-dist-relay) |
 | **macula-realm** | Canonical realm service. Provides identity-and-membership, UCAN capability issuance, and per-realm administration. | Repo currently private, design phase | (private) |
 | **macula-realm-compose** | Deployment composition for `macula-realm` (containers, configuration). | Repo currently private | (private) |
 | **macula-demo** | Reference demo deployments and infrastructure scripts. | Repo currently private | (private) |
-| **macula-comm-docs** | Investor and public-sector communication material (commercial pitch, federated-compute thesis articles, public-sector vertical). | Public | [GitHub](https://github.com/macula-io/macula-comm-docs) |
+| **macula-comm-docs** | Investor and public-sector communication material (commercial pitch, federated-compute thesis articles, public-sector vertical). | Public | [Codeberg](https://codeberg.org/macula-io/macula-comm-docs) |
 
 **Core capabilities of the substrate:**
 
@@ -79,24 +79,18 @@ The user-facing runtime, infrastructure, and developer tooling that turns the Ma
 | Package | Description | Status | Links |
 |---------|-------------|--------|-------|
 | **hecate-realm** | Realm service variant that ships either as a white-label of `macula-realm` or as a headless identity-capability service that allows operators to plug in any authentication and authorisation backend behind it. The architectural choice between the two shapes is open and will be resolved during the realm-service development cycle. | Repo currently private, design phase | (private) |
-| **hecate-daemon** | Erlang/OTP backend that runs on an operator's hardware. Outbound-only client of `macula-station`. Hosts the venture-lifecycle management, the LLM provider integrations, and the application-plugin runtime. | Public | [GitHub](https://github.com/hecate-social/hecate-daemon) |
-| **hecate-web** | Native desktop user interface built with Tauri and SvelteKit. Talks to `hecate-daemon` over a Unix socket. | Public | [GitHub](https://github.com/hecate-social/hecate-web) |
-| **hecate-tui** | Terminal user interface, written in Go with chat, tools, and vim-mode. Talks to `hecate-daemon` over the same protocol as `hecate-web`. | Public | [GitHub](https://github.com/hecate-social/hecate-tui) |
-| **hecate-cli** | Command-line interface. Top-level commands route to the daemon's plugins (for example, `hecate status`, `hecate install`, `hecate {plugin} {subcommand}`). | Public | [GitHub](https://github.com/hecate-social/hecate-cli) |
-| **hecate-sdk** | Erlang software-development kit for building Hecate-resident applications. | Public | [GitHub](https://github.com/hecate-social/hecate-sdk) |
-| **hecate-sdk-ts** | TypeScript software-development kit, used by web frontends that integrate with Hecate. | Public | [GitHub](https://github.com/hecate-social/hecate-sdk-ts) |
-| **hecate-install** | Immutable edge-node operating system based on NixOS, replaces the archived `macula-os` and `macula-os-nix`. Bootstrap ISO and first-boot configuration for a fresh Hecate node. | Public | [GitHub](https://github.com/hecate-social/hecate-install) |
-| **hecate-gitops** | GitOps reconciler for Hecate-managed nodes. Watches a configuration repository, reconciles podman quadlets via systemd-user, supports zero-touch deploys via container auto-update. The canonical deployment path for Hecate-based clusters. | Public | [GitHub](https://github.com/hecate-social/hecate-gitops) |
-| **hecate-marketplace** | Plugin marketplace for Hecate applications. The decentralised app-store layer through which `hecate-app-*` plugins are discovered and installed. | Public | [GitHub](https://github.com/hecate-social/hecate-marketplace) |
-| **hecate-trader** | Trading and exchange application built on Hecate. | Public | [GitHub](https://github.com/hecate-social/hecate-trader) |
-| **hecate-martha** | AI assistant for event-sourcing domain modelling and code generation. Distributed as a `hecate-app-*` plugin through the marketplace. | Public | [GitHub](https://github.com/hecate-social/hecate-martha) |
-| **hecate-mesh-demo** | Mesh-resilience demonstration tool with five built-in scenarios. | Repo currently private | (private) |
-| **hecate-agents** | Philosophy, skills, and code-generation templates that guide Hecate development. | Public | [GitHub](https://github.com/hecate-social/hecate-agents) |
-| **hecate-the-book** | Long-form documentation and educational material about Hecate. | Public | [GitHub](https://github.com/hecate-social/hecate-the-book) |
+| **hecate-daemon** | Erlang/OTP backend that runs on an operator's hardware. Outbound-only client of `macula-station`. Hosts the venture-lifecycle management, the LLM provider integrations, and the application-plugin runtime. | Public | [Codeberg](https://codeberg.org/hecate-social/hecate-daemon) |
+| **hecate-web** | Native desktop user interface built with Tauri and SvelteKit. Talks to `hecate-daemon` over a Unix socket. | Public | [Codeberg](https://codeberg.org/hecate-social/hecate-web) |
+| **hecate-cli** | Command-line interface. Top-level commands route to the daemon's plugins (for example, `hecate status`, `hecate install`, `hecate {plugin} {subcommand}`). | Public | [Codeberg](https://codeberg.org/hecate-social/hecate-cli) |
+| **hecate-sdk** | Erlang software-development kit for building Hecate-resident applications. | Public | [Codeberg](https://codeberg.org/hecate-social/hecate-sdk) |
+| **hecate-sdk-ts** | TypeScript software-development kit, used by web frontends that integrate with Hecate. | Public | [Codeberg](https://codeberg.org/hecate-social/hecate-sdk-ts) |
+| **hecate-install** | Immutable edge-node operating system based on NixOS, replaces the archived `macula-os` and `macula-os-nix`. Bootstrap ISO and first-boot configuration for a fresh Hecate node. | Public | [Codeberg](https://codeberg.org/hecate-social/hecate-install) |
+| **hecate-gitops** | GitOps reconciler for Hecate-managed nodes. Watches a configuration repository, reconciles podman quadlets via systemd-user, supports zero-touch deploys via container auto-update. The canonical deployment path for Hecate-based clusters. | Public | [Codeberg](https://codeberg.org/hecate-social/hecate-gitops) |
+| **hecate-agents** | Philosophy, skills, and code-generation templates that guide Hecate development. | Public | [Codeberg](https://codeberg.org/hecate-social/hecate-agents) |
 
-**Hecate plugin ecosystem.** Plugins live in their own `hecate-app-*` repositories under `hecate-social`, are distributed through `hecate-marketplace`, and run inside `hecate-daemon`. Each plugin contributes a daemon component, optional web frontend pages, and optional CLI subcommands.
+**Hecate plugin ecosystem.** Plugins live in their own `hecate-app-*` repositories under the `hecate-apps` organisation, are discovered and installed through the appstore embedded in `hecate-daemon` and `hecate-web`, and run inside `hecate-daemon`. Each plugin contributes a daemon component, optional web frontend pages, and optional CLI subcommands.
 
-> See the dedicated [hecate-ecosystem](https://github.com/hecate-social/hecate-ecosystem) documentation hub for fuller Hecate-side detail.
+> See the dedicated [hecate-ecosystem](https://codeberg.org/hecate-social/hecate-ecosystem) documentation hub for fuller Hecate-side detail.
 
 ### Content transfer
 
@@ -146,12 +140,12 @@ A BEAM-native event-sourcing stack providing durable event stores, Command-Query
 
 | Package | Description | Links |
 |---------|-------------|-------|
-| **reckon_db** | Distributed event store on Khepri / Ra (Raft) | [GitHub](https://github.com/reckon-db-org/reckon-db) \| [HexDocs](https://hexdocs.pm/reckon_db) |
-| **evoq** | CQRS / event-sourcing framework (aggregates, commands, events) | [GitHub](https://github.com/reckon-db-org/evoq) \| [HexDocs](https://hexdocs.pm/evoq) |
-| **reckon_gater** | Gateway and shared types | [GitHub](https://github.com/reckon-db-org/reckon-gater) \| [HexDocs](https://hexdocs.pm/reckon_gater) |
-| **reckon_evoq** | Adapter connecting `evoq` to `reckon_db` | [GitHub](https://github.com/reckon-db-org/reckon-evoq) \| [HexDocs](https://hexdocs.pm/reckon_evoq) |
+| **reckon_db** | Distributed event store on Khepri / Ra (Raft) | [Codeberg](https://codeberg.org/reckon-db-org/reckon-db) \| [HexDocs](https://hexdocs.pm/reckon_db) |
+| **evoq** | CQRS / event-sourcing framework (aggregates, commands, events) | [Codeberg](https://codeberg.org/reckon-db-org/evoq) \| [HexDocs](https://hexdocs.pm/evoq) |
+| **reckon_gater** | Gateway and shared types | [Codeberg](https://codeberg.org/reckon-db-org/reckon-gater) \| [HexDocs](https://hexdocs.pm/reckon_gater) |
+| **reckon_evoq** | Adapter connecting `evoq` to `reckon_db` | [Codeberg](https://codeberg.org/reckon-db-org/reckon-evoq) \| [HexDocs](https://hexdocs.pm/reckon_evoq) |
 
-> See [reckon-ecosystem](https://github.com/reckon-db-org/reckon-ecosystem) for full Reckon-side documentation.
+> See [reckon-ecosystem](https://codeberg.org/reckon-db-org/reckon-ecosystem) for full Reckon-side documentation.
 
 ### Faber: Neuroevolution ([rgfaber](https://github.com/rgfaber))
 
@@ -159,10 +153,10 @@ Evolutionary neural-network framework for Erlang and OTP. Adaptive controllers c
 
 | Package | Description | Links |
 |---------|-------------|-------|
-| **faber_tweann** | TWEANN neural networks with liquid-time-constant neurons and Open Neural Network Exchange export | [GitHub](https://github.com/rgfaber/faber-tweann) \| [HexDocs](https://hexdocs.pm/faber_tweann) |
-| **faber_neuroevolution** | Population-based evolutionary training with speciation and selection | [GitHub](https://github.com/rgfaber/faber-neuroevolution) \| [HexDocs](https://hexdocs.pm/faber_neuroevolution) |
+| **faber_tweann** | TWEANN neural networks with liquid-time-constant neurons and Open Neural Network Exchange export | [Codeberg](https://codeberg.org/rgfaber/faber-tweann) \| [HexDocs](https://hexdocs.pm/faber_tweann) |
+| **faber_neuroevolution** | Population-based evolutionary training with speciation and selection | [Codeberg](https://codeberg.org/rgfaber/faber-neuroevolution) \| [HexDocs](https://hexdocs.pm/faber_neuroevolution) |
 
-> See [faber-ecosystem](https://github.com/rgfaber/faber-ecosystem) for full Faber-side documentation.
+> See [faber-ecosystem](https://codeberg.org/rgfaber/faber-ecosystem) for full Faber-side documentation.
 
 ### bc_gitops: Mesh application orchestration ([beam-campus](https://github.com/beam-campus))
 
@@ -238,7 +232,7 @@ Every component is built on the BEAM (the Erlang virtual machine), battle-tested
 - **Internet-of-Things platforms**: collect and process sensor data at the edge
 - **Financial systems**: complete audit trails through event sourcing
 - **Gaming**: real-time multiplayer on a mesh network
-- **Robotics**: evolve controllers with [Faber](https://github.com/rgfaber/faber-ecosystem) neuroevolution
+- **Robotics**: evolve controllers with [Faber](https://codeberg.org/rgfaber/faber-ecosystem) neuroevolution
 - **Healthcare**: decentralised patient data with UCAN authorisation
 - **Public-sector citizen platforms**: Burgerrekengemeenschap and adjacent municipal use cases
 
