@@ -30,7 +30,7 @@ We use a railroad-network analogy for the architectural separation between subst
 | Railroad role | Macula role | Implementation |
 |---|---|---|
 | **The track** | Peering protocol (QUIC, mesh routing) | `macula` (the SDK and protocol) |
-| **The station** | Infrastructure node (DHT participation, SWIM liveness, source-routing, bootstrap, overlay) | `hecate-station` (reference implementation) |
+| **The station** | Infrastructure node (DHT participation, SWIM liveness, source-routing, bootstrap, overlay) | `macula-station` (reference implementation) |
 | **The train company** | Identity-and-membership service (who is a member of which realm, capability issuance) | `macula-realm` (canonical) and `hecate-realm` (white-label or pluggable-auth variant) |
 | **The passenger's ticket** | Client SDK that holds capabilities | `macula` SDK consumed by application processes |
 | **The passenger** | Application process | `hecate-daemon` and similar outbound-only clients |
@@ -56,8 +56,9 @@ Federated mesh networking and the supporting reference services that operators n
 | Package | Description | Status | Links |
 |---------|-------------|--------|-------|
 | **macula** | Federated mesh-networking SDK and protocol over QUIC and HTTP/3. The canonical client library and the protocol specification. | Public, on hex.pm | [GitHub](https://github.com/macula-io/macula) \| [HexDocs](https://hexdocs.pm/macula) |
-| **macula-relay** | First-generation reference relay server. Operators run instances to bridge nodes behind Network Address Translation. | Repo currently private | (private) |
-| **macula-dist-relay** | Distributed-relay reference implementation (newer than `macula-relay`, supports multi-relay federation with cross-relay routing). | Public | [GitHub](https://github.com/macula-io/macula-dist-relay) |
+| **macula-station** | Reference Macula V2 station. The infrastructure node that provides DHT participation, SWIM liveness, source-routing, bootstrap, and overlay services to Macula clients. Realm-agnostic infrastructure (a single station can serve multiple realms). Renamed from `hecate-social/hecate-station` and transferred on 2026-04-30; supersedes `macula-relay`. | Repo currently private, design phase | (private) |
+| **macula-relay** | First-generation reference relay server. Superseded by `macula-station`; kept for historical reference and for V1-network compatibility windows. | Repo currently private, archival | (private) |
+| **macula-dist-relay** | Distributed-relay reference implementation used during V1 multi-relay testing. Federation-of-relays cross-routing experiments live here. | Public | [GitHub](https://github.com/macula-io/macula-dist-relay) |
 | **macula-realm** | Canonical realm service. Provides identity-and-membership, UCAN capability issuance, and per-realm administration. | Repo currently private, design phase | (private) |
 | **macula-realm-compose** | Deployment composition for `macula-realm` (containers, configuration). | Repo currently private | (private) |
 | **macula-demo** | Reference demo deployments and infrastructure scripts. | Repo currently private | (private) |
@@ -77,9 +78,8 @@ The user-facing runtime, infrastructure, and developer tooling that turns the Ma
 
 | Package | Description | Status | Links |
 |---------|-------------|--------|-------|
-| **hecate-station** | Reference Macula station. The infrastructure node that provides DHT participation, SWIM liveness, source-routing, bootstrap, and overlay services to Macula clients. Realm-agnostic infrastructure (a single station can serve multiple realms). | Repo currently private, design phase | (private) |
 | **hecate-realm** | Realm service variant that ships either as a white-label of `macula-realm` or as a headless identity-capability service that allows operators to plug in any authentication and authorisation backend behind it. The architectural choice between the two shapes is open and will be resolved during the realm-service development cycle. | Repo currently private, design phase | (private) |
-| **hecate-daemon** | Erlang/OTP backend that runs on an operator's hardware. Outbound-only client of `hecate-station`. Hosts the venture-lifecycle management, the LLM provider integrations, and the application-plugin runtime. | Public | [GitHub](https://github.com/hecate-social/hecate-daemon) |
+| **hecate-daemon** | Erlang/OTP backend that runs on an operator's hardware. Outbound-only client of `macula-station`. Hosts the venture-lifecycle management, the LLM provider integrations, and the application-plugin runtime. | Public | [GitHub](https://github.com/hecate-social/hecate-daemon) |
 | **hecate-web** | Native desktop user interface built with Tauri and SvelteKit. Talks to `hecate-daemon` over a Unix socket. | Public | [GitHub](https://github.com/hecate-social/hecate-web) |
 | **hecate-tui** | Terminal user interface, written in Go with chat, tools, and vim-mode. Talks to `hecate-daemon` over the same protocol as `hecate-web`. | Public | [GitHub](https://github.com/hecate-social/hecate-tui) |
 | **hecate-cli** | Command-line interface. Top-level commands route to the daemon's plugins (for example, `hecate status`, `hecate install`, `hecate {plugin} {subcommand}`). | Public | [GitHub](https://github.com/hecate-social/hecate-cli) |
