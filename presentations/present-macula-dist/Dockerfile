@@ -15,6 +15,10 @@ WORKDIR /app
 COPY rebar.config ./
 RUN rebar3 get-deps
 
+# Hex package omits native/ — copy NIF source and symlink into dep tree
+COPY native ./native
+RUN ln -s /app/native _build/default/lib/macula/native
+
 COPY src ./src
 RUN rebar3 as prod release
 

@@ -42,7 +42,7 @@ if [ -n "${RELAY}" ]; then
   exec rebar3 shell \
     --name "${NODE}" \
     --setcookie "${COOKIE}" \
-    --eval "mesh_chat:tour(\"${RELAY}\", \"${ROOM}\")."
+    --eval "dist_chat:tour(\"${RELAY}\", \"${ROOM}\")."
 else
   exec rebar3 shell --name "${NODE}" --setcookie "${COOKIE}"
 fi
