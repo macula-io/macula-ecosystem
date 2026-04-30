@@ -3,13 +3,13 @@
 # validate relay-side fixes before pushing + waiting for CI/Watchtower
 # to roll out to Hetzner.
 #
-# Boots a dist-relay from /home/rl/work/github.com/macula-io/macula-dist-relay
+# Boots a dist-relay from /home/rl/work/codeberg.org/macula-io/macula-dist-relay
 # on 127.0.0.1:14434, then runs test-chat-fleet.sh against it with N
 # participants.
 set -euo pipefail
 
 N="${1:-3}"
-RELAY_DIR="${RELAY_DIR:-/home/rl/work/github.com/macula-io/macula-dist-relay}"
+RELAY_DIR="${RELAY_DIR:-/home/rl/work/codeberg.org/macula-io/macula-dist-relay}"
 DIR="$(cd "$(dirname "$0")/.." && pwd)"
 COOKIE="local-fleet-$$"
 PORT=14434
