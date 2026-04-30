@@ -15,91 +15,109 @@
 
 ## What is Macula?
 
-Macula is a **BEAM-native platform** for building distributed applications that run on a decentralized mesh network. The ecosystem provides:
+Macula is a **BEAM-native federated mesh platform** for building distributed applications that run across hardware operators control. The substrate provides:
 
-- **Mesh Networking** - HTTP/3 over QUIC for NAT-friendly communication
-- **Edge Computing** - Run workloads autonomously at the edge
-- **Content Transfer** - P2P artifact distribution without external dependencies
-- **GitOps Orchestration** - Deploy and manage OTP applications across the mesh
+- **Federated relay-mesh networking** over QUIC and HTTP/3 (no central coordinator, no proprietary cloud dependency in the data path)
+- **Edge computing**: workloads run autonomously where the operator wants them
+- **Content addressing and transfer**: peer-to-peer artefact distribution without external dependencies
+- **Sovereign identity and authorisation**: DID identities and UCAN capability tokens
+- **Application platform**: Hecate, the user-facing runtime built on Macula
 
-## Architecture Overview
+## The mental model
+
+We use a railroad-network analogy for the architectural separation between substrate, infrastructure, identity, and clients. Each role lives in a different repository and is independently operable:
+
+| Railroad role | Macula role | Implementation |
+|---|---|---|
+| **The track** | Peering protocol (QUIC, mesh routing) | `macula` (the SDK and protocol) |
+| **The station** | Infrastructure node (DHT participation, SWIM liveness, source-routing, bootstrap, overlay) | `hecate-station` (reference implementation) |
+| **The train company** | Identity-and-membership service (who is a member of which realm, capability issuance) | `macula-realm` (canonical) and `hecate-realm` (white-label or pluggable-auth variant) |
+| **The passenger's ticket** | Client SDK that holds capabilities | `macula` SDK consumed by application processes |
+| **The passenger** | Application process | `hecate-daemon` and similar outbound-only clients |
+
+Stations are deliberately **realm-agnostic infrastructure**. A single station can serve multiple realms simultaneously. Realm membership is held by the realm service, not by the station. Clients (daemons) make outbound connections to a station representing their realm.
+
+## Architecture diagram
 
 <p align="center">
   <img src="assets/ecosystem-overview.svg" alt="Macula Ecosystem Architecture" width="100%">
 </p>
 
-## Mesh Architecture
+> **Note.** The ecosystem-overview, mesh-architecture, and node-realm-pairing SVG diagrams currently depict the earlier hub-and-spoke model and are scheduled for regeneration to reflect the railroad model described above. Until that regeneration ships, treat the diagrams as historical reference rather than authoritative architecture.
 
-<p align="center">
-  <img src="assets/mesh-architecture.svg" alt="Macula Mesh: Decentralized Service Architecture" width="100%">
-</p>
+## The Macula ecosystem
 
-Edge nodes form clusters that participate in a realm (mesh). Services advertise to the Kademlia DHT, consumers discover them, and communication happens via RPC (request/response) or PubSub (broadcast). All interactions are secured with DID identities and UCAN capability tokens.
+The Macula ecosystem is organised in two cooperating layers: the substrate (the `macula-io` organisation) and the application platform (the `hecate-social` organisation). Together they cover the full path from networking primitive to user-facing runtime.
 
-## The Ecosystem
+### Macula: the substrate ([macula-io](https://github.com/macula-io))
 
-The Macula platform comprises the following components:
+Federated mesh networking and the supporting reference services that operators need to run a Macula network.
 
----
+| Package | Description | Status | Links |
+|---------|-------------|--------|-------|
+| **macula** | Federated mesh-networking SDK and protocol over QUIC and HTTP/3. The canonical client library and the protocol specification. | Public, on hex.pm | [GitHub](https://github.com/macula-io/macula) \| [HexDocs](https://hexdocs.pm/macula) |
+| **macula-relay** | First-generation reference relay server. Operators run instances to bridge nodes behind Network Address Translation. | Repo currently private | (private) |
+| **macula-dist-relay** | Distributed-relay reference implementation (newer than `macula-relay`, supports multi-relay federation with cross-relay routing). | Public | [GitHub](https://github.com/macula-io/macula-dist-relay) |
+| **macula-realm** | Canonical realm service. Provides identity-and-membership, UCAN capability issuance, and per-realm administration. | Repo currently private, design phase | (private) |
+| **macula-realm-compose** | Deployment composition for `macula-realm` (containers, configuration). | Repo currently private | (private) |
+| **macula-demo** | Reference demo deployments and infrastructure scripts. | Repo currently private | (private) |
+| **macula-comm-docs** | Investor and public-sector communication material (commercial pitch, federated-compute thesis articles, public-sector vertical). | Public | [GitHub](https://github.com/macula-io/macula-comm-docs) |
 
-### Macula Mesh — Decentralized Infrastructure
+**Core capabilities of the substrate:**
 
-A BEAM-native HTTP/3 mesh network for edge computing.
+- **DHT pub/sub**: decentralised publish/subscribe via Kademlia DHT
+- **DHT RPC**: request/response patterns with service discovery (asynchronous request/response, not synchronous)
+- **NAT traversal**: QUIC over UDP for firewall-friendly inbound and outbound connections
+- **Capability security**: DID identities with UCAN authorisation tokens
+- **Content transfer**: content-addressed storage and peer-to-peer transfer with merkle-tree verification (described below)
 
-| Package | Description | Links |
-|---------|-------------|-------|
-| **macula** | HTTP/3 mesh networking over QUIC with DHT-based service discovery | [GitHub](https://github.com/macula-io/macula) \| [HexDocs](https://hexdocs.pm/macula) |
-| **hecate** | User-facing runtime + extensible app platform for Macula | [GitHub](https://github.com/hecate-social) |
-| **hecate-install** | Immutable edge node OS (NixOS-based, replaces archived `macula-os` / `macula-os-nix`) | [GitHub](https://github.com/hecate-social/hecate-install) |
+### Hecate: the application platform ([hecate-social](https://github.com/hecate-social))
 
-**Core capabilities:**
-- **DHT PubSub** — Decentralized publish/subscribe via Kademlia DHT
-- **DHT RPC** — Request/response patterns with service discovery
-- **NAT Traversal** — HTTP/3 over QUIC for firewall-friendly communication
-- **Capability Security** — DID identities with UCAN authorization tokens
+The user-facing runtime, infrastructure, and developer tooling that turns the Macula substrate into a usable platform for operators, developers, and end users. Hecate is a separate organisation but is the canonical Macula-on-the-desktop and Macula-on-the-edge experience.
 
----
+| Package | Description | Status | Links |
+|---------|-------------|--------|-------|
+| **hecate-station** | Reference Macula station. The infrastructure node that provides DHT participation, SWIM liveness, source-routing, bootstrap, and overlay services to Macula clients. Realm-agnostic infrastructure (a single station can serve multiple realms). | Repo currently private, design phase | (private) |
+| **hecate-realm** | Realm service variant that ships either as a white-label of `macula-realm` or as a headless identity-capability service that allows operators to plug in any authentication and authorisation backend behind it. The architectural choice between the two shapes is open and will be resolved during the realm-service development cycle. | Repo currently private, design phase | (private) |
+| **hecate-daemon** | Erlang/OTP backend that runs on an operator's hardware. Outbound-only client of `hecate-station`. Hosts the venture-lifecycle management, the LLM provider integrations, and the application-plugin runtime. | Public | [GitHub](https://github.com/hecate-social/hecate-daemon) |
+| **hecate-web** | Native desktop user interface built with Tauri and SvelteKit. Talks to `hecate-daemon` over a Unix socket. | Public | [GitHub](https://github.com/hecate-social/hecate-web) |
+| **hecate-tui** | Terminal user interface, written in Go with chat, tools, and vim-mode. Talks to `hecate-daemon` over the same protocol as `hecate-web`. | Public | [GitHub](https://github.com/hecate-social/hecate-tui) |
+| **hecate-cli** | Command-line interface. Top-level commands route to the daemon's plugins (for example, `hecate status`, `hecate install`, `hecate {plugin} {subcommand}`). | Public | [GitHub](https://github.com/hecate-social/hecate-cli) |
+| **hecate-sdk** | Erlang software-development kit for building Hecate-resident applications. | Public | [GitHub](https://github.com/hecate-social/hecate-sdk) |
+| **hecate-sdk-ts** | TypeScript software-development kit, used by web frontends that integrate with Hecate. | Public | [GitHub](https://github.com/hecate-social/hecate-sdk-ts) |
+| **hecate-install** | Immutable edge-node operating system based on NixOS, replaces the archived `macula-os` and `macula-os-nix`. Bootstrap ISO and first-boot configuration for a fresh Hecate node. | Public | [GitHub](https://github.com/hecate-social/hecate-install) |
+| **hecate-gitops** | GitOps reconciler for Hecate-managed nodes. Watches a configuration repository, reconciles podman quadlets via systemd-user, supports zero-touch deploys via container auto-update. The canonical deployment path for Hecate-based clusters. | Public | [GitHub](https://github.com/hecate-social/hecate-gitops) |
+| **hecate-marketplace** | Plugin marketplace for Hecate applications. The decentralised app-store layer through which `hecate-app-*` plugins are discovered and installed. | Public | [GitHub](https://github.com/hecate-social/hecate-marketplace) |
+| **hecate-trader** | Trading and exchange application built on Hecate. | Public | [GitHub](https://github.com/hecate-social/hecate-trader) |
+| **hecate-martha** | AI assistant for event-sourcing domain modelling and code generation. Distributed as a `hecate-app-*` plugin through the marketplace. | Public | [GitHub](https://github.com/hecate-social/hecate-martha) |
+| **hecate-mesh-demo** | Mesh-resilience demonstration tool with five built-in scenarios. | Repo currently private | (private) |
+| **hecate-agents** | Philosophy, skills, and code-generation templates that guide Hecate development. | Public | [GitHub](https://github.com/hecate-social/hecate-agents) |
+| **hecate-the-book** | Long-form documentation and educational material about Hecate. | Public | [GitHub](https://github.com/hecate-social/hecate-the-book) |
 
-### bc_gitops — Mesh Application Orchestration ([beam-campus](https://github.com/beam-campus))
+**Hecate plugin ecosystem.** Plugins live in their own `hecate-app-*` repositories under `hecate-social`, are distributed through `hecate-marketplace`, and run inside `hecate-daemon`. Each plugin contributes a daemon component, optional web frontend pages, and optional CLI subcommands.
 
-BEAM-native GitOps reconciler for publishing, installing, and managing OTP applications across the mesh.
+> See the dedicated [hecate-ecosystem](https://github.com/hecate-social/hecate-ecosystem) documentation hub for fuller Hecate-side detail.
 
-| Package | Description | Links |
-|---------|-------------|-------|
-| **bc_gitops** | GitOps reconciler for OTP applications | [GitHub](https://github.com/beam-campus/bc-gitops) \| [HexDocs](https://hexdocs.pm/bc_gitops) |
-
-**Core capabilities:**
-- **GitOps Reconciliation** — Watches a Git repository for application specifications
-- **Auto-deployment** — Automatically deploys, upgrades, and removes applications based on config changes
-- **Hot Code Reload** — Supports hot code upgrades for same-version changes
-- **Dependency Management** — Respects application dependencies during deployment
-- **Multi-format Config** — Supports Erlang terms, YAML, and JSON config files
-- **Pluggable Runtime** — Custom deployment strategies via runtime behaviour
-- **Mesh Source Type** — Fetch releases from mesh via MCID (Macula Content Identifier)
-
----
-
-### Macula Content Transfer — P2P Artifact Distribution
+### Content transfer
 
 <p align="center">
   <img src="assets/content-transfer-flow.svg" alt="Macula Content Transfer: Want/Have/Block Protocol" width="100%">
 </p>
 
-BEAM-native content-addressed storage and transfer system for distributing OTP releases and artifacts across the mesh without external dependencies like IPFS or BitTorrent.
+Content transfer is a built-in capability of `macula`, not a separate component. It provides BEAM-native content-addressed storage and peer-to-peer transfer for distributing OTP releases and artefacts across the mesh without external dependencies on IPFS, BitTorrent, or comparable systems.
 
-**Core capabilities:**
-- **Content-Addressed Storage** — MCID (Macula Content Identifier) ensures same content = same ID everywhere
-- **Merkle Tree Verification** — Chunk-level integrity verification with parallel download
-- **Want/Have/Block Protocol** — Efficient P2P exchange inspired by IPFS Bitswap
-- **DHT Integration** — Announce availability and discover providers via Kademlia DHT
-- **Parallel Download** — Fetch chunks from multiple providers simultaneously
-- **NAT-Friendly** — Uses existing Macula QUIC transport (no new NAT traversal needed)
+**Capabilities:**
 
-**Protocol message types:** `content_want`, `content_have`, `content_block`, `content_manifest_req`, `content_manifest_res`, `content_cancel`
+- **Content-addressed storage**: Macula Content Identifiers (MCIDs) ensure that the same content has the same identifier everywhere
+- **Merkle-tree verification**: chunk-level integrity verification with parallel download
+- **Want/have/block protocol**: efficient peer-to-peer exchange inspired by IPFS Bitswap
+- **DHT integration**: providers announce availability and consumers discover providers via the Kademlia DHT
+- **Parallel download**: fetch chunks from multiple providers simultaneously
+- **NAT-friendly**: uses the existing Macula QUIC transport, no additional NAT-traversal layer required
 
-See the [Content Transfer Guide](guides/content-transfer.md) for API usage and protocol details.
+Protocol message types: `content_want`, `content_have`, `content_block`, `content_manifest_req`, `content_manifest_res`, `content_cancel`. See the [Content Transfer Guide](guides/content-transfer.md) for application-programming-interface usage and protocol details.
 
-## Data Flow
+## Data flow
 
 <p align="center">
   <img src="assets/data-flow.svg" alt="Event-Sourced Application Data Flow" width="100%">
@@ -107,139 +125,135 @@ See the [Content Transfer Guide](guides/content-transfer.md) for API usage and p
 
 ## Documentation
 
-- [**Overview**](guides/overview.md) - Introduction to the ecosystem
-- [**Architecture**](guides/architecture.md) - How the pieces fit together
-- [**Getting Started**](guides/getting-started.md) - Build your first app
-- [**Event Sourcing**](guides/event-sourcing.md) - CQRS/ES patterns
-- [**Mesh Networking**](guides/mesh-networking.md) - HTTP/3 mesh guide
-- [**Content Transfer**](guides/content-transfer.md) - P2P artifact distribution
-- [**Neuroevolution**](guides/neuroevolution.md) - TWEANN and NEAT (moved to Faber ecosystem)
-- [**MaculaOS**](guides/macula-os.md) - Edge deployment
+- [**Overview**](guides/overview.md): Introduction to the ecosystem
+- [**Architecture**](guides/architecture.md): How the pieces fit together
+- [**Getting Started**](guides/getting-started.md): Build your first application
+- [**Joining a Realm**](guides/joining-a-realm.md): Realm onboarding flow
+- [**Lab Setup Scenarios**](guides/LAB_SETUP_SCENARIOS.md): Multi-node lab configurations
+- [**Event Sourcing**](guides/event-sourcing.md): CQRS and event-sourcing patterns (cross-references the Reckon ecosystem)
+- [**Mesh Networking**](guides/mesh-networking.md): QUIC mesh and federated-relay guide
+- [**Content Transfer**](guides/content-transfer.md): Peer-to-peer artefact distribution
+- [**Neuroevolution**](guides/neuroevolution.md): TWEANN and NEAT (cross-references the Faber ecosystem)
+- [**MaculaOS**](guides/macula-os.md): Edge deployment (historical, superseded by `hecate-install`)
 
-## Related Ecosystems
+## Related ecosystems
 
-Macula works alongside two independent ecosystems, each maintained by their own organizations:
+Macula works alongside three independent ecosystems, each maintained by their own organisations.
 
-### Reckon — Event Sourcing & CQRS ([reckon-db-org](https://github.com/reckon-db-org))
+### Reckon: Event sourcing and CQRS ([reckon-db-org](https://github.com/reckon-db-org))
 
-A BEAM-native event sourcing stack providing durable event stores, CQRS frameworks, and distributed persistence. Applications built on Macula can use Reckon for event-sourced state management.
+A BEAM-native event-sourcing stack providing durable event stores, Command-Query Responsibility Segregation frameworks, and distributed persistence. Applications built on Macula and on Hecate use Reckon for event-sourced state management.
 
 | Package | Description | Links |
 |---------|-------------|-------|
-| **reckon_db** | Distributed event store on Khepri/Ra | [GitHub](https://github.com/reckon-db-org/reckon-db) \| [HexDocs](https://hexdocs.pm/reckon_db) |
-| **evoq** | CQRS/ES framework (aggregates, commands, events) | [GitHub](https://github.com/reckon-db-org/evoq) \| [HexDocs](https://hexdocs.pm/evoq) |
+| **reckon_db** | Distributed event store on Khepri / Ra (Raft) | [GitHub](https://github.com/reckon-db-org/reckon-db) \| [HexDocs](https://hexdocs.pm/reckon_db) |
+| **evoq** | CQRS / event-sourcing framework (aggregates, commands, events) | [GitHub](https://github.com/reckon-db-org/evoq) \| [HexDocs](https://hexdocs.pm/evoq) |
 | **reckon_gater** | Gateway and shared types | [GitHub](https://github.com/reckon-db-org/reckon-gater) \| [HexDocs](https://hexdocs.pm/reckon_gater) |
-| **reckon_evoq** | Adapter connecting evoq to ReckonDB | [GitHub](https://github.com/reckon-db-org/reckon-evoq) \| [HexDocs](https://hexdocs.pm/reckon_evoq) |
+| **reckon_evoq** | Adapter connecting `evoq` to `reckon_db` | [GitHub](https://github.com/reckon-db-org/reckon-evoq) \| [HexDocs](https://hexdocs.pm/reckon_evoq) |
 
-> See [reckon-ecosystem](https://github.com/reckon-db-org/reckon-ecosystem) for full documentation.
+> See [reckon-ecosystem](https://github.com/reckon-db-org/reckon-ecosystem) for full Reckon-side documentation.
 
-### Hecate — AI-Powered Developer Studio ([hecate-social](https://github.com/hecate-social))
+### Faber: Neuroevolution ([rgfaber](https://github.com/rgfaber))
 
-An AI-powered developer studio for building applications on the Macula mesh. Hecate uses both Macula (for mesh networking) and Reckon (for event sourcing) to provide a venture lifecycle management system.
-
-| Component | Description | Links |
-|-----------|-------------|-------|
-| **hecate-daemon** | Erlang/OTP backend with venture lifecycle and LLM providers | [GitHub](https://github.com/hecate-social/hecate-daemon) |
-| **hecate-web** | Native desktop UI with Tauri/SvelteKit (DevOps, LLM, Event Storming) | [GitHub](https://github.com/hecate-social/hecate-web) |
-| **hecate-tui** | Go terminal UI with chat, tools, and vim mode | [GitHub](https://github.com/hecate-social/hecate-tui) |
-| **hecate-agents** | Philosophy, skills, and code generation templates | [GitHub](https://github.com/hecate-social/hecate-agents) |
-
-> See [hecate-ecosystem](https://github.com/hecate-social/hecate-ecosystem) for full documentation.
-
-### Faber — AI & Neuroevolution ([rgfaber](https://github.com/rgfaber))
-
-Evolutionary neural network framework for Erlang/OTP. Evolve adaptive AI controllers using TWEANN and NEAT, with optional distributed evaluation across the Macula mesh.
+Evolutionary neural-network framework for Erlang and OTP. Adaptive controllers can be evolved using TWEANN and NEAT, with optional distributed evaluation across the Macula mesh.
 
 | Package | Description | Links |
 |---------|-------------|-------|
-| **faber_tweann** | TWEANN neural networks with LTC neurons and ONNX export | [GitHub](https://github.com/rgfaber/faber-tweann) \| [HexDocs](https://hexdocs.pm/faber_tweann) |
+| **faber_tweann** | TWEANN neural networks with liquid-time-constant neurons and Open Neural Network Exchange export | [GitHub](https://github.com/rgfaber/faber-tweann) \| [HexDocs](https://hexdocs.pm/faber_tweann) |
 | **faber_neuroevolution** | Population-based evolutionary training with speciation and selection | [GitHub](https://github.com/rgfaber/faber-neuroevolution) \| [HexDocs](https://hexdocs.pm/faber_neuroevolution) |
 
-> See [faber-ecosystem](https://github.com/rgfaber/faber-ecosystem) for full documentation.
+> See [faber-ecosystem](https://github.com/rgfaber/faber-ecosystem) for full Faber-side documentation.
 
----
+### bc_gitops: Mesh application orchestration ([beam-campus](https://github.com/beam-campus))
+
+A complementary BEAM-native GitOps reconciler for publishing, installing, and managing Open Telecom Platform applications across a Macula mesh. Macula-based deployments use `hecate-gitops` as the canonical reconciler; `bc_gitops` is an adjacent option for operators who want a different reconciler shape or a mesh-source-type for fetching releases via Macula Content Identifiers.
+
+| Package | Description | Links |
+|---------|-------------|-------|
+| **bc_gitops** | GitOps reconciler for OTP applications | [GitHub](https://github.com/beam-campus/bc-gitops) \| [HexDocs](https://hexdocs.pm/bc_gitops) |
 
 ## Why Macula?
 
-### Reclaim Your Place in the AI Economy
+### Reclaim your place in the AI economy
 
-AI is rapidly automating cognitive work, displacing millions from traditional employment. But AI needs compute—and that's an opportunity. Macula transforms you from a **displaced worker** into an **infrastructure provider**:
+Artificial intelligence is rapidly automating cognitive work, displacing millions from traditional employment. But artificial intelligence needs compute, and that is an opportunity. Macula transforms an operator from a **displaced worker** into an **infrastructure provider**:
 
-- **Compute as a new asset class** - Your hardware becomes income-generating infrastructure
-- **Run micro-datacenters** - Participate in the mesh economy from your home or office
-- **Own your contribution** - No middleman taking 30%+ of your compute value
-- **Community-owned AI** - Train and run models on community infrastructure, not Big Tech clouds
+- **Compute as a new asset class**: operator-owned hardware becomes income-generating infrastructure
+- **Run micro-datacentres**: participate in the mesh economy from a home or office
+- **Own the contribution**: no middleman taking thirty percent or more of the compute value
+- **Community-owned artificial intelligence**: train and run models on community infrastructure rather than on Big Tech clouds
 
-### A Platform for Indies and Solo Developers
+### A platform for independents and solo developers
 
-Big Tech platforms demand 30% cuts, dictate your terms, and can deplatform you overnight. Macula puts a **production-ready distributed platform at your fingertips**:
+Big Tech platforms demand thirty-percent cuts, dictate terms, and can deplatform operators overnight. Macula puts a **production-ready distributed platform at any developer's fingertips**:
 
-- **Zero platform fees** - Keep 100% of what you earn
-- **No app store gatekeepers** - Deploy directly to your users
-- **Built-in distribution** - Your app runs on the mesh, scales with demand
-- **Own your relationship** - Direct connection to users, no algorithm deciding your fate
+- **Zero platform fees**: keep one hundred percent of what you earn
+- **No app-store gatekeepers**: deploy directly to your users
+- **Built-in distribution**: applications run on the mesh and scale with demand
+- **Own the relationship**: direct connection to users, no algorithm deciding distribution
 
-### Break Free from Big Tech
+### Break free from Big Tech
 
-Five companies control most cloud infrastructure, creating vendor lock-in and data exploitation. Macula provides **infrastructure you own**:
+Five companies control most cloud infrastructure, creating vendor lock-in and data exploitation. Macula provides **infrastructure that operators own**:
 
-- **Local data processing** - Your data never leaves your network
-- **Open standards** - No proprietary lock-in, no platform risk
-- **Portable workloads** - Move freely between nodes and providers
+- **Local data processing**: data does not leave the operator's network
+- **Open standards**: no proprietary lock-in, no platform risk
+- **Portable workloads**: move freely between nodes and providers
 
-### Data Sovereignty by Design
+### Data sovereignty by design
 
-Governments worldwide enforce strict data residency requirements (GDPR, CCPA, localization laws). Macula's edge-first architecture naturally complies:
+Governments worldwide enforce strict data-residency requirements (the General Data Protection Regulation, the California Consumer Privacy Act, localisation laws). Macula's edge-first architecture naturally complies:
 
-- **Processing where data is created** - No cross-border transfers
-- **Cryptographic authorization** - UCAN tokens, not central auth servers
-- **Audit trails** - Event sourcing captures every state change
+- **Processing where data is created**: no cross-border transfers
+- **Cryptographic authorisation**: UCAN tokens, not central authentication servers
+- **Audit trails**: event sourcing captures every state change
 
-### Digital Resilience
+### Digital resilience
 
-Centralized systems fail catastrophically. Macula's mesh architecture ensures continuity:
+Centralised systems fail catastrophically. Macula's mesh architecture ensures continuity:
 
-- **If node A fails, nodes B, C, D continue** - No single point of failure
-- **Offline-capable** - Nodes operate independently when disconnected
-- **Eventual consistency** - Changes propagate when connectivity returns
+- **If one node fails, others continue**: no single point of failure
+- **Offline-capable**: nodes operate independently when disconnected
+- **Eventual consistency**: changes propagate when connectivity returns
 
-### Environmental Efficiency
+### Environmental efficiency
 
-Data centers consume significant global electricity while operating at only 15-25% utilization. Edge processing changes this:
+Data centres consume a significant share of global electricity while operating at fifteen to twenty-five percent utilisation. Edge processing changes this:
 
-- **10x energy reduction** for local processing vs cloud round-trips
-- **Utilize existing hardware** - Any device can join the mesh
-- **Reduce network overhead** - Process data where it's generated
+- **Up to ten-fold energy reduction** for local processing versus cloud round-trips
+- **Use existing hardware**: any device can join the mesh
+- **Reduce network overhead**: process data where it is generated
 
-### BEAM-Native Excellence
+### BEAM-native excellence
 
-Every component is built on the BEAM (Erlang VM), battle-tested in telecom for 40+ years:
+Every component is built on the BEAM (the Erlang virtual machine), battle-tested in telecommunications for forty years and counting:
 
-- **Fault tolerance** - Supervisors restart failed processes automatically
-- **Soft real-time** - Predictable latency characteristics
-- **Hot code loading** - Deploy without downtime
-- **Massive concurrency** - Millions of lightweight processes
+- **Fault tolerance**: supervisors restart failed processes automatically
+- **Soft real-time**: predictable latency characteristics
+- **Hot code loading**: deploy without downtime
+- **Massive concurrency**: millions of lightweight processes
 
-## Use Cases
+## Use cases
 
-- **IoT Platforms** - Collect and process sensor data at the edge
-- **Financial Systems** - Complete audit trails with event sourcing
-- **Gaming** - Real-time multiplayer on a mesh network
-- **Robotics** - Evolve controllers with [Faber](https://github.com/rgfaber/faber-ecosystem) neuroevolution
-- **Healthcare** - Decentralized patient data with UCAN authorization
+- **Internet-of-Things platforms**: collect and process sensor data at the edge
+- **Financial systems**: complete audit trails through event sourcing
+- **Gaming**: real-time multiplayer on a mesh network
+- **Robotics**: evolve controllers with [Faber](https://github.com/rgfaber/faber-ecosystem) neuroevolution
+- **Healthcare**: decentralised patient data with UCAN authorisation
+- **Public-sector citizen platforms**: Burgerrekengemeenschap and adjacent municipal use cases
 
 ## Community
 
-- **Macula**: [macula-io](https://github.com/macula-io) on GitHub | Search `macula` on [hex.pm](https://hex.pm)
-- **Reckon**: [reckon-db-org](https://github.com/reckon-db-org) on GitHub | Search `reckon` on [hex.pm](https://hex.pm)
+- **Macula**: [macula-io](https://github.com/macula-io) on GitHub | search `macula` on [hex.pm](https://hex.pm)
 - **Hecate**: [hecate-social](https://github.com/hecate-social) on GitHub
-- **Faber**: [rgfaber](https://github.com/rgfaber) on GitHub | Search `faber` on [hex.pm](https://hex.pm)
+- **Reckon**: [reckon-db-org](https://github.com/reckon-db-org) on GitHub | search `reckon` on [hex.pm](https://hex.pm)
+- **Faber**: [rgfaber](https://github.com/rgfaber) on GitHub | search `faber` on [hex.pm](https://hex.pm)
 - **beam-campus**: [beam-campus](https://github.com/beam-campus) on GitHub | `bc_gitops` on [hex.pm](https://hex.pm)
-- **Issues**: Report bugs on the respective repositories
+- **Issues**: report bugs on the respective repositories
 
 ## License
 
-Apache 2.0 - See [LICENSE](LICENSE) for details.
+Apache 2.0. See [LICENSE](LICENSE) for details.
 
 ---
 
