@@ -439,33 +439,41 @@ about() ->
 
 %% Long-lived presence process. Subscribes once, then re-announces
 %% periodically so the mesh stays aware of us across silent reconnects.
+%% Subscribes with `self()' as the pid; inbound `macula_event' frames
+%% are routed via the `presence_event_loop' below.
 presence_loop() ->
     %% Give join_mesh a moment to settle before subscribing
     timer:sleep(1000),
-    Client = macula_dist_relay:get_mesh_client(),
-    subscribe_presence(Client),
-    announce_forever(Client).
+    Pool = macula_dist_relay:get_mesh_pool(),
+    Realm = persistent_term:get({mesh_chat, realm_tag}, <<0:256>>),
+    subscribe_presence(Pool, Realm),
+    announce_forever(Pool, Realm).
 
-announce_forever(Client) ->
-    announce(Client),
+announce_forever(Pool, Realm) ->
+    announce(Pool, Realm),
     receive
-        stop -> ok
+        stop ->
+            ok;
+        {macula_event, _SubRef, _Topic, Payload, _Meta} ->
+            handle_peer_announcement(Payload),
+            announce_forever(Pool, Realm);
+        {macula_event_gone, _SubRef, _Reason} ->
+            announce_forever(Pool, Realm)
     after ?PRESENCE_INTERVAL_MS ->
-        announce_forever(macula_dist_relay:get_mesh_client())
+        announce_forever(macula_dist_relay:get_mesh_pool(), Realm)
     end.
 
-subscribe_presence(undefined) -> ok;
-subscribe_presence(Client) ->
-    macula_mesh_client:subscribe(Client, ?PRESENCE_TOPIC,
-        fun(Msg) -> handle_peer_announcement(Msg) end).
+subscribe_presence(undefined, _Realm) -> ok;
+subscribe_presence(Pool, Realm) ->
+    macula_pubsub:subscribe(Pool, Realm, ?PRESENCE_TOPIC, self()).
 
-announce(undefined) -> ok;
-announce(Client) ->
+announce(undefined, _Realm) -> ok;
+announce(Pool, Realm) ->
     Payload = iolist_to_binary(json:encode(#{<<"node">> => atom_to_binary(node())})),
-    macula_mesh_client:publish(Client, ?PRESENCE_TOPIC, Payload).
+    macula_pubsub:publish(Pool, Realm, ?PRESENCE_TOPIC, Payload, #{}).
 
-handle_peer_announcement(Msg) ->
-    Node = extract_node(macula_dist_relay:extract_payload(Msg)),
+handle_peer_announcement(Payload) ->
+    Node = extract_node(Payload),
     maybe_connect_peer(binary_to_atom(Node)).
 
 extract_node(#{<<"node">> := N}) -> N;
@@ -497,7 +505,12 @@ ensure_pg() ->
     end.
 
 join_mesh(RelayUrl, Realm) ->
-    case macula:join_mesh(#{relays => [RelayUrl], realm => Realm}) of
+    %% V2 pool wants a 32-byte realm tag. Hash the user-supplied
+    %% string so two callers using the same realm name still land
+    %% on the same wire-level realm.
+    RealmTag = crypto:hash(sha256, Realm),
+    persistent_term:put({mesh_chat, realm_tag}, RealmTag),
+    case macula:join_mesh(#{relays => [RelayUrl]}) of
         ok ->
             persistent_term:put({mesh_chat, relay}, RelayUrl);
         {error, Reason} ->
