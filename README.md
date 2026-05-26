@@ -86,7 +86,7 @@ The user-facing runtime, infrastructure, and developer tooling that turns the Ma
 | **hecate-sdk-ts** | TypeScript software-development kit, used by web frontends that integrate with Hecate. | Public | [Codeberg](https://codeberg.org/hecate-social/hecate-sdk-ts) |
 | **hecate-install** | Immutable edge-node operating system based on NixOS, replaces the archived `macula-os` and `macula-os-nix`. Bootstrap ISO and first-boot configuration for a fresh Hecate node. | Public | [Codeberg](https://codeberg.org/hecate-social/hecate-install) |
 | **hecate-gitops** | GitOps reconciler for Hecate-managed nodes. Watches a configuration repository, reconciles podman quadlets via systemd-user, supports zero-touch deploys via container auto-update. The canonical deployment path for Hecate-based clusters. | Public | [Codeberg](https://codeberg.org/hecate-social/hecate-gitops) |
-| **hecate-agents** | Philosophy, skills, and code-generation templates that guide Hecate development. | Public | [Codeberg](https://codeberg.org/hecate-social/hecate-agents) |
+| **hecate-corpus** | Philosophy, skills, and code-generation templates that guide Hecate development. | Public | [Codeberg](https://codeberg.org/hecate-social/hecate-corpus) |
 
 **Hecate plugin ecosystem.** Plugins live in their own `hecate-app-*` repositories under the `hecate-apps` organisation, are discovered and installed through the appstore embedded in `hecate-daemon` and `hecate-web`, and run inside `hecate-daemon`. Each plugin contributes a daemon component, optional web frontend pages, and optional CLI subcommands.
 
