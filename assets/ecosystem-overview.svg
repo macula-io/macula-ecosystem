@@ -164,7 +164,7 @@
   <rect x="620" y="580" width="166" height="75" rx="10" fill="url(#hecateGrad)"/>
   <text x="703" y="607" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">hecate-daemon</text>
   <text x="703" y="623" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fecdd3">Erlang/OTP &#183; Event-Sourced</text>
-  <text x="703" y="638" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fecdd3">Venture Lifecycle &#183; LLM</text>
+  <text x="703" y="638" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fecdd3">Domain Lifecycle &#183; LLM</text>
 
   <rect x="796" y="580" width="166" height="75" rx="10" fill="url(#hecateGrad)"/>
   <text x="879" y="607" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fff">hecate-web</text>
@@ -179,7 +179,7 @@
   <!-- Row 2: supporting components -->
   <rect x="630" y="670" width="240" height="55" rx="8" fill="#9f1239" opacity="0.7"/>
   <rect x="630" y="670" width="240" height="55" rx="8" fill="none" stroke="#e11d48" stroke-width="1" opacity="0.5"/>
-  <text x="750" y="697" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fda4af">hecate-agents</text>
+  <text x="750" y="697" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#fda4af">hecate-corpus</text>
   <text x="750" y="715" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#fb7185">Philosophy &#183; Skills &#183; Templates</text>
 
   <rect x="890" y="670" width="250" height="55" rx="8" fill="#9f1239" opacity="0.7"/>
