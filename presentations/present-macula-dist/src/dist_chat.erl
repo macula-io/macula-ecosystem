@@ -284,16 +284,19 @@ register_kernel_with_client() ->
 
 %% If PING_TARGETS env is set (Docker/headless mode), auto-connect.
 auto_ping_targets() ->
-    case os:getenv("PING_TARGETS") of
-        false -> ok;
-        "" -> ok;
-        Targets ->
-            Nodes = [list_to_atom(string:trim(T))
-                     || T <- string:split(Targets, ",", all),
-                        string:trim(T) =/= ""],
-            [spawn(fun() -> timer:sleep(3000), ping(N) end) || N <- Nodes],
-            ok
-    end.
+    auto_ping_targets(os:getenv("PING_TARGETS")).
+
+auto_ping_targets(false) -> ok;
+auto_ping_targets("") -> ok;
+auto_ping_targets(Targets) ->
+    Nodes = [list_to_atom(string:trim(T))
+             || T <- string:split(Targets, ",", all),
+                string:trim(T) =/= ""],
+    lists:foreach(fun spawn_delayed_ping/1, Nodes),
+    ok.
+
+spawn_delayed_ping(N) ->
+    spawn(fun() -> timer:sleep(3000), ping(N) end).
 
 %%====================================================================
 %% Internal — messaging

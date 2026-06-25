@@ -152,19 +152,19 @@ collect_with_budget(Remaining, _Expected, Acc, _Deadline) when Remaining =< 0 ->
 collect_with_budget(Remaining, Expected, Acc, Deadline) ->
     receive
         {chat_msg, #{from := From}} ->
-            case lists:member(From, Acc) of
-                true ->
-                    collect(Expected, Acc, Deadline);
-                false ->
-                    logf("received chat from ~s (~p/~p)",
-                         [From, length(Acc) + 1, length(Expected)]),
-                    collect(Expected, [From | Acc], Deadline)
-            end
+            collect_from(lists:member(From, Acc), From, Expected, Acc, Deadline)
     after min(Remaining, 2000) ->
         logf("still waiting (~p/~p from: ~p) ...",
              [length(Acc), length(Expected), Expected -- Acc]),
         collect(Expected, Acc, Deadline)
     end.
+
+collect_from(true, _From, Expected, Acc, Deadline) ->
+    collect(Expected, Acc, Deadline);
+collect_from(false, From, Expected, Acc, Deadline) ->
+    logf("received chat from ~s (~p/~p)",
+         [From, length(Acc) + 1, length(Expected)]),
+    collect(Expected, [From | Acc], Deadline).
 
 %%====================================================================
 %% Diagnostics

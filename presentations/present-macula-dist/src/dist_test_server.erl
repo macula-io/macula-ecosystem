@@ -110,52 +110,61 @@ test_peer(Target, Stats) ->
 
     %% Test 1: net_adm:ping
     PingResult = net_adm:ping(Target),
-    {Pongs2, Pangs2} = case PingResult of
-        pong ->
-            log("PING ~s → \e[32mpong\e[0m", [Target]),
-            {Pongs + 1, Pangs};
-        pang ->
-            log("PING ~s → \e[31mpang\e[0m", [Target]),
-            {Pongs, Pangs + 1}
-    end,
+    {Pongs2, Pangs2} = ping_tally(PingResult, Target, Pongs, Pangs),
 
     %% Test 2+3: only if ping succeeded
-    {RpcOk2, RpcFail2, GsOk2, GsFail2} = case PingResult of
-        pong ->
-            %% Test 2: rpc:call
-            RpcRes = case rpc:call(Target, erlang, node, []) of
-                Target ->
-                    log("RPC  ~s → \e[32mok\e[0m (node=~s)", [Target, Target]),
-                    ok;
-                {badrpc, Reason} ->
-                    log("RPC  ~s → \e[31mfail\e[0m (~p)", [Target, Reason]),
-                    fail;
-                Other ->
-                    log("RPC  ~s → \e[31mfail\e[0m (got ~p)", [Target, Other]),
-                    fail
-            end,
-
-            %% Test 3: gen_server:call
-            GsRes = case catch gen_server:call({dist_test_server, Target}, ping, 5000) of
-                {pong, Target} ->
-                    log("GS   ~s → \e[32mpong\e[0m", [Target]),
-                    ok;
-                GsErr ->
-                    log("GS   ~s → \e[31mfail\e[0m (~p)", [Target, GsErr]),
-                    fail
-            end,
-
-            {RpcOk + case RpcRes of ok -> 1; _ -> 0 end,
-             RpcFail + case RpcRes of fail -> 1; _ -> 0 end,
-             GsOk + case GsRes of ok -> 1; _ -> 0 end,
-             GsFail + case GsRes of fail -> 1; _ -> 0 end};
-        pang ->
-            {RpcOk, RpcFail, GsOk, GsFail}
-    end,
+    {RpcOk2, RpcFail2, GsOk2, GsFail2} =
+        rpc_gs_tally(PingResult, Target, RpcOk, RpcFail, GsOk, GsFail),
 
     #{pings => Pings + 1, pongs => Pongs2, pangs => Pangs2,
       rpc_ok => RpcOk2, rpc_fail => RpcFail2,
       gs_ok => GsOk2, gs_fail => GsFail2}.
+
+ping_tally(pong, Target, Pongs, Pangs) ->
+    log("PING ~s → \e[32mpong\e[0m", [Target]),
+    {Pongs + 1, Pangs};
+ping_tally(pang, Target, Pongs, Pangs) ->
+    log("PING ~s → \e[31mpang\e[0m", [Target]),
+    {Pongs, Pangs + 1}.
+
+rpc_gs_tally(pong, Target, RpcOk, RpcFail, GsOk, GsFail) ->
+    RpcRes = rpc_test(Target),
+    GsRes = gs_test(Target),
+    {RpcOk + ok_count(RpcRes), RpcFail + fail_count(RpcRes),
+     GsOk + ok_count(GsRes), GsFail + fail_count(GsRes)};
+rpc_gs_tally(pang, _Target, RpcOk, RpcFail, GsOk, GsFail) ->
+    {RpcOk, RpcFail, GsOk, GsFail}.
+
+%% Test 2: rpc:call
+rpc_test(Target) ->
+    rpc_result(rpc:call(Target, erlang, node, []), Target).
+
+rpc_result(Target, Target) ->
+    log("RPC  ~s → \e[32mok\e[0m (node=~s)", [Target, Target]),
+    ok;
+rpc_result({badrpc, Reason}, Target) ->
+    log("RPC  ~s → \e[31mfail\e[0m (~p)", [Target, Reason]),
+    fail;
+rpc_result(Other, Target) ->
+    log("RPC  ~s → \e[31mfail\e[0m (got ~p)", [Target, Other]),
+    fail.
+
+%% Test 3: gen_server:call
+gs_test(Target) ->
+    gs_result(catch gen_server:call({dist_test_server, Target}, ping, 5000), Target).
+
+gs_result({pong, Target}, Target) ->
+    log("GS   ~s → \e[32mpong\e[0m", [Target]),
+    ok;
+gs_result(GsErr, Target) ->
+    log("GS   ~s → \e[31mfail\e[0m (~p)", [Target, GsErr]),
+    fail.
+
+ok_count(ok) -> 1;
+ok_count(_) -> 0.
+
+fail_count(fail) -> 1;
+fail_count(_) -> 0.
 
 %%====================================================================
 %% Helpers
@@ -168,13 +177,13 @@ parse_targets(Env) ->
         string:trim(T) =/= ""].
 
 env_int(Key, Default) ->
-    case os:getenv(Key) of
-        false -> Default;
-        "" -> Default;
-        Val ->
-            try list_to_integer(Val)
-            catch _:_ -> Default
-            end
+    env_int_value(os:getenv(Key), Default).
+
+env_int_value(false, Default) -> Default;
+env_int_value("", Default) -> Default;
+env_int_value(Val, Default) ->
+    try list_to_integer(Val)
+    catch _:_ -> Default
     end.
 
 env_bin(Key) ->

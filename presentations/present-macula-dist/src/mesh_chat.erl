@@ -487,12 +487,12 @@ maybe_connect_peer(Peer) ->
     end.
 
 try_connect(Peer) ->
-    spawn(fun() ->
-        case net_adm:ping(Peer) of
-            pong -> io:format("\e[32m[mesh]\e[0m Connected to \e[1m~s\e[0m~n", [short_node(Peer)]);
-            pang -> ok
-        end
-    end).
+    spawn(fun() -> ping_and_report(net_adm:ping(Peer), Peer) end).
+
+ping_and_report(pong, Peer) ->
+    io:format("\e[32m[mesh]\e[0m Connected to \e[1m~s\e[0m~n", [short_node(Peer)]);
+ping_and_report(pang, _Peer) ->
+    ok.
 
 %%====================================================================
 %% Internal — Connection Setup
