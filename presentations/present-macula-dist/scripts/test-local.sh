@@ -6,7 +6,7 @@ set -euo pipefail
 
 RELAY_URL="${DIST_RELAY_URL:-quic://127.0.0.1:14434}"
 DIR="$(cd "$(dirname "$0")/.." && pwd)"
-RELAY_DIR="${RELAY_DIR:-/home/rl/work/codeberg.org/macula-io/macula-dist-relay}"
+RELAY_DIR="${RELAY_DIR:-/home/rl/work/github.com/macula-io/macula-dist-relay}"
 COOKIE="dist-relay-local-$$"
 HOST=$(cat /etc/hostname 2>/dev/null | cut -d. -f1 || uname -n | cut -d. -f1)
 
