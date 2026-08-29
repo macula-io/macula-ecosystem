@@ -444,7 +444,7 @@ about() ->
 presence_loop() ->
     %% Give join_mesh a moment to settle before subscribing
     timer:sleep(1000),
-    Pool = macula_dist_relay:get_mesh_pool(),
+    Pool = macula_dist_pool:get_mesh_pool(),
     Realm = persistent_term:get({mesh_chat, realm_tag}, <<0:256>>),
     subscribe_presence(Pool, Realm),
     announce_forever(Pool, Realm).
@@ -460,7 +460,7 @@ announce_forever(Pool, Realm) ->
         {macula_event_gone, _SubRef, _Reason} ->
             announce_forever(Pool, Realm)
     after ?PRESENCE_INTERVAL_MS ->
-        announce_forever(macula_dist_relay:get_mesh_pool(), Realm)
+        announce_forever(macula_dist_pool:get_mesh_pool(), Realm)
     end.
 
 subscribe_presence(undefined, _Realm) -> ok;
