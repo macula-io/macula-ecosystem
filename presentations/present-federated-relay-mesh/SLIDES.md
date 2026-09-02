@@ -299,7 +299,7 @@ If it needs a network, it runs on the mesh.
 **Run a relay** — macula.io/relay
 **Install a node** — macula.io/install
 **Read the code** — github.com/macula-io/macula
-**Support the work** — buymeacoffee.com/rlefever
+**Support the work** — github.com/sponsors/rgfaber
 
 The mesh grows with every relay, every node, every country.
 
