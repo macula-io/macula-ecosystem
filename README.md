@@ -56,13 +56,13 @@ Federated mesh networking and the supporting reference services that operators n
 | Package | Description | Status | Links |
 |---------|-------------|--------|-------|
 | **macula** | Federated mesh-networking SDK and protocol over QUIC and HTTP/3. The canonical client library and the protocol specification. | Public, on hex.pm | [GitHub](https://github.com/macula-io/macula) \| [HexDocs](https://hexdocs.pm/macula) |
-| **macula-station** | Reference Macula V2 station. The infrastructure node that provides DHT participation, SWIM liveness, source-routing, bootstrap, and overlay services to Macula clients. Realm-agnostic infrastructure (a single station can serve multiple realms). Renamed from `hecate-social/hecate-station` and transferred on 2026-04-30; supersedes `macula-relay`. | Repo currently private, design phase | (private) |
+| **macula-station** | Reference Macula V2 station. The infrastructure node that provides DHT participation, SWIM liveness, source-routing, bootstrap, and overlay services to Macula clients. Realm-agnostic infrastructure (a single station can serve multiple realms). Renamed from `hecate-social/hecate-station` and transferred on 2026-04-30; supersedes `macula-relay`. | Public, live in production (verified 2026-09-05) | [GitHub](https://github.com/macula-io/macula-station) |
 | **macula-relay** | First-generation reference relay server. Superseded by `macula-station`; kept for historical reference and for V1-network compatibility windows. | Repo currently private, archival | (private) |
 | **macula-dist-relay** | Distributed-relay reference implementation used during V1 multi-relay testing. Federation-of-relays cross-routing experiments live here. | Public | [GitHub](https://github.com/macula-io/macula-dist-relay) |
-| **macula-realm** | Canonical realm service. Provides identity-and-membership, UCAN capability issuance, and per-realm administration. | Repo currently private, design phase | (private) |
-| **macula-realm-compose** | Deployment composition for `macula-realm` (containers, configuration). | Repo currently private | (private) |
+| **macula-realm** | Realm mesh-membership identity service: HyParView admission, station links, realm key lifecycle. Shipped and live in production on macula.io (verified 2026-09-05); this repo builds the realm-identity half of what was a single combined service before a 2026-08-30/09-04 split -- the other half, org/app management and licensing, moved to `macula-portal`. | Repo currently private, live | (private) |
+| **macula-realm-compose** | Deployment composition, renamed "Macula Portal Compose Deployment" (repo description, verified 2026-09-05) as part of the split above. | Repo currently private | (private) |
 | **macula-demo** | Reference demo deployments and infrastructure scripts. | Repo currently private | (private) |
-| **macula-comm-docs** | Investor and public-sector communication material (commercial pitch, federated-compute thesis articles, public-sector vertical). | Public | [GitHub](https://github.com/macula-io/macula-comm-docs) |
+| **macula-comm-docs** | Investor and public-sector communication material (commercial pitch, federated-compute thesis articles, public-sector vertical). | Repo currently private (verified 2026-09-05) | (private) |
 
 **Core capabilities of the substrate:**
 
@@ -78,7 +78,7 @@ The user-facing runtime, infrastructure, and developer tooling that turns the Ma
 
 | Package | Description | Status | Links |
 |---------|-------------|--------|-------|
-| **hecate-realm** | Realm service variant that ships either as a white-label of `macula-realm` or as a headless identity-capability service that allows operators to plug in any authentication and authorisation backend behind it. The architectural choice between the two shapes is open and will be resolved during the realm-service development cycle. | Repo currently private, design phase | (private) |
+| **hecate-realm** | ⚠ Design intent, not a built thing: a realm service variant that would ship either as a white-label of `macula-realm` or as a headless identity-capability service that allows operators to plug in any authentication and authorisation backend behind it. The repo `hecate-social/hecate-realm` (verified 2026-09-05) is actually the org's marketing website, unrelated to identity/auth -- nothing matching this description has been built under this or any other name yet. | Not built; name is taken by an unrelated repo | (n/a) |
 | **hecate-daemon** | Erlang/OTP backend that runs on an operator's hardware. Outbound-only client of `macula-station`. Hosts the venture-lifecycle management, the LLM provider integrations, and the application-plugin runtime. | Public | [GitHub](https://github.com/hecate-social/hecate-daemon) |
 | **hecate-web** | Native desktop user interface built with Tauri and SvelteKit. Talks to `hecate-daemon` over a Unix socket. | Public | [GitHub](https://github.com/hecate-social/hecate-web) |
 | **hecate-cli** | Command-line interface. Top-level commands route to the daemon's plugins (for example, `hecate status`, `hecate install`, `hecate {plugin} {subcommand}`). | Public | [GitHub](https://github.com/hecate-social/hecate-cli) |
