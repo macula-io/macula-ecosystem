@@ -231,51 +231,53 @@ stats = :macula.dht_stats(client)
 
 ## Authorization (UCAN)
 
-The mesh uses UCAN (User Controlled Authorization Networks) for
-capability-based security.
+The mesh uses UCAN (User Controlled Authorization Networks) tokens to gate
+procedures. A provider gates a procedure when it advertises it, and a caller
+presents a token with the call. macula checks the token before the handler
+runs: a caller without a valid token is refused with `unauthorized`, and the
+handler never sees the token.
 
-### Creating a UCAN Token
-
-```elixir
-# Create a token granting read access to orders
-{:ok, ucan} = :macula.create_ucan(
-  issuer_did: "did:macula:io.acme.admin",
-  audience_did: "did:macula:io.acme.reporting",
-  capabilities: [
-    %{with: "io.acme.orders.*", can: "read"},
-    %{with: "io.acme.orders.get_order", can: "invoke"}
-  ],
-  expires_in: 3600  # 1 hour
-)
-```
-
-### Using UCAN for Calls
+### Gating a Procedure
 
 ```elixir
-# Make an authorized call
-{:ok, result} = :macula.call(client, "io.acme.orders.get_order",
-  %{order_id: "123"},
-  ucan: ucan
-)
+# issuer_public_key: the raw 32-byte Ed25519 public key whose tokens this
+# procedure accepts.
+:ok = :macula.advertise(pool, realm, "orders.get_order", handler,
+  %{auth: {:ucan_required, issuer_public_key}})
 ```
 
-### Authorization Checks
+`{:realm_member_required, realm_did, required_can}` gates on membership in a
+realm instead: a token signed by the realm's own key, carrying the
+capability `required_can`, such as `"member/email-verified"`.
+
+### Minting a Token
 
 ```elixir
-# In your RPC handler
-def handle_get_order(args, context) do
-  # Context includes caller's DID and capabilities
-  if authorized?(context, "io.acme.orders", "read") do
-    {:ok, get_order(args.order_id)}
-  else
-    {:error, :unauthorized}
-  end
-end
-
-defp authorized?(context, resource, action) do
-  :macula.check_capability(context.ucan, resource, action)
-end
+# The audience is the caller's public key in lowercase hex: macula accepts a
+# token only from the identity it was minted for.
+{:ok, token} =
+  :macula_ucan_nif.create(
+    Base.encode16(issuer_public_key, case: :lower),
+    Base.encode16(caller_public_key, case: :lower),
+    [%{with: "mri:realm:io.acme", can: "call"}],
+    issuer_private_key,
+    %{exp: System.system_time(:second) + 3600}
+  )
 ```
+
+### Calling a Gated Procedure
+
+```elixir
+# The timeout comes before the options: without it, call_station/6 runs and
+# no token is sent.
+{:ok, result} =
+  :macula.call_station(pool, station, realm, "orders.get_order",
+    %{order_id: "123"}, 5_000, %{ucan_token: token})
+```
+
+See macula's
+[Authorization Guide](https://github.com/macula-io/macula/blob/main/docs/guides/shared/AUTHORIZATION_GUIDE.md)
+for what a token must hold, and for gating streaming procedures.
 
 ## NAT Traversal
 
