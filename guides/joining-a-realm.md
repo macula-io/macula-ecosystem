@@ -1,10 +1,8 @@
 # Joining a Realm
 
 > ⚠ **Rewritten 2026-09-05.** The previous version of this guide described
-> a `hecate pair` CLI, a 6-digit confirmation code, and credential storage
-> under `~/.hecate/hecate-daemon/` — none of it real. `hecate-daemon` is
-> obsolete (archived, deleted from local disk), and no `/api/v1/pairing/*`
-> endpoints exist or ever did under that exact shape. What's below is the
+> a pairing CLI and a 6-digit confirmation code that never existed, and no
+> `/api/v1/pairing/*` endpoints exist or ever did under that exact shape. What's below is the
 > actual flow, verified live against production `realm.macula.io`: a real
 > join producing a genuine `201`.
 
@@ -48,9 +46,9 @@ You don't need anything below this section. The tool is
 returns, then call it again with `wait_seconds` once they've had a
 chance to confirm. Configuration is `MACULA_MCP_REALM_URL` (default
 `https://realm.macula.io`) — see
-[hecate-corpus's FAQ_MACULA_MCP.md](https://github.com/hecate-social/hecate-corpus/blob/main/guides/FAQ_MACULA_MCP.md)
+[mcl-corpus's FAQ_MACULA_MCP.md](https://github.com/macula-services/mcl-corpus/blob/main/guides/FAQ_MACULA_MCP.md)
 for the full tool reference and
-[FAQ_JOIN_A_REALM.md](https://github.com/hecate-social/hecate-corpus/blob/main/guides/FAQ_JOIN_A_REALM.md)
+[FAQ_JOIN_A_REALM.md](https://github.com/macula-services/mcl-corpus/blob/main/guides/FAQ_JOIN_A_REALM.md)
 for the wire-level detail.
 
 The rest of this page is that same detail, for anyone building a

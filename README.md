@@ -21,7 +21,7 @@ Macula is a **BEAM-native federated mesh platform** for building distributed app
 - **Edge computing**: workloads run autonomously where the operator wants them
 - **Content addressing and transfer**: peer-to-peer artefact distribution without external dependencies
 - **Sovereign identity and authorisation**: DID identities and UCAN capability tokens
-- **Application platform**: Hecate, the user-facing runtime built on Macula
+- **On-mesh services**: the `mcl-*` services in [macula-services](https://github.com/macula-services), each built on the `mcl_om` service base
 
 ## The mental model
 
@@ -31,23 +31,19 @@ We use a railroad-network analogy for the architectural separation between subst
 |---|---|---|
 | **The track** | Peering protocol (QUIC, mesh routing) | `macula` (the SDK and protocol) |
 | **The station** | Infrastructure node (DHT participation, SWIM liveness, source-routing, bootstrap, overlay) | `macula-station` (reference implementation) |
-| **The train company** | Identity-and-membership service (who is a member of which realm, capability issuance) | `macula-realm` (canonical) and `hecate-realm` (white-label or pluggable-auth variant) |
+| **The train company** | Identity-and-membership service (who is a member of which realm, capability issuance) | `macula-realm` |
 | **The passenger's ticket** | Client SDK that holds capabilities | `macula` SDK consumed by application processes |
-| **The passenger** | Application process | `hecate-daemon` and similar outbound-only clients |
+| **The passenger** | Application process | Services (`mcl-*`), the command-line tool, the MCP server and other outbound-only clients |
 
-Stations are deliberately **realm-agnostic infrastructure**. A single station can serve multiple realms simultaneously. Realm membership is held by the realm service, not by the station. Clients (daemons) make outbound connections to a station representing their realm.
+Stations are deliberately **realm-agnostic infrastructure**. A single station can serve multiple realms simultaneously. Realm membership is held by the realm service, not by the station. Clients make outbound connections to a station representing their realm.
 
 ## Architecture diagram
 
-<p align="center">
-  <img src="assets/ecosystem-overview.svg" alt="Macula Ecosystem Architecture" width="100%">
-</p>
-
-> **Note.** The ecosystem-overview, mesh-architecture, and node-realm-pairing SVG diagrams currently depict the earlier hub-and-spoke model and are scheduled for regeneration to reflect the railroad model described above. Until that regeneration ships, treat the diagrams as historical reference rather than authoritative architecture.
+> **Note.** The mesh-architecture SVG diagram depicts the earlier hub-and-spoke model and is scheduled for regeneration to reflect the railroad model described above. Until then, treat it as historical reference rather than authoritative architecture.
 
 ## The Macula ecosystem
 
-The Macula ecosystem is organised in two cooperating layers: the substrate (the `macula-io` organisation) and the application platform (the `hecate-social` organisation). Together they cover the full path from networking primitive to user-facing runtime.
+The Macula ecosystem is organised in two cooperating layers: the substrate (the `macula-io` organisation) and the on-mesh services (the `macula-services` organisation).
 
 ### Macula: the substrate ([macula-io](https://github.com/macula-io))
 
@@ -56,7 +52,7 @@ Federated mesh networking and the supporting reference services that operators n
 | Package | Description | Status | Links |
 |---------|-------------|--------|-------|
 | **macula** | Federated mesh-networking SDK and protocol over QUIC and HTTP/3. The canonical client library and the protocol specification. | Public, on hex.pm | [GitHub](https://github.com/macula-io/macula) \| [HexDocs](https://hexdocs.pm/macula) |
-| **macula-station** | Reference Macula V2 station. The infrastructure node that provides DHT participation, SWIM liveness, source-routing, bootstrap, and overlay services to Macula clients. Realm-agnostic infrastructure (a single station can serve multiple realms). Renamed from `hecate-social/hecate-station` and transferred on 2026-04-30; supersedes `macula-relay`. | Public, live in production (verified 2026-09-05) | [GitHub](https://github.com/macula-io/macula-station) |
+| **macula-station** | Reference Macula V2 station. The infrastructure node that provides DHT participation, SWIM liveness, source-routing, bootstrap, and overlay services to Macula clients. Realm-agnostic infrastructure (a single station can serve multiple realms). Supersedes `macula-relay`. | Public, live in production (verified 2026-09-05) | [GitHub](https://github.com/macula-io/macula-station) |
 | **macula-relay** | First-generation reference relay server. Superseded by `macula-station`; kept for historical reference and for V1-network compatibility windows. | Repo currently private, archival | (private) |
 | **macula-dist-relay** | Distributed-relay reference implementation used during V1 multi-relay testing. Federation-of-relays cross-routing experiments live here. | Public | [GitHub](https://github.com/macula-io/macula-dist-relay) |
 | **macula-realm** | Realm mesh-membership identity service: HyParView admission, station links, realm key lifecycle. Shipped and live in production on macula.io (verified 2026-09-05); this repo builds the realm-identity half of what was a single combined service before a 2026-08-30/09-04 split -- the other half, org/app management and licensing, moved to `macula-portal`. | Repo currently private, live | (private) |
@@ -72,25 +68,9 @@ Federated mesh networking and the supporting reference services that operators n
 - **Capability security**: DID identities with UCAN authorisation tokens
 - **Content transfer**: content-addressed storage and peer-to-peer transfer with merkle-tree verification (described below)
 
-### Hecate: the application platform ([hecate-social](https://github.com/hecate-social))
+### Services ([macula-services](https://github.com/macula-services))
 
-The user-facing runtime, infrastructure, and developer tooling that turns the Macula substrate into a usable platform for operators, developers, and end users. Hecate is a separate organisation but is the canonical Macula-on-the-desktop and Macula-on-the-edge experience.
-
-| Package | Description | Status | Links |
-|---------|-------------|--------|-------|
-| **hecate-realm** | ⚠ Design intent, not a built thing: a realm service variant that would ship either as a white-label of `macula-realm` or as a headless identity-capability service that allows operators to plug in any authentication and authorisation backend behind it. The repo `hecate-social/hecate-realm` (verified 2026-09-05) is actually the org's marketing website, unrelated to identity/auth -- nothing matching this description has been built under this or any other name yet. | Not built; name is taken by an unrelated repo | (n/a) |
-| **hecate-daemon** | Erlang/OTP backend that runs on an operator's hardware. Outbound-only client of `macula-station`. Hosts the venture-lifecycle management, the LLM provider integrations, and the application-plugin runtime. | Public | [GitHub](https://github.com/hecate-social/hecate-daemon) |
-| **hecate-web** | Native desktop user interface built with Tauri and SvelteKit. Talks to `hecate-daemon` over a Unix socket. | Public | [GitHub](https://github.com/hecate-social/hecate-web) |
-| **hecate-cli** | Command-line interface. Top-level commands route to the daemon's plugins (for example, `hecate status`, `hecate install`, `hecate {plugin} {subcommand}`). | Public | [GitHub](https://github.com/hecate-social/hecate-cli) |
-| **hecate-sdk** | Erlang software-development kit for building Hecate-resident applications. | Public | [GitHub](https://github.com/hecate-social/hecate-sdk) |
-| **hecate-sdk-ts** | TypeScript software-development kit, used by web frontends that integrate with Hecate. | Public | [GitHub](https://github.com/hecate-social/hecate-sdk-ts) |
-| **hecate-install** | Immutable edge-node operating system based on NixOS, replaces the archived `macula-os` and `macula-os-nix`. Bootstrap ISO and first-boot configuration for a fresh Hecate node. | Public | [GitHub](https://github.com/hecate-social/hecate-install) |
-| **hecate-gitops** | GitOps reconciler for Hecate-managed nodes. Watches a configuration repository, reconciles podman quadlets via systemd-user, supports zero-touch deploys via container auto-update. The canonical deployment path for Hecate-based clusters. | Public | [GitHub](https://github.com/hecate-social/hecate-gitops) |
-| **hecate-corpus** | Philosophy, skills, and code-generation templates that guide Hecate development. | Public | [GitHub](https://github.com/hecate-social/hecate-corpus) |
-
-**Hecate plugin ecosystem.** Plugins live in their own `hecate-app-*` repositories under the `hecate-apps` organisation, are discovered and installed through the appstore embedded in `hecate-daemon` and `hecate-web`, and run inside `hecate-daemon`. Each plugin contributes a daemon component, optional web frontend pages, and optional CLI subcommands.
-
-> See the dedicated [hecate-ecosystem](https://github.com/hecate-social/hecate-ecosystem) documentation hub for fuller Hecate-side detail.
+On-mesh services, each built on the `mcl_om` service base and reached over the mesh, for example `mcl-echo`, `mcl-stations`, `mcl-citizens`, `mcl-rag` and `mcl-tube`. [mcl-corpus](https://github.com/macula-services/mcl-corpus) holds the philosophy, skills and code-generation templates that guide the work.
 
 ### Content transfer
 
@@ -128,7 +108,7 @@ Protocol message types: `content_want`, `content_have`, `content_block`, `conten
 - [**Mesh Networking**](guides/mesh-networking.md): QUIC mesh and federated-relay guide
 - [**Content Transfer**](guides/content-transfer.md): Peer-to-peer artefact distribution
 - [**Neuroevolution**](guides/neuroevolution.md): TWEANN and NEAT (cross-references the Faber ecosystem)
-- [**MaculaOS**](guides/macula-os.md): Edge deployment (historical, superseded by `hecate-install`)
+- [**MaculaOS**](guides/macula-os.md): Edge deployment (historical; MaculaOS is archived)
 
 ## Related ecosystems
 
@@ -136,7 +116,7 @@ Macula works alongside three independent ecosystems, each maintained by their ow
 
 ### Reckon: Event sourcing and CQRS ([reckon-db-org](https://github.com/reckon-db-org))
 
-A BEAM-native event-sourcing stack providing durable event stores, Command-Query Responsibility Segregation frameworks, and distributed persistence. Applications built on Macula and on Hecate use Reckon for event-sourced state management.
+A BEAM-native event-sourcing stack providing durable event stores, Command-Query Responsibility Segregation frameworks, and distributed persistence. Applications built on Macula can use Reckon for event-sourced state management.
 
 | Package | Description | Links |
 |---------|-------------|-------|
@@ -160,7 +140,7 @@ Evolutionary neural-network framework for Erlang and OTP. Adaptive controllers c
 
 ### bc_gitops: Mesh application orchestration ([beam-campus](https://github.com/beam-campus))
 
-A complementary BEAM-native GitOps reconciler for publishing, installing, and managing Open Telecom Platform applications across a Macula mesh. Macula-based deployments use `hecate-gitops` as the canonical reconciler; `bc_gitops` is an adjacent option for operators who want a different reconciler shape or a mesh-source-type for fetching releases via Macula Content Identifiers.
+A complementary BEAM-native GitOps reconciler for publishing, installing, and managing Open Telecom Platform applications across a Macula mesh. `bc_gitops` is an option for operators who want a BEAM-native reconciler or a mesh-source-type for fetching releases via Macula Content Identifiers.
 
 | Package | Description | Links |
 |---------|-------------|-------|
@@ -238,7 +218,7 @@ Every component is built on the BEAM (the Erlang virtual machine), battle-tested
 ## Community
 
 - **Macula**: [macula-io](https://github.com/macula-io) on GitHub | search `macula` on [hex.pm](https://hex.pm)
-- **Hecate**: [hecate-social](https://github.com/hecate-social) on GitHub
+- **Services**: [macula-services](https://github.com/macula-services) on GitHub
 - **Reckon**: [reckon-db-org](https://github.com/reckon-db-org) on GitHub | search `reckon` on [hex.pm](https://hex.pm)
 - **Faber**: [rgfaber](https://github.com/rgfaber) on GitHub | search `faber` on [hex.pm](https://hex.pm)
 - **beam-campus**: [beam-campus](https://github.com/beam-campus) on GitHub | `bc_gitops` on [hex.pm](https://hex.pm)

@@ -25,8 +25,7 @@ The distributed application platform:
 | Package | Description |
 |---------|-------------|
 | [macula](https://hexdocs.pm/macula) | HTTP/3 mesh networking over QUIC |
-| [hecate](https://github.com/hecate-social) | User-facing runtime + extensible app platform |
-| [hecate-install](https://github.com/hecate-social/hecate-install) | Edge node OS (NixOS, replaces archived `macula-os`) |
+| [macula-services](https://github.com/macula-services) | On-mesh services (`mcl-*`) built on the `mcl_om` service base |
 
 ### rgfaber - AI & Neuroevolution
 
@@ -36,8 +35,6 @@ The distributed application platform:
 | [faber_neuroevolution](https://hexdocs.pm/faber_neuroevolution) | Population-based evolutionary training |
 
 ## The Big Picture
-
-![Ecosystem Overview](assets/ecosystem-overview.svg)
 
 The architecture follows a layered approach:
 
