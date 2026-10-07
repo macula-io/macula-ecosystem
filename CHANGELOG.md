@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `scripts/generate_features.py` with tests, `features/sources.json`, `scripts/md_to_pdf.sh`.
-- Workflows `features` (regenerate and propose) and `test`.
+- Workflows `features` (regenerate and push a branch; a team member opens the pull request) and `test`.
 
 ### Removed
 

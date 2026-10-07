@@ -42,7 +42,9 @@ the station.
 The build also refuses any output that matches a denylist held as a repository secret.
 
 It regenerates when the register delivers a new export (branch `register-export`), nightly (new releases), and on
-demand. Each run that changes the document opens a pull request; a person merges it. Nothing merges automatically.
+demand. A run that changes the document pushes it to a branch (`register-export` or `features-update`); it never opens
+or merges a pull request. A member of the Macula team opens the pull request from that branch, and a maintainer
+merges it. Nothing merges automatically.
 
 To have a repository's capabilities appear, add a feature section to its README:
 
