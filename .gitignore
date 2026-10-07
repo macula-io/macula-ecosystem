@@ -17,3 +17,5 @@ _build/
 _checkouts/
 mix.lock
 rebar.lock
+dist/
+__pycache__/

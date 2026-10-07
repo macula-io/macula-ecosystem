@@ -1,0 +1,20 @@
+{
+  "components": [
+    {"name": "macula", "role": "Erlang/Elixir SDK and the wire protocol", "repo": "macula-io/macula"},
+    {"name": "macula-station", "role": "Station: DHT discovery, SWIM liveness, QUIC routing", "repo": "macula-io/macula-station", "source": "private", "image": "ghcr.io/macula-io/macula-station"},
+    {"name": "macula-realm", "role": "Realm: membership identity and admission", "repo": "macula-io/macula-realm", "source": "private"},
+    {"name": "macula-go", "role": "Go SDK", "repo": "macula-io/macula-go"},
+    {"name": "macula-rust", "role": "Rust SDK", "repo": "macula-io/macula-rust"},
+    {"name": "macula-py", "role": "Python SDK", "repo": "macula-io/macula-py"},
+    {"name": "macula-dotnet", "role": ".NET SDK", "repo": "macula-io/macula-dotnet"},
+    {"name": "macula-ts", "role": "TypeScript SDK", "repo": "macula-io/macula-ts"},
+    {"name": "macula-php", "role": "PHP SDK", "repo": "macula-io/macula-php"},
+    {"name": "macula-pqc", "role": "Post-quantum primitives", "repo": "macula-io/macula-pqc"},
+    {"name": "macula-cli", "role": "Command-line tool", "repo": "macula-io/macula-cli"},
+    {"name": "macula-mcp", "role": "MCP server for agent harnesses", "repo": "macula-io/macula-mcp"},
+    {"name": "macula-lazymesh", "role": "Agent harness and terminal UI", "repo": "macula-io/macula-lazymesh"},
+    {"name": "macula-desktop", "role": "Desktop application", "repo": "macula-io/macula-desktop"},
+    {"name": "macula-rag", "role": "Federated semantic retrieval", "repo": "macula-io/macula-rag"},
+    {"name": "macula-fovea", "role": "Fovea security specification", "repo": "macula-io/macula-fovea"}
+  ]
+}

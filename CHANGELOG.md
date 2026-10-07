@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- The repository now holds one generated document, `FEATURES.md`: what Macula does today, built by
+  `scripts/generate_features.py` from released tags, README feature sections verified against the files they name,
+  and the security register's public export. It regenerates by pull request; nothing merges automatically
+  (macula-ecosystem#1).
+- README rewritten: the mental model, how the document is made, and where everything else lives.
+
+### Added
+
+- `scripts/generate_features.py` with tests, `features/sources.json`, `scripts/md_to_pdf.sh`.
+- Workflows `features` (regenerate and propose) and `test`.
+
+### Removed
+
+- The hand-written guides (overview, architecture, getting started, event sourcing, neuroevolution, content transfer)
+  and their diagrams: every API sample in them no longer matched the released code.
+
 ## [0.1.0] - 2026-01-08
 
 ### Added
