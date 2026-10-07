@@ -1,5 +1,8 @@
 # Macula
 
+> [!NOTE]
+> **Macula in ten seconds.** Macula leaves IPv4 behind and replaces what the cloud era built on top of the internet: no DNS lookups to find a service, no public certificate authority to trust, no open ports, no central broker. Machines find each other through a signed distributed table and talk over QUIC on IPv6, trust is run by each community itself, and services can seal everything end to end.
+
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 <p align="center">
@@ -63,7 +66,8 @@ realm withdraws it, it stops working quickly. Stations serve any realm, and one 
 </p>
 
 A machine makes its own key, asks the realm to join and proves it holds that key, and the person confirms the request in
-their own browser. The realm then signs the membership, and the machine dials stations outbound. The details are in [guides/joining-a-realm.md](guides/joining-a-realm.md).
+their own browser. The realm then signs the membership, and the machine dials stations outbound. Reaching the mesh needs IPv6; IPv4-only
+networks can't connect today. The details are in [guides/joining-a-realm.md](guides/joining-a-realm.md).
 
 ## What it makes possible
 

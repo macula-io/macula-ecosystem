@@ -10,6 +10,7 @@ pandoc README.md \
   --from gfm+raw_html --lua-filter scripts/readme_pdf.lua \
   --pdf-engine=lualatex \
   -V geometry:margin=2.2cm -V papersize=a4 -V fontsize=11pt \
+  -V header-includes='\usepackage{tcolorbox}' \
   -V colorlinks=true -V linkcolor=blue -V urlcolor=blue \
   -V title="Macula" -M title="Macula" -V subtitle="What it is, why it matters, what is built" \
   -V date="$(date -u +%Y-%m-%d)" \
