@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="318" viewBox="0 0 760 318" font-family="Liberation Sans, Arial, sans-serif">
+<rect x="0" y="0" width="760" height="318" fill="#ffffff"/>
+<text x="10" y="18" font-size="13" font-weight="bold" fill="#000000">Done features per component, by level</text>
+<text x="102" y="55" font-size="11" text-anchor="end" fill="#000000">SDKs</text>
+<rect x="110.0" y="40" width="24.2" height="22" fill="#90caf9" stroke="#ffffff" stroke-width="1"/>
+<text x="122.1" y="55" font-size="11" text-anchor="middle" fill="#000000">1</text>
+<rect x="134.2" y="40" width="24.2" height="22" fill="#1e88e5" stroke="#ffffff" stroke-width="1"/>
+<text x="146.3" y="55" font-size="11" text-anchor="middle" fill="#ffffff">1</text>
+<rect x="158.4" y="40" width="72.6" height="22" fill="#0d47a1" stroke="#ffffff" stroke-width="1"/>
+<text x="194.7" y="55" font-size="11" text-anchor="middle" fill="#ffffff">3</text>
+<rect x="231.1" y="40" width="169.5" height="22" fill="#b0b0b0" stroke="#ffffff" stroke-width="1"/>
+<text x="315.8" y="55" font-size="11" text-anchor="middle" fill="#000000">7</text>
+<rect x="400.5" y="40" width="48.4" height="22" fill="#e3e3e3" stroke="#ffffff" stroke-width="1"/>
+<text x="424.7" y="55" font-size="11" text-anchor="middle" fill="#000000">2</text>
+<text x="454.9" y="55" font-size="11" fill="#000000">5 of 14 done, 77% built</text>
+<text x="102" y="85" font-size="11" text-anchor="end" fill="#000000">Stations</text>
+<rect x="110.0" y="70" width="72.6" height="22" fill="#1e88e5" stroke="#ffffff" stroke-width="1"/>
+<text x="146.3" y="85" font-size="11" text-anchor="middle" fill="#ffffff">3</text>
+<rect x="182.6" y="70" width="72.6" height="22" fill="#0d47a1" stroke="#ffffff" stroke-width="1"/>
+<text x="218.9" y="85" font-size="11" text-anchor="middle" fill="#ffffff">3</text>
+<rect x="255.3" y="70" width="48.4" height="22" fill="#80deea" stroke="#ffffff" stroke-width="1"/>
+<text x="279.5" y="85" font-size="11" text-anchor="middle" fill="#000000">2</text>
+<rect x="303.7" y="70" width="193.7" height="22" fill="#b0b0b0" stroke="#ffffff" stroke-width="1"/>
+<text x="400.5" y="85" font-size="11" text-anchor="middle" fill="#000000">8</text>
+<rect x="497.4" y="70" width="72.6" height="22" fill="#e3e3e3" stroke="#ffffff" stroke-width="1"/>
+<text x="533.7" y="85" font-size="11" text-anchor="middle" fill="#000000">3</text>
+<text x="576.0" y="85" font-size="11" fill="#000000">6 of 19 done, 73% built</text>
+<text x="102" y="115" font-size="11" text-anchor="end" fill="#000000">Realm</text>
+<rect x="110.0" y="100" width="121.1" height="22" fill="#1e88e5" stroke="#ffffff" stroke-width="1"/>
+<text x="170.5" y="115" font-size="11" text-anchor="middle" fill="#ffffff">5</text>
+<rect x="231.1" y="100" width="48.4" height="22" fill="#0d47a1" stroke="#ffffff" stroke-width="1"/>
+<text x="255.3" y="115" font-size="11" text-anchor="middle" fill="#ffffff">2</text>
+<rect x="279.5" y="100" width="72.6" height="22" fill="#e3e3e3" stroke="#ffffff" stroke-width="1"/>
+<text x="315.8" y="115" font-size="11" text-anchor="middle" fill="#000000">3</text>
+<text x="358.1" y="115" font-size="11" fill="#000000">7 of 10 done, 70% built</text>
+<text x="102" y="145" font-size="11" text-anchor="end" fill="#000000">Fleet Ops</text>
+<rect x="110.0" y="130" width="72.6" height="22" fill="#1e88e5" stroke="#ffffff" stroke-width="1"/>
+<text x="146.3" y="145" font-size="11" text-anchor="middle" fill="#ffffff">3</text>
+<rect x="182.6" y="130" width="48.4" height="22" fill="#b0b0b0" stroke="#ffffff" stroke-width="1"/>
+<text x="206.8" y="145" font-size="11" text-anchor="middle" fill="#000000">2</text>
+<rect x="231.1" y="130" width="72.6" height="22" fill="#e3e3e3" stroke="#ffffff" stroke-width="1"/>
+<text x="267.4" y="145" font-size="11" text-anchor="middle" fill="#000000">3</text>
+<text x="309.7" y="145" font-size="11" fill="#000000">3 of 8 done, 76% built</text>
+<text x="102" y="175" font-size="11" text-anchor="end" fill="#000000">fovea</text>
+<rect x="110.0" y="160" width="24.2" height="22" fill="#1e88e5" stroke="#ffffff" stroke-width="1"/>
+<text x="122.1" y="175" font-size="11" text-anchor="middle" fill="#ffffff">1</text>
+<rect x="134.2" y="160" width="72.6" height="22" fill="#b0b0b0" stroke="#ffffff" stroke-width="1"/>
+<text x="170.5" y="175" font-size="11" text-anchor="middle" fill="#000000">3</text>
+<text x="212.8" y="175" font-size="11" fill="#000000">1 of 4 done, 72% built</text>
+<text x="102" y="205" font-size="11" text-anchor="end" fill="#000000">Practices</text>
+<rect x="110.0" y="190" width="48.4" height="22" fill="#90caf9" stroke="#ffffff" stroke-width="1"/>
+<text x="134.2" y="205" font-size="11" text-anchor="middle" fill="#000000">2</text>
+<rect x="158.4" y="190" width="145.3" height="22" fill="#1e88e5" stroke="#ffffff" stroke-width="1"/>
+<text x="231.1" y="205" font-size="11" text-anchor="middle" fill="#ffffff">6</text>
+<rect x="303.7" y="190" width="24.2" height="22" fill="#b0b0b0" stroke="#ffffff" stroke-width="1"/>
+<text x="315.8" y="205" font-size="11" text-anchor="middle" fill="#000000">1</text>
+<rect x="327.9" y="190" width="24.2" height="22" fill="#e3e3e3" stroke="#ffffff" stroke-width="1"/>
+<text x="340.0" y="205" font-size="11" text-anchor="middle" fill="#000000">1</text>
+<text x="358.1" y="205" font-size="11" fill="#000000">8 of 10 done, 86% built</text>
+<text x="102" y="235" font-size="11" text-anchor="end" fill="#000000">Apps</text>
+<rect x="110.0" y="220" width="48.4" height="22" fill="#b0b0b0" stroke="#ffffff" stroke-width="1"/>
+<text x="134.2" y="235" font-size="11" text-anchor="middle" fill="#000000">2</text>
+<rect x="158.4" y="220" width="24.2" height="22" fill="#e3e3e3" stroke="#ffffff" stroke-width="1"/>
+<text x="170.5" y="235" font-size="11" text-anchor="middle" fill="#000000">1</text>
+<text x="188.6" y="235" font-size="11" fill="#000000">0 of 3 done, 55% built</text>
+<rect x="10" y="264" width="14" height="14" fill="#90caf9"/>
+<text x="30" y="276" font-size="11" fill="#000000">L1 Baseline done</text>
+<rect x="148" y="264" width="14" height="14" fill="#1e88e5"/>
+<text x="168" y="276" font-size="11" fill="#000000">L2 Strong done</text>
+<rect x="274" y="264" width="14" height="14" fill="#0d47a1"/>
+<text x="294" y="276" font-size="11" fill="#000000">L3 High done</text>
+<rect x="10" y="288" width="14" height="14" fill="#80deea"/>
+<text x="30" y="300" font-size="11" fill="#000000">beyond the fleet</text>
+<rect x="148" y="288" width="14" height="14" fill="#b0b0b0"/>
+<text x="168" y="300" font-size="11" fill="#000000">released, not yet complete or proven on the fleet</text>
+<rect x="484" y="288" width="14" height="14" fill="#e3e3e3"/>
+<text x="504" y="300" font-size="11" fill="#000000">being built or to do</text>
+</svg>
