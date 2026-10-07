@@ -1,0 +1,85 @@
+# Builds README.pdf, signs it with cosign keyless, and delivers it to macula-codex.
+#
+# This exists so anyone can download Macula's public PDFs and check that our CI made them.
+#
+# The signature's identity is this workflow file on main:
+#   https://github.com/macula-io/macula-ecosystem/.github/workflows/readme-pdf.yml@refs/heads/main
+# macula-codex verifies every PDF against exactly that identity before it publishes a release.
+# Renaming or moving this file changes the identity: change macula-codex's publish workflow too.
+name: readme-pdf
+
+on:
+  push:
+    branches: [main]
+    paths: ['README.md', 'assets/**', 'scripts/readme_pdf*', 'scripts/fonts.conf', '.github/workflows/readme-pdf.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write   # cosign keyless: the workflow's OIDC token is the signing identity
+
+concurrency:
+  group: readme-pdf
+  cancel-in-progress: false
+
+env:
+  # pandoc 3.7 with lualatex and rsvg-convert, pinned by digest.
+  PANDOC_IMAGE: docker.io/pandoc/extra@sha256:44b748219f2fb010c1bd97805580cca8d22929caf8c62752106d582b7ba3cd79
+  IDENTITY: https://github.com/macula-io/macula-ecosystem/.github/workflows/readme-pdf.yml@refs/heads/main
+  ISSUER: https://token.actions.githubusercontent.com
+  CODEX_BRANCH: readme-pdf
+
+jobs:
+  pdf:
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted]
+    # CODEX_EXPORT_DEPLOY_KEY lives in this environment, which only main may use.
+    environment: codex-export
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false   # $PWD is mounted into the pandoc container
+
+      - name: Build README.pdf
+        run: |
+          set -eu
+          podman run --rm \
+            -v "$PWD":/data:Z -w /data --entrypoint sh "$PANDOC_IMAGE" \
+            scripts/readme_pdf.sh /data/README.pdf
+          test -s README.pdf
+
+      - uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: v3.1.3
+
+      - name: Sign, then verify against the exact identity
+        run: |
+          set -eu
+          cosign sign-blob --yes --bundle README.pdf.sigstore.json README.pdf
+          cosign verify-blob --bundle README.pdf.sigstore.json \
+            --certificate-identity "$IDENTITY" --certificate-oidc-issuer "$ISSUER" README.pdf
+          if cosign verify-blob --bundle README.pdf.sigstore.json \
+               --certificate-identity "${IDENTITY}x" --certificate-oidc-issuer "$ISSUER" README.pdf 2>/dev/null; then
+            echo "REFUSED: a wrong identity verified" >&2; exit 1
+          fi
+
+      - name: Deliver to macula-codex (branch readme-pdf, rebuilt from codex main)
+        env:
+          CODEX_EXPORT_DEPLOY_KEY: ${{ secrets.CODEX_EXPORT_DEPLOY_KEY }}
+        run: |
+          set -eu
+          d="$RUNNER_TEMP/codex"; rm -rf "$d"; mkdir -p "$d"
+          umask 077
+          trap 'rm -f "$RUNNER_TEMP/codex_key"' EXIT
+          printf '%s\n' "$CODEX_EXPORT_DEPLOY_KEY" > "$RUNNER_TEMP/codex_key"
+          # GitHub's published ed25519 host key (api.github.com/meta), pinned.
+          echo "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl" > "$RUNNER_TEMP/known_hosts"
+          export GIT_SSH_COMMAND="ssh -i $RUNNER_TEMP/codex_key -o IdentitiesOnly=yes -o UserKnownHostsFile=$RUNNER_TEMP/known_hosts -o StrictHostKeyChecking=yes"
+          git clone -q --depth 1 git@github.com:macula-io/macula-codex.git "$d"
+          cp README.pdf README.pdf.sigstore.json "$d/"
+          cd "$d"
+          git checkout -q -B "$CODEX_BRANCH"
+          git add README.pdf README.pdf.sigstore.json
+          git -c user.name="macula-ecosystem readme-pdf" -c user.email="readme-pdf@macula-ecosystem.invalid" \
+            commit -q -m "README.pdf from macula-ecosystem ${GITHUB_SHA::7}"
+          git push -q --force origin "$CODEX_BRANCH"

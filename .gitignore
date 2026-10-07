@@ -17,3 +17,6 @@ _build/
 _checkouts/
 mix.lock
 rebar.lock
+README.pdf
+README.pdf.sigstore.json
+assets/*.pdf
