@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 340" width="860" height="340" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">A realm and its members</title>
+  <desc id="d">A realm keeps signed membership for people and services. Members prove membership with signed records and short-lived delegations. Stations route for any realm; one station can serve several realms.</desc>
+  <rect width="860" height="340" rx="16" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="430" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">A realm and its members</text>
+  <rect x="300" y="60" width="260" height="70" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="430" y="90" text-anchor="middle" font-size="15" font-weight="bold" fill="#4c1d95">Realm</text>
+  <text x="430" y="110" text-anchor="middle" font-size="12" fill="#4c1d95">signs who belongs and who may serve what</text>
+  <g fill="#dcfce7" stroke="#16a34a" stroke-width="2">
+    <rect x="60" y="190" width="150" height="56" rx="8"/><rect x="250" y="190" width="150" height="56" rx="8"/>
+    <rect x="460" y="190" width="150" height="56" rx="8"/><rect x="650" y="190" width="150" height="56" rx="8"/>
+  </g>
+  <g text-anchor="middle" fill="#14532d"><text x="135" y="214" font-size="14" font-weight="bold">Person</text><text x="135" y="232" font-size="11">joined in a browser</text>
+    <text x="325" y="214" font-size="14" font-weight="bold">Agent</text><text x="325" y="232" font-size="11">acts for a person</text>
+    <text x="535" y="214" font-size="14" font-weight="bold">Service</text><text x="535" y="232" font-size="11">serves procedures</text>
+    <text x="725" y="214" font-size="14" font-weight="bold">Device</text><text x="725" y="232" font-size="11">a machine you own</text></g>
+  <g stroke="#7c3aed" stroke-width="2" stroke-dasharray="5 4"><line x1="370" y1="130" x2="135" y2="190"/><line x1="400" y1="130" x2="325" y2="190"/><line x1="460" y1="130" x2="535" y2="190"/><line x1="490" y1="130" x2="725" y2="190"/></g>
+  <text x="430" y="285" text-anchor="middle" font-size="13" fill="#334155">Every identity is an ML-DSA-87 key. A service is authorised by a realm-signed delegation</text>
+  <text x="430" y="305" text-anchor="middle" font-size="13" fill="#334155">that lives at most 30 minutes, so withdrawing it takes effect quickly.</text>
+  <text x="430" y="325" text-anchor="middle" font-size="13" fill="#334155">Stations route for any realm; they do not decide who belongs.</text>
+</svg>

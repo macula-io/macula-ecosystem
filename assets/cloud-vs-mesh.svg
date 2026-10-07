@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 380" width="860" height="380" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">The cloud model compared with the Macula mesh</title>
+  <desc id="d">Left: every device talks through one large cloud provider. Right: machines people own connect outbound to stations that route between them, under a realm that says who belongs.</desc>
+  <rect width="860" height="380" rx="16" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="215" y="38" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">Today: through a few clouds</text>
+  <text x="645" y="38" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">Macula: a mesh of owned machines</text>
+  <line x1="430" y1="60" x2="430" y2="350" stroke="#cbd5e1" stroke-dasharray="6 6"/>
+  <!-- cloud side -->
+  <ellipse cx="215" cy="190" rx="95" ry="55" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+  <text x="215" y="185" text-anchor="middle" font-size="15" font-weight="bold" fill="#334155">Cloud provider</text>
+  <text x="215" y="205" text-anchor="middle" font-size="12" fill="#475569">holds the data, the keys,</text>
+  <text x="215" y="220" text-anchor="middle" font-size="12" fill="#475569">and the off switch</text>
+  <g fill="#ffffff" stroke="#64748b" stroke-width="2">
+    <rect x="40" y="80" width="70" height="40" rx="6"/><rect x="320" y="80" width="70" height="40" rx="6"/>
+    <rect x="40" y="270" width="70" height="40" rx="6"/><rect x="320" y="270" width="70" height="40" rx="6"/>
+  </g>
+  <g stroke="#94a3b8" stroke-width="2"><line x1="110" y1="110" x2="140" y2="155"/><line x1="320" y1="110" x2="290" y2="155"/><line x1="110" y1="280" x2="140" y2="228"/><line x1="320" y1="280" x2="290" y2="228"/></g>
+  <g font-size="12" fill="#334155" text-anchor="middle"><text x="75" y="105">device</text><text x="355" y="105">device</text><text x="75" y="295">device</text><text x="355" y="295">device</text></g>
+  <text x="215" y="345" text-anchor="middle" font-size="13" fill="#475569">Two neighbours talk via someone else's data centre.</text>
+  <!-- mesh side -->
+  <rect x="490" y="62" width="310" height="34" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="645" y="84" text-anchor="middle" font-size="13" fill="#4c1d95">Realm: who belongs, signed membership</text>
+  <g fill="#dbeafe" stroke="#2563eb" stroke-width="2"><circle cx="560" cy="190" r="30"/><circle cx="730" cy="190" r="30"/></g>
+  <g font-size="12" fill="#1e3a8a" text-anchor="middle"><text x="560" y="194">station</text><text x="730" y="194">station</text></g>
+  <line x1="590" y1="190" x2="700" y2="190" stroke="#2563eb" stroke-width="2"/>
+  <g fill="#dcfce7" stroke="#16a34a" stroke-width="2">
+    <rect x="470" y="115" width="80" height="36" rx="6"/><rect x="470" y="245" width="80" height="36" rx="6"/>
+    <rect x="740" y="115" width="80" height="36" rx="6"/><rect x="740" y="245" width="80" height="36" rx="6"/>
+  </g>
+  <g font-size="11" fill="#14532d" text-anchor="middle"><text x="510" y="137">your laptop</text><text x="510" y="267">your server</text><text x="780" y="137">their service</text><text x="780" y="267">an agent</text></g>
+  <g stroke="#16a34a" stroke-width="2" marker-end="url(#a)"><line x1="520" y1="151" x2="545" y2="166"/><line x1="520" y1="245" x2="545" y2="214"/><line x1="770" y1="151" x2="745" y2="166"/><line x1="770" y1="245" x2="745" y2="214"/></g>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker></defs>
+  <text x="645" y="320" text-anchor="middle" font-size="13" fill="#475569">Machines dial out to stations; no open ports.</text>
+  <text x="645" y="340" text-anchor="middle" font-size="13" fill="#475569">Every link is post-quantum encrypted.</text>
+</svg>

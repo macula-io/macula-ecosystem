@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 300" width="860" height="300" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">A node joining</title>
+  <desc id="d">Four steps: the node makes its own key; it asks the realm to join and proves it holds the key; the person confirms in their own browser; the realm signs the membership, and the node dials stations outbound.</desc>
+  <rect width="860" height="300" rx="16" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="430" y="36" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">A node joining</text>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker></defs>
+  <g stroke-width="2">
+    <rect x="30" y="80" width="180" height="120" rx="10" fill="#dcfce7" stroke="#16a34a"/>
+    <rect x="240" y="80" width="180" height="120" rx="10" fill="#ede9fe" stroke="#7c3aed"/>
+    <rect x="450" y="80" width="180" height="120" rx="10" fill="#fef3c7" stroke="#d97706"/>
+    <rect x="660" y="80" width="170" height="120" rx="10" fill="#dbeafe" stroke="#2563eb"/>
+  </g>
+  <g stroke="#334155" stroke-width="2.5" marker-end="url(#a)"><line x1="210" y1="140" x2="236" y2="140"/><line x1="420" y1="140" x2="446" y2="140"/><line x1="630" y1="140" x2="656" y2="140"/></g>
+  <g text-anchor="middle">
+    <text x="120" y="110" font-size="15" font-weight="bold" fill="#14532d">1. Own key</text>
+    <text x="120" y="135" font-size="12" fill="#14532d">the node makes its</text><text x="120" y="152" font-size="12" fill="#14532d">ML-DSA-87 key; it</text><text x="120" y="169" font-size="12" fill="#14532d">never leaves the machine</text>
+    <text x="330" y="110" font-size="15" font-weight="bold" fill="#4c1d95">2. Ask to join</text>
+    <text x="330" y="135" font-size="12" fill="#4c1d95">a signed request proves</text><text x="330" y="152" font-size="12" fill="#4c1d95">it holds that key; the</text><text x="330" y="169" font-size="12" fill="#4c1d95">realm returns a link</text>
+    <text x="540" y="110" font-size="15" font-weight="bold" fill="#78350f">3. The person confirms</text>
+    <text x="540" y="135" font-size="12" fill="#78350f">they open the link in</text><text x="540" y="152" font-size="12" fill="#78350f">their own browser and</text><text x="540" y="169" font-size="12" fill="#78350f">confirm the request</text>
+    <text x="745" y="110" font-size="15" font-weight="bold" fill="#1e3a8a">4. On the mesh</text>
+    <text x="745" y="135" font-size="12" fill="#1e3a8a">the realm signs the</text><text x="745" y="152" font-size="12" fill="#1e3a8a">membership; the node</text><text x="745" y="169" font-size="12" fill="#1e3a8a">dials stations outbound</text>
+  </g>
+  <text x="430" y="250" text-anchor="middle" font-size="13" fill="#334155">The node reaches the mesh outbound: it needs no open port and no fixed address.</text>
+  <text x="430" y="270" text-anchor="middle" font-size="13" fill="#334155">Without joining, a key can still use the mesh, but nothing vouches for it.</text>
+</svg>

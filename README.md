@@ -1,235 +1,114 @@
-# Macula Ecosystem
+# Macula
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![GitHub Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-support-ea4aaa.svg?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/rgfaber)
 
 <p align="center">
   <img src="assets/logo.svg" width="120" height="120" alt="Macula">
 </p>
 
-<p align="center">
-  <strong>Documentation hub for the Macula distributed application platform</strong>
-</p>
+Macula is a mesh: machines that people and organisations own, connected directly to each other, with no cloud in the
+middle. This page explains what it is, why it is a different way to use the internet, and what is built today.
 
----
+## The problem
 
-## What is Macula?
+Most of what we do online travels through a handful of cloud providers. Two neighbours sending each other a message,
+a sensor reporting to a server in the next room, two companies exchanging an order: the traffic goes up to someone
+else's data centre and back down. That provider holds the data and the keys, sets the terms and the prices, and can
+switch any of it off. The machines at either end, which the people involved actually own, do none of the work of
+connecting.
 
-Macula is a **BEAM-native federated mesh platform** for building distributed applications that run across hardware operators control. The substrate provides:
-
-- **Federated relay-mesh networking** over QUIC and HTTP/3 (no central coordinator, no proprietary cloud dependency in the data path)
-- **Edge computing**: workloads run autonomously where the operator wants them
-- **Content addressing and transfer**: peer-to-peer artefact distribution without external dependencies
-- **Sovereign identity and authorisation**: DID identities and UCAN capability tokens
-- **On-mesh services**: the `mcl-*` services in [macula-services](https://github.com/macula-services), each built on the `mcl_om` service base
-
-## The mental model
-
-We use a railroad-network analogy for the architectural separation between substrate, infrastructure, identity, and clients. Each role lives in a different repository and is independently operable:
-
-| Railroad role | Macula role | Implementation |
-|---|---|---|
-| **The track** | Peering protocol (QUIC, mesh routing) | `macula` (the SDK and protocol) |
-| **The station** | Infrastructure node (DHT participation, SWIM liveness, source-routing, bootstrap, overlay) | `macula-station` (reference implementation) |
-| **The train company** | Identity-and-membership service (who is a member of which realm, capability issuance) | `macula-realm` |
-| **The passenger's ticket** | Client SDK that holds capabilities | `macula` SDK consumed by application processes |
-| **The passenger** | Application process | Services (`mcl-*`), the command-line tool, the MCP server and other outbound-only clients |
-
-Stations are deliberately **realm-agnostic infrastructure**. A single station can serve multiple realms simultaneously. Realm membership is held by the realm service, not by the station. Clients make outbound connections to a station representing their realm.
-
-## Architecture diagram
-
-> **Note.** The mesh-architecture SVG diagram depicts the earlier hub-and-spoke model and is scheduled for regeneration to reflect the railroad model described above. Until then, treat it as historical reference rather than authoritative architecture.
-
-## The Macula ecosystem
-
-The Macula ecosystem is organised in two cooperating layers: the substrate (the `macula-io` organisation) and the on-mesh services (the `macula-services` organisation).
-
-### Macula: the substrate ([macula-io](https://github.com/macula-io))
-
-Federated mesh networking and the supporting reference services that operators need to run a Macula network.
-
-| Package | Description | Status | Links |
-|---------|-------------|--------|-------|
-| **macula** | Federated mesh-networking SDK and protocol over QUIC and HTTP/3. The canonical client library and the protocol specification. | Public, on hex.pm | [GitHub](https://github.com/macula-io/macula) \| [HexDocs](https://hexdocs.pm/macula) |
-| **macula-station** | Reference Macula V2 station. The infrastructure node that provides DHT participation, SWIM liveness, source-routing, bootstrap, and overlay services to Macula clients. Realm-agnostic infrastructure (a single station can serve multiple realms). Supersedes `macula-relay`. | Public, live in production (verified 2026-09-05) | [GitHub](https://github.com/macula-io/macula-station) |
-| **macula-relay** | First-generation reference relay server. Superseded by `macula-station`; kept for historical reference and for V1-network compatibility windows. | Repo currently private, archival | (private) |
-| **macula-dist-relay** | Distributed-relay reference implementation used during V1 multi-relay testing. Federation-of-relays cross-routing experiments live here. | Public | [GitHub](https://github.com/macula-io/macula-dist-relay) |
-| **macula-realm** | Realm mesh-membership identity service: HyParView admission, station links, realm key lifecycle. Shipped and live in production on macula.io (verified 2026-09-05); this repo builds the realm-identity half of what was a single combined service before a 2026-08-30/09-04 split -- the other half, org/app management and licensing, moved to `macula-portal`. | Repo currently private, live | (private) |
-| **macula-realm-compose** | Deployment composition, renamed "Macula Portal Compose Deployment" (repo description, verified 2026-09-05) as part of the split above. | Repo currently private | (private) |
-| **macula-demo** | Reference demo deployments and infrastructure scripts. | Repo currently private | (private) |
-| **macula-comm-docs** | Investor and public-sector communication material (commercial pitch, federated-compute thesis articles, public-sector vertical). | Repo currently private (verified 2026-09-05) | (private) |
-
-**Core capabilities of the substrate:**
-
-- **DHT pub/sub**: decentralised publish/subscribe via Kademlia DHT
-- **DHT RPC**: request/response patterns with service discovery (asynchronous request/response, not synchronous)
-- **NAT traversal**: QUIC over UDP for firewall-friendly inbound and outbound connections
-- **Capability security**: DID identities with UCAN authorisation tokens
-- **Content transfer**: content-addressed storage and peer-to-peer transfer with merkle-tree verification (described below)
-
-### Services ([macula-services](https://github.com/macula-services))
-
-On-mesh services, each built on the `mcl_om` service base and reached over the mesh, for example `mcl-echo`, `mcl-stations`, `mcl-citizens`, `mcl-rag` and `mcl-tube`. [mcl-corpus](https://github.com/macula-services/mcl-corpus) holds the philosophy, skills and code-generation templates that guide the work.
-
-### Content transfer
+## The idea
 
 <p align="center">
-  <img src="assets/content-transfer-flow.svg" alt="Macula Content Transfer: Want/Have/Block Protocol" width="100%">
+  <img src="assets/cloud-vs-mesh.svg" alt="The cloud model compared with the Macula mesh" width="100%">
 </p>
 
-Content transfer is a built-in capability of `macula`, not a separate component. It provides BEAM-native content-addressed storage and peer-to-peer transfer for distributing OTP releases and artefacts across the mesh without external dependencies on IPFS, BitTorrent, or comparable systems.
+Macula lets those owned machines talk to each other directly, as a mesh. Four ideas carry it:
 
-**Capabilities:**
+- **Owned machines.** A laptop, a server in a cupboard, a service in a container: each one holds its own identity, a
+  key it generates and keeps. Nothing about it is rented from a platform.
+- **Stations that route.** Machines connect *outbound* to stations, so nothing needs an open port, a fixed address or a
+  VPN. Stations keep a shared directory (a distributed hash table) of who offers what, and forward traffic between
+  machines. They route; they do not own anything.
+- **A realm for identity.** A realm says who belongs: which people, agents, services and devices are members, and which
+  service may offer what. Membership is signed, so any machine can check it without asking a central server; a membership checked that way
+  holds until it expires (up to 30 days), so revoking a member stops new ones, not one already issued.
+- **Sealing end to end.** Every link is encrypted. On top of that, a call can be sealed to the receiving service's own
+  key, so the station that forwards it sees who is talking to whom, but not what they say.
 
-- **Content-addressed storage**: Macula Content Identifiers (MCIDs) ensure that the same content has the same identifier everywhere
-- **Merkle-tree verification**: chunk-level integrity verification with parallel download
-- **Want/have/block protocol**: efficient peer-to-peer exchange inspired by IPFS Bitswap
-- **DHT integration**: providers announce availability and consumers discover providers via the Kademlia DHT
-- **Parallel download**: fetch chunks from multiple providers simultaneously
-- **NAT-friendly**: uses the existing Macula QUIC transport, no additional NAT-traversal layer required
-
-Protocol message types: `content_want`, `content_have`, `content_block`, `content_manifest_req`, `content_manifest_res`, `content_cancel`. See the [Content Transfer Guide](guides/content-transfer.md) for application-programming-interface usage and protocol details.
-
-## Data flow
+## How a call travels
 
 <p align="center">
-  <img src="assets/data-flow.svg" alt="Event-Sourced Application Data Flow" width="100%">
+  <img src="assets/call-path.svg" alt="How a call travels from caller through a station to a provider" width="100%">
 </p>
 
-## Documentation
+A program that wants something done (the caller) looks up who offers it (the provider) in the shared directory, then
+sends its request to the station that provider is connected to: one hop. The caller signs the request, the provider
+checks the signature and answers, and no station in between can change either message without being detected.
 
-- [**Overview**](guides/overview.md): Introduction to the ecosystem
-- [**Architecture**](guides/architecture.md): How the pieces fit together
-- [**Getting Started**](guides/getting-started.md): Build your first application
-- [**Joining a Realm**](guides/joining-a-realm.md): Realm onboarding flow
-- [**Lab Setup Scenarios**](guides/LAB_SETUP_SCENARIOS.md): Multi-node lab configurations
-- [**Event Sourcing**](guides/event-sourcing.md): CQRS and event-sourcing patterns (cross-references the Reckon ecosystem)
-- [**Mesh Networking**](guides/mesh-networking.md): QUIC mesh and federated-relay guide
-- [**Content Transfer**](guides/content-transfer.md): Peer-to-peer artefact distribution
-- [**Neuroevolution**](guides/neuroevolution.md): TWEANN and NEAT (cross-references the Faber ecosystem)
-- [**MaculaOS**](guides/macula-os.md): Edge deployment (historical; MaculaOS is archived)
+## A realm and its members
 
-## Related ecosystems
+<p align="center">
+  <img src="assets/realm.svg" alt="A realm and its members" width="100%">
+</p>
 
-Macula works alongside three independent ecosystems, each maintained by their own organisations.
+A realm vouches for its members. A person joins through their own browser; an agent acts on that person's behalf; a
+service is allowed to offer what it offers by a realm-signed delegation that lives at most 30 minutes, so when the
+realm withdraws it, it stops working quickly. Stations serve any realm, and one station can serve several.
 
-### Reckon: Event sourcing and CQRS ([reckon-db-org](https://github.com/reckon-db-org))
+## Joining
 
-A BEAM-native event-sourcing stack providing durable event stores, Command-Query Responsibility Segregation frameworks, and distributed persistence. Applications built on Macula can use Reckon for event-sourced state management.
+<p align="center">
+  <img src="assets/joining.svg" alt="The four steps of a node joining a realm" width="100%">
+</p>
 
-| Package | Description | Links |
-|---------|-------------|-------|
-| **reckon_db** | Distributed event store on Khepri / Ra (Raft) | [GitHub](https://github.com/reckon-db-org/reckon-db) \| [HexDocs](https://hexdocs.pm/reckon_db) |
-| **evoq** | CQRS / event-sourcing framework (aggregates, commands, events) | [GitHub](https://github.com/reckon-db-org/evoq) \| [HexDocs](https://hexdocs.pm/evoq) |
-| **reckon_gater** | Gateway and shared types | [GitHub](https://github.com/reckon-db-org/reckon-gater) \| [HexDocs](https://hexdocs.pm/reckon_gater) |
-| **reckon_evoq** | Adapter connecting `evoq` to `reckon_db` | [GitHub](https://github.com/reckon-db-org/reckon-evoq) \| [HexDocs](https://hexdocs.pm/reckon_evoq) |
+A machine makes its own key, asks the realm to join and proves it holds that key, and the person confirms the request in
+their own browser. The realm then signs the membership, and the machine dials stations outbound. The details are in [guides/joining-a-realm.md](guides/joining-a-realm.md).
 
-> See [reckon-ecosystem](https://github.com/reckon-db-org/reckon-ecosystem) for full Reckon-side documentation.
+## What it makes possible
 
-### Faber: Neuroevolution ([rgfaber](https://github.com/rgfaber))
+- **Services without a platform in between.** A service on your own hardware is reachable by the realm's members
+  wherever they are, without a hosting contract or an open port.
+- **Data without a platform holding it.** Data travels between the machines involved, through stations that forward
+  it, instead of being stored by a platform in order to be shared.
+- **Agents that work together.** Programs and AI agents find each other's services and call them, under an identity the
+  realm signed.
+- **Trust you can check.** Who belongs, who may serve what, and what was sent are all signed, so each machine verifies
+  them itself.
 
-Evolutionary neural-network framework for Erlang and OTP. Adaptive controllers can be evolved using TWEANN and NEAT, with optional distributed evaluation across the Macula mesh.
+## Security today
 
-| Package | Description | Links |
-|---------|-------------|-------|
-| **faber_tweann** | TWEANN neural networks with liquid-time-constant neurons and Open Neural Network Exchange export | [GitHub](https://github.com/rgfaber/faber-tweann) \| [HexDocs](https://hexdocs.pm/faber_tweann) |
-| **faber_neuroevolution** | Population-based evolutionary training with speciation and selection | [GitHub](https://github.com/rgfaber/faber-neuroevolution) \| [HexDocs](https://hexdocs.pm/faber_neuroevolution) |
+Macula's security is recorded feature by feature in a register, with the evidence behind each claim and how far it is
+built. The public edition is **[SECURITY_FEATURES.md](SECURITY_FEATURES.md)**. In short:
 
-> See [faber-ecosystem](https://github.com/rgfaber/faber-ecosystem) for full Faber-side documentation.
+- Every mesh link uses TLS 1.3 with a hybrid post-quantum (ML-KEM) key exchange, and stations refuse classical-only
+  clients.
+- Every node, token and proof is signed with ML-DSA-87, a post-quantum signature.
+- Every request, reply and event is signed by its sender and verified by the receiver, so no station can alter it
+  undetected.
+- Sealing end to end is on for five services so far, two of which accept nothing else; for the others, the stations
+  can still read what they relay.
+- Stations see who talks to whom and when; Macula claims no anonymity.
+- Identity keys are protected by file permissions only, and there is no revocation list for a stolen key yet.
 
-### bc_gitops: Mesh application orchestration ([beam-campus](https://github.com/beam-campus))
+## Where to start
 
-A complementary BEAM-native GitOps reconciler for publishing, installing, and managing Open Telecom Platform applications across a Macula mesh. `bc_gitops` is an option for operators who want a BEAM-native reconciler or a mesh-source-type for fetching releases via Macula Content Identifiers.
+Macula runs today on a development fleet. The building blocks are open source under Apache-2.0:
 
-| Package | Description | Links |
-|---------|-------------|-------|
-| **bc_gitops** | GitOps reconciler for OTP applications | [GitHub](https://github.com/beam-campus/bc-gitops) \| [HexDocs](https://hexdocs.pm/bc_gitops) |
+| You want to | Look at |
+|---|---|
+| Build on the mesh from Erlang or Elixir | [macula](https://github.com/macula-io/macula) |
+| Build from Go, Rust, Python, .NET, TypeScript or PHP | [macula-go](https://github.com/macula-io/macula-go), [macula-rust](https://github.com/macula-io/macula-rust), [macula-py](https://github.com/macula-io/macula-py), [macula-dotnet](https://github.com/macula-io/macula-dotnet), [macula-ts](https://github.com/macula-io/macula-ts), [macula-php](https://github.com/macula-io/macula-php) |
+| Try the mesh from a terminal | [macula-cli](https://github.com/macula-io/macula-cli) |
+| Give an AI agent access to the mesh | [macula-mcp](https://github.com/macula-io/macula-mcp) |
+| Read the post-quantum building blocks | [macula-pqc](https://github.com/macula-io/macula-pqc) |
 
-## Why Macula?
+The station and the realm are developed separately; the station image is publicly available.
 
-### Reclaim your place in the AI economy
+## Reporting a vulnerability
 
-Artificial intelligence is rapidly automating cognitive work, displacing millions from traditional employment. But artificial intelligence needs compute, and that is an opportunity. Macula transforms an operator from a **displaced worker** into an **infrastructure provider**:
-
-- **Compute as a new asset class**: operator-owned hardware becomes income-generating infrastructure
-- **Run micro-datacentres**: participate in the mesh economy from a home or office
-- **Own the contribution**: no middleman taking thirty percent or more of the compute value
-- **Community-owned artificial intelligence**: train and run models on community infrastructure rather than on Big Tech clouds
-
-### A platform for independents and solo developers
-
-Big Tech platforms demand thirty-percent cuts, dictate terms, and can deplatform operators overnight. Macula puts a **production-ready distributed platform at any developer's fingertips**:
-
-- **Zero platform fees**: keep one hundred percent of what you earn
-- **No app-store gatekeepers**: deploy directly to your users
-- **Built-in distribution**: applications run on the mesh and scale with demand
-- **Own the relationship**: direct connection to users, no algorithm deciding distribution
-
-### Break free from Big Tech
-
-Five companies control most cloud infrastructure, creating vendor lock-in and data exploitation. Macula provides **infrastructure that operators own**:
-
-- **Local data processing**: data does not leave the operator's network
-- **Open standards**: no proprietary lock-in, no platform risk
-- **Portable workloads**: move freely between nodes and providers
-
-### Data sovereignty by design
-
-Governments worldwide enforce strict data-residency requirements (the General Data Protection Regulation, the California Consumer Privacy Act, localisation laws). Macula's edge-first architecture naturally complies:
-
-- **Processing where data is created**: no cross-border transfers
-- **Cryptographic authorisation**: UCAN tokens, not central authentication servers
-- **Audit trails**: event sourcing captures every state change
-
-### Digital resilience
-
-Centralised systems fail catastrophically. Macula's mesh architecture ensures continuity:
-
-- **If one node fails, others continue**: no single point of failure
-- **Offline-capable**: nodes operate independently when disconnected
-- **Eventual consistency**: changes propagate when connectivity returns
-
-### Environmental efficiency
-
-Data centres consume a significant share of global electricity while operating at fifteen to twenty-five percent utilisation. Edge processing changes this:
-
-- **Up to ten-fold energy reduction** for local processing versus cloud round-trips
-- **Use existing hardware**: any device can join the mesh
-- **Reduce network overhead**: process data where it is generated
-
-### BEAM-native excellence
-
-Every component is built on the BEAM (the Erlang virtual machine), battle-tested in telecommunications for forty years and counting:
-
-- **Fault tolerance**: supervisors restart failed processes automatically
-- **Soft real-time**: predictable latency characteristics
-- **Hot code loading**: deploy without downtime
-- **Massive concurrency**: millions of lightweight processes
-
-## Use cases
-
-- **Internet-of-Things platforms**: collect and process sensor data at the edge
-- **Financial systems**: complete audit trails through event sourcing
-- **Gaming**: real-time multiplayer on a mesh network
-- **Robotics**: evolve controllers with [Faber](https://github.com/rgfaber/faber-ecosystem) neuroevolution
-- **Healthcare**: decentralised patient data with UCAN authorisation
-
-## Community
-
-- **Macula**: [macula-io](https://github.com/macula-io) on GitHub | search `macula` on [hex.pm](https://hex.pm)
-- **Services**: [macula-services](https://github.com/macula-services) on GitHub
-- **Reckon**: [reckon-db-org](https://github.com/reckon-db-org) on GitHub | search `reckon` on [hex.pm](https://hex.pm)
-- **Faber**: [rgfaber](https://github.com/rgfaber) on GitHub | search `faber` on [hex.pm](https://hex.pm)
-- **beam-campus**: [beam-campus](https://github.com/beam-campus) on GitHub | `bc_gitops` on [hex.pm](https://hex.pm)
-- **Issues**: report bugs on the respective repositories
+See [SECURITY.md](SECURITY.md).
 
 ## License
 
-Apache 2.0. See [LICENSE](LICENSE) for details.
-
----
-
-<p align="center">
-  <sub>Built with the BEAM</sub>
-</p>
+Apache 2.0. See [LICENSE](LICENSE).
