@@ -32,7 +32,7 @@ env:
 jobs:
   pdf:
     if: github.ref == 'refs/heads/main'
-    runs-on: [self-hosted]
+    runs-on: ubuntu-latest
     # CODEX_EXPORT_DEPLOY_KEY lives in this environment, which only main may use.
     environment: codex-export
     steps:
@@ -43,8 +43,8 @@ jobs:
       - name: Build README.pdf
         run: |
           set -eu
-          podman run --rm \
-            -v "$PWD":/data:Z -w /data --entrypoint sh "$PANDOC_IMAGE" \
+          docker run --rm \
+            -v "$PWD":/data -w /data --entrypoint sh "$PANDOC_IMAGE" \
             scripts/readme_pdf.sh /data/README.pdf
           test -s README.pdf
 

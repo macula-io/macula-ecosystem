@@ -90,8 +90,8 @@ built. The public edition is **[SECURITY_FEATURES.md](SECURITY_FEATURES.md)**. I
 - Every node, token and proof is signed with ML-DSA-87, a post-quantum signature.
 - Every request, reply and event is signed by its sender and verified by the receiver, so no station can alter it
   undetected.
-- Sealing end to end is on for five services so far, two of which accept nothing else; for the others, the stations
-  can still read what they relay.
+- Sealing end to end is released in every SDK and off by default: a service opts in, and can refuse anything sent
+  in the clear. For a service that has not opted in, the stations can still read what they relay.
 - Stations see who talks to whom and when; Macula claims no anonymity.
 - Identity keys are protected by file permissions only, and there is no revocation list for a stolen key yet.
 
@@ -101,7 +101,7 @@ Macula runs today on a development fleet. The building blocks are open source un
 
 | You want to | Look at |
 |---|---|
-| Build on the mesh from Erlang or Elixir | [macula](https://github.com/macula-io/macula) |
+| Build on the mesh from Erlang or Elixir | [macula](https://github.com/macula-io/macula) ([HexDocs](https://hexdocs.pm/macula)) |
 | Build from Go, Rust, Python, .NET, TypeScript or PHP | [macula-go](https://github.com/macula-io/macula-go), [macula-rust](https://github.com/macula-io/macula-rust), [macula-py](https://github.com/macula-io/macula-py), [macula-dotnet](https://github.com/macula-io/macula-dotnet), [macula-ts](https://github.com/macula-io/macula-ts), [macula-php](https://github.com/macula-io/macula-php) |
 | Try the mesh from a terminal | [macula-cli](https://github.com/macula-io/macula-cli) |
 | Give an AI agent access to the mesh | [macula-mcp](https://github.com/macula-io/macula-mcp) |
