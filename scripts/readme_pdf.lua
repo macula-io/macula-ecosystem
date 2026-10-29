@@ -36,14 +36,9 @@ function RawBlock(el)
   return pandoc.Para(imgs)
 end
 
--- The source repository is private: a relative link would lead nowhere for a reader.
--- The security features are published in macula-codex; any other relative link becomes text.
+-- A relative link would lead nowhere for a reader of the PDF: it becomes text.
 function Link(el)
   if el.target:match("^https?://") or el.target:match("^mailto:") then return nil end
-  if el.target:match("^SECURITY_FEATURES") then
-    el.target = "https://github.com/macula-io/macula-codex/releases"
-    return el
-  end
   return el.content
 end
 
