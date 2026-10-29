@@ -83,7 +83,9 @@ networks can't connect today. The details are in [guides/joining-a-realm.md](gui
 ## Security today
 
 Macula's security is recorded feature by feature in a register, with the evidence behind each claim and how far it is
-built. The public edition is **[SECURITY_FEATURES.md](SECURITY_FEATURES.md)**. In short:
+built. The public edition is a signed PDF, rebuilt each time the register changes and only when every claim it
+checks against the live network holds: **[SECURITY_FEATURES.pdf](https://github.com/macula-io/macula-codex/blob/register-pdf/SECURITY_FEATURES.pdf)**
+in [macula-codex](https://github.com/macula-io/macula-codex), which says how to verify it. In short:
 
 - Every mesh link uses TLS 1.3 with a hybrid post-quantum (ML-KEM) key exchange, and stations refuse classical-only
   clients.

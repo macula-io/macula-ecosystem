@@ -1,0 +1,22 @@
+# Fails when this repository carries its own copy of the security register, or links one,
+# instead of the signed PDF that macula-architecture's export job delivers to macula-codex.
+# This exists so a reader here never sees a register that stopped updating (macula-ecosystem#6).
+name: register-link
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: The README links the signed register PDF, and no copy is tracked
+        run: scripts/check_register_link.sh
